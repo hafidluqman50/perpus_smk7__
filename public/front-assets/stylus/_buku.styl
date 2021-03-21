@@ -1,0 +1,261 @@
+.overlay
+    position fixed
+    min-width 120%
+    min-height 120%
+    z-index 3
+    background rgba(0,0,0, 0.4)
+    display none
+#page-buku
+    padding-bottom 60px
+    & > div
+        padding 15px 0
+        & > .column
+            background-color #fff
+    div
+        &.is-fixed
+            &::-webkit-scrollbar
+                width 0.4em
+            &::-webkit-scrollbar-thumb
+                background-color lightgrey
+                border-radius 50px
+    #side-menu
+        transition all 0.5s ease
+        position fixed
+        z-index 4
+        background #fff
+        aside > div
+            margin-bottom 30px
+            .menu-label
+                margin 0 0 5px
+        & > .close-menu
+            position absolute
+            right 10px
+            display none
+        .back-button
+            padding-bottom 5px
+            border-bottom 1px solid rgba(0,0,0,0.1)
+            a
+                vertical-align middle
+            i
+                vertical-align baseline
+    & > .open-menu
+        width 35px
+        height 35px
+        position fixed
+        top 10px
+        left 10px
+        z-index 4
+        background none
+        border none
+        color #00d1b2
+        padding 5px
+        background-color #fff
+        // border-radius 50%
+    .is-fixed
+        z-index 8
+        top 0
+        bottom 0
+        overflow-y scroll
+        i
+            color #00d1b2
+    li
+        & > a
+            font-size 14px
+            // padding-left 0
+    input
+        border-radius 0
+        box-shadow none
+        transition all 0.5s ease
+        border none
+        border-bottom 1px solid #00d1b2
+        &:focus
+            border-bottom 1px solid #141e30
+            &::placeholder
+                color #141e30
+                opacity 0.6
+                letter-spacing 0
+        &::placeholder
+            font-size 15px
+            letter-spacing 0.5px
+            color #4a4a4a
+            transition all 0.5s ease
+    .kategori
+        p
+            display inline-block
+            opacity 0.7
+            &::before
+                content '('
+                display inline-block
+                font-size 14px
+                color #00d1b2
+                margin-right 2px
+            &::after
+                content ')'
+                display inline-block
+                font-size 14px
+                color #00d1b2
+                margin-left 2px
+    .banner
+        padding 0
+        position relative
+        section
+            min-height 300px
+        .hero-body
+            padding-left 20px
+            padding-right 20px
+        p
+            text-align justify
+        h4
+            padding-bottom 5px
+            margin-bottom 30px
+            border-bottom 2px solid rgba(20, 30, 48, 0.3)
+        figure
+            transition all 0.4s ease
+            display inline-block
+            position absolute
+            top 0
+            left 0
+            z-index 999
+            &:nth-of-type(1)
+                z-index 4
+                top 13%
+                left 7%
+            &:nth-of-type(2)
+                z-index 3
+                top 17%
+                left 8%
+                transition-delay 0.1s
+            &:nth-of-type(3)
+                z-index 2
+                top 21%
+                left 9%
+                transition-delay 0.2s
+            &:nth-of-type(4)
+                z-index 1
+                top 25%
+                left 10%
+                transition-delay 0.3s
+        img
+            width 200px
+            height 220px
+    .books
+        &:hover
+            figure
+                &:nth-of-type(1)
+                    transform rotate(-45deg)
+                &:nth-of-type(2)
+                    transform rotate(-35deg)
+                &:nth-of-type(3)
+                    transform rotate(-25deg)
+                &:nth-of-type(4)
+                    transform rotate(-15deg)
+
+.card-content
+    padding 1rem
+    i
+        color #ffdd57
+        font-size 14px
+
+div
+    &.card-content
+        & > .title
+            color #0f0f0f!important
+            margin 0!important
+            text-transform capitalize
+        & > div
+            & > a
+                color #fff!important
+    &.data-siswa
+        p
+            text-transform capitalize
+            font-weight 400
+            color #141e30!important
+            letter-spacing 1px
+            margin-top 40px
+        li
+            letter-spacing -1px
+            opacity 0.6
+            padding 7px 0
+            color #141e30!important
+            border-bottom 1px dotted #00d1b2
+            font-weight 100!important
+            margin-bottom 40px!important
+        span
+            &.icon
+                color #00d1b2
+                margin-right 10px
+    &.data-buku
+        .title
+            text-transform capitalize
+            padding 5px 0
+            font-weight 400
+        li
+            &.subtitle
+                font-size 14px
+                padding-left 5px
+                border-left 1px dotted #00d1b2
+        .wrap-info
+            padding 10px 0
+
+button
+    &.pinjam
+        width 100%
+        border-radius 0!important
+        letter-spacing 1px
+        height 100%
+        i.fa-heart-o::before
+            transition all 1s ease
+        &:hover i.fa-heart-o::before
+            content "\f004"
+            color red
+            opacity 0.8
+            
+@-webkit-keyframes pulse 
+  0% 
+    -webkit-transform scale(1)
+    transform scale(1)
+
+  50% 
+    -webkit-transform scale(1.2)
+    transform scale(1.2)
+
+  100% 
+    -webkit-transform scale(1)
+    transform scale(1)
+
+@keyframes pulse 
+  0% 
+    -webkit-transform scale(1)
+    -ms-transform scale(1)
+    transform scale(1)
+
+  50% 
+    -webkit-transform scale(1.2)
+    -ms-transform scale(1.2)
+    transform scale(1.2)
+
+  100% 
+    -webkit-transform scale(1)
+    -ms-transform scale(1)
+    transform scale(1)
+
+.pulse 
+  -webkit-animation-name pulse
+  animation-name pulse
+
+.animated.pulse:hover
+      -webkit-backface-visibility visible
+      -ms-backface-visibility visible
+      backface-visibility visible
+      -webkit-animation pulse 1s alternate infinite
+      -o-animation pulse 1s alternate infinite
+      -moz-animation pulse 1s alternate infinite
+      animation pulse 1s alternate infinite
+
+.load-icon
+    position absolute
+    bottom 0
+    left 20%
+    right 0
+    margin 0 auto
+    color #00d1b2

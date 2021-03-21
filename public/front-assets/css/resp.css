@@ -1,0 +1,122 @@
+@media screen and (max-width: 768px) {
+	#nav {
+		background: #fff!important;
+	}
+	#nav ul > div:nth-of-type(1){
+		text-align: left!important;
+	}
+	#nav ul > div:nth-of-type(2){
+		display: none;
+	}
+	#nav ul > div:nth-of-type(3),
+	#nav ul > div:nth-of-type(4){
+		text-align: left;
+	}
+	#nav li > a{
+		color: #141e30!important;
+		line-height: 0!important;
+	}
+	#nav .navbar-item img{
+		max-width: 100px!important;
+		max-height: 70px!important;
+		display: flex!important;
+	}
+	#nav img{
+	}
+	/* HEADER */
+	#header > figure > figcaption {
+		top: 30%!important;
+	}
+	#header > figure > figcaption > h1 {
+		font-size: 26px!important;
+	}
+	#header > figure > figcaption > p {
+	  line-height: 25px!important;
+	  letter-spacing: 0!important;
+	  width: 100%!important;
+	  font-size: 13.5px!important;
+	}
+	#header > figure > figcaption > a {
+	  font-size: 15px!important;
+	  padding: 10px 25px;
+	}
+	/* PROFIL */
+
+	#profil .pinjaman{
+		font-size: 19px!important;
+	}
+	#profil .pinjaman::before{
+		width: 16%!important;
+		height: 20px;
+	}
+	#profil .pinjaman::after{
+		width: 14%!important;
+		height: 20px;
+	}
+	/* BUKU */
+	.card-content {
+		padding: 1rem;
+	}
+	.card-content > p.title{
+		font-size: 20px!important;
+	}
+	.card-content span.icon{
+		width: 1rem;
+		height: 1rem;
+	}
+	.card-content i{
+		font-size: 16px!important;
+	}
+	/* ETC */
+	p.title-style{
+		font-size: 24px!important;
+		letter-spacing: 0!important;
+	}
+	p.title-style::before{
+		width: 22%!important;
+		height: 24px!important;
+		display: none;
+	}
+	p.title-style::after{
+		width: 20%!important;
+		height: 24px!important;
+		display: none;
+	}
+	div.data-siswa{
+		padding-top: 20px;
+	}
+	div.data-siswa p{
+		margin-top: 0px!important;
+		font-size: 16px!important;
+	}
+	div.data-siswa li{
+		font-size: 17px!important;
+	}
+	div.data-buku .title{
+		padding: 0!important;
+		font-size: 17px!important;
+	}
+	div.data-buku li.subtitle{
+		font-size: 14px;
+	}
+	div.data-buku .wrap-info{
+		padding: 10px 0;
+	}
+	/* PAGE BUKU DAN KATEGORI */
+	#page-buku #side-menu{
+		left: -300px;
+		width: 270px;
+	}
+	#page-buku .banner h2{	
+		font-size: 23px;
+	}
+	#page-buku .banner p{
+		margin-bottom: 10px!important;
+		font-size: 14px;
+	}
+}
+@media screen and (max-width: 999px) {
+	#page-buku #side-menu > .delete{
+		display: block!important;
+	}
+}

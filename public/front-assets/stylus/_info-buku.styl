@@ -1,0 +1,63 @@
+
+#info-buku
+    padding 50px 0
+    img
+        min-height 200px
+        max-height 500px
+    & > div
+        & > div
+            &.columns
+                background-color #fff
+                box-sizing border-box
+                -webkit-box-shadow 0 0 15px #141e30
+                box-shadow 0 0 15px #141e30
+    h3
+        &.title
+            background-color #141e30
+            display inline-block
+            padding 10px 15px
+            color #fff
+    p
+        &.subtitle
+            border-top 2px solid #00d1b2
+            padding 5px 15px
+    .rate
+        & > i
+            color #ffdd57
+
+.kandang
+    width 100%
+    perspective 2000px
+    display inline-block
+    padding 10px
+
+.kubik
+    position relative
+    transform-style preserve-3d
+    transition all 0.3s ease
+    figure
+        margin 0
+        width 100%
+        height 100%
+        position absolute
+        div
+            width 100%
+            height 100%
+            p
+                color #fff
+                transform rotate(-90deg)
+                font-size 20px
+                position relative
+                bottom 0
+                top 100px
+    .front
+        width 100%
+        transform rotateY(0deg) translateZ(50px)
+    .left
+        width 100px
+        height 100%
+        background-color #141e30
+        display inline-block
+        transform rotateY(-90deg) translateZ(50px)
+    &:hover
+        transform rotateY(50deg)

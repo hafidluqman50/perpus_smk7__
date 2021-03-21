@@ -1,0 +1,19 @@
+$(function(){
+    $("button.notif-wishlist").click(function(){
+        $("#wrap-notif").each(function(){
+            $(this).show().animate({
+                right:'10px'
+            },300);
+            $(".wish-box:first-child").appendTo("#wrap-notif").show().animate({
+                right:'10px'
+            },300).delay(5000).fadeOut();
+        });
+    });
+    // console.log('tolol')
+    $('.show,.wish-box').show().animate({
+        right:'10px'
+    },300);
+    $('.is-notif:first-child').show().animate({
+        right:'10px'
+    },300).delay(5000).fadeOut();
+});

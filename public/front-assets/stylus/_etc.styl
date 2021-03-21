@@ -1,0 +1,53 @@
+html,body
+    margin 0
+    padding 0
+    height 100%
+body
+    &::-webkit-scrollbar
+        width 0.5em
+    &::-webkit-scrollbar-thumb
+        background-color #00d1b2
+#container
+    min-height 100%
+    position relative
+#content
+    padding-bottom 435px
+
+.button
+    border-radius 0
+
+.is-none
+    display none
+
+p
+    &.title-style
+        color #141e30!important
+        text-transform uppercase
+        font-weight 500
+        letter-spacing -2px
+        word-spacing 5px
+        &::before
+            content ''
+            background-image linear-gradient(50deg, rgba(0,209,178,0.97) 78%, rgba(255, 255, 255, 0) 78%)
+            position absolute
+            width 30%
+            left 10px
+            top 5px
+            height 40px
+        &::after
+            content ''
+            background-image linear-gradient(50deg, rgba(20,30,48,0.9) 78%, rgba(255, 255, 255, 0) 78%)
+            position absolute
+            width 28%
+            left 10px
+            height 40px
+.back-menu
+    position absolute
+    left 10px
+    top 10px
+    color #fff
+    &:hover
+        color #fff
+        opacity 0.8
+    & > *
+        color #fff

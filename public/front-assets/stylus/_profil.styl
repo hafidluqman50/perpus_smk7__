@@ -1,0 +1,145 @@
+
+#profil1
+    padding 20px 0
+    & > div
+        padding 10px 40px 30px
+        background-color #fff
+    figure
+        width 100%
+        height 300px
+        & > img
+            width 100%
+            height 100%
+
+.banner2
+    width 100%
+    height 250px
+    background-color #00d1b2
+    background-size cover
+    background-image url(../img/pattern.png)
+    background-image linear-gradient(to right, rgba(0,209,178,0.97) 0%, rgba(9, 229, 196, 0.97) 100%), url(../img/pattern.png)
+
+#profil
+    background-color #fff
+    padding 100px 10px 0
+    position relative
+    top -100px
+    a.button
+        width 100%
+        height 100%
+    img
+        object-fit cover
+    figure
+        &.foto-siswa
+            width 210px
+            height 220px
+            top -120px
+            position absolute
+            left 0
+            right 0
+            margin 0 auto
+            z-index 4
+            box-shadow 5px 5px 0 0 rgba(20, 30, 48, 0.85)
+            & > img
+                width 100%
+                height 100%
+    input
+        height auto
+        border none
+        box-shadow none
+        padding 0
+        font-size 1.3rem
+    .btn-file
+        position relative
+        overflow hidden
+        width 210px
+        z-index 999
+        top 8px
+        border-radius 0
+        input[type="file"]
+            position absolute
+            top 0
+            right 0
+            min-width 100%
+            min-height 100%
+            font-size 100px
+            text-align right
+            opacity 0
+            outline none
+            background white
+            cursor inherit
+            display block
+    img#uploadPreview
+        outline 1px solid #141e30
+        object-fit cover
+        width 210px
+        height 220px
+        position absolute
+        top -120px
+        left 0
+        right 0
+        z-index 99
+        margin 0 auto
+    .pinjaman
+        font-weight 500
+        letter-spacing -0.5px
+        padding-bottom 7px
+        border-bottom 1px solid lightgrey
+        i
+            color #00d1b2
+        &::before
+            content ''
+            display inline-block
+            background-image linear-gradient(50deg, rgba(0,209,178,0.97) 78%, rgba(255, 255, 255, 0) 78%)
+            width 100px
+            min-width 50px
+            height 20px
+            position relative
+            left 5px
+            top 3px
+        &::after
+            content ''
+            background-image linear-gradient(50deg, rgba(20,30,48,0.9) 78%, rgba(255, 255, 255, 0) 78%)
+            min-width 50px
+            width 100px
+            height 20px
+            position absolute
+            left 0
+    #rating
+        .book-rate
+            border 1px solid #00d1b2
+            box-sizing border-box
+        figure
+            width 100%
+            height 200px
+        img
+            width 100%
+            height 100%
+        b
+            display block
+            font-size 20px
+            font-weight 500
+        .stars
+            unicode-bidi bidi-override
+            direction rtl
+            font-size 30px
+            span.star
+                font-family FontAwesome
+                font-weight normal
+                font-style normal
+                display inline-block
+                cursor pointer
+            span.star:before
+                content "\f006"
+                padding-right 5px
+                color #ffdd57
+                transition all 0.3s ease
+            span.star:hover:before
+            span.star:hover ~ span:before
+                content "\f005"
+            span.star.active:before
+            span.star.active ~ span:before
+                content "\f005"
+            
+.hover
+    transition 0.4s
