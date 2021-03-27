@@ -1,4 +1,4 @@
-@include('Pengurus.layout.header')
+@include('Pengurus.Petugas.layout.header')
 @yield('content')
-@include('Pengurus.layout.footer')
+@include('Pengurus.Petugas.layout.footer')
 @yield('js')

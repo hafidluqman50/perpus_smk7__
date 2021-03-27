@@ -146,7 +146,7 @@
 							</h1>
 							<hr>
 							<p class="subtitle is-6">
-								Beberapa buku dengan rating tertinggi
+								Beberapa buku dengan peminjaman paling banyak
 							</p>
 						</div>
 						@foreach($buku->cekRating() as $key => $data)
@@ -175,7 +175,7 @@
 									<div>
 										<small>{{ tanggal_upload($data->tanggal_upload) }}</small>
 										<br>
-										<span class="icon is-big">
+										{{-- <span class="icon is-big">
 											<i class="fa fa-star"></i>
 										</span>
 										<span class="icon is-big">
@@ -189,7 +189,7 @@
 										</span>
 										<span class="icon is-big">
 											<i class="fa fa-star-o"></i>
-										</span>
+										</span> --}}
 									</div>
 					 				<div>
 					 					<div class="new-tag">
@@ -280,7 +280,7 @@
 									<div>
 										<small>{{ tanggal_upload($data->tanggal_upload) }}</small>
 										<br>
-										<span class="icon is-big">
+										{{-- <span class="icon is-big">
 											<i class="fa fa-star"></i>
 										</span>
 										<span class="icon is-big">
@@ -294,7 +294,7 @@
 										</span>
 										<span class="icon is-big">
 											<i class="fa fa-star-o"></i>
-										</span>
+										</span> --}}
 									</div>
 					 				<div>
 					 					<div class="new-tag">

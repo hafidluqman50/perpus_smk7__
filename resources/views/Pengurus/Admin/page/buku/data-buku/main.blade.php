@@ -32,7 +32,7 @@
 								Import Buku
 							</button>
 						</a>
-						<a href="{{url('/admin/data-buku/contoh/import')}}">
+						<a href="{{url('/admin/data-buku/contoh-import')}}">
 							<button class="btn btn-success">
 								Contoh Format Import
 							</button>
@@ -57,7 +57,7 @@
 							<thead>
 								<tr>
 									<th scope="col">No.</th>
-									<th scope="col">Nomor Induk</th>
+									{{-- <th scope="col">Nomor Induk</th> --}}
 									<th scope="col">Judul Buku</th>
 									<th scope="col">Kategori</th>
 									<th scope="col">Sub Kategori</th>
@@ -92,7 +92,7 @@
                 {data:'id_buku',searchable:false,render:function(data,type,row,meta){
                     return meta.row + meta.settings._iDisplayStart+1;
                 }},
-                {data:'nomor_induk',name:'nomor_induk'},
+                // {data:'nomor_induk',name:'nomor_induk'},
                 {data:'judul_buku',name:'judul_buku'},
                 {data:'nama_kategori',name:'nama_kategori'},
                 {data:'nama_sub',name:'nama_sub'},

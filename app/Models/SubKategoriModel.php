@@ -23,6 +23,17 @@ class SubKategoriModel extends Model
         return $db;
     }
 
+    public static function getIdSubKtg($slug_ktg,$slug_sub)
+    {
+        $get = self::join('kategori_buku','sub_kategori.id_kategori_buku','=','kategori_buku.id_kategori_buku')
+                    ->where('slug_kategori',$slug_ktg)
+                    ->where('slug_sub_ktg',$slug_sub)
+                    ->firstOrFail()
+                    ->id_sub_ktg;
+
+        return $get;
+    }
+
     public static function findBySlug($slug,$slug_sub) {
         $db = self::where('slug_sub_ktg',$slug_sub);
         if ($db->count() > 0) {

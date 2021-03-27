@@ -193,9 +193,9 @@ class BukuTamuController extends Controller
                 $spreadsheet->getActiveSheet()->setCellValue('C'.$cell_job,'Kepala Tata Administrasi');
                 $spreadsheet->getActiveSheet()->setCellValue('J'.$cell_job,'Kepala Perpustakaan');
                 $spreadsheet->getActiveSheet()->setCellValue('C'.$cell_name,'Jumran, S.Pd');
-                $spreadsheet->getActiveSheet()->setCellValue('J'.$cell_name,'Khairul Anam, M.Pd');
+                $spreadsheet->getActiveSheet()->setCellValue('J'.$cell_name,Petugas::where('jabatan','kepala-perpustakaan')->firstOrFail()->nama_petugas);
                 $spreadsheet->getActiveSheet()->setCellValue('C'.$cell_nip,'NIP.19660507 199011 1 001');
-                $spreadsheet->getActiveSheet()->setCellValue('J'.$cell_nip,'NIP.19670512 200701 1 038');
+                $spreadsheet->getActiveSheet()->setCellValue('J'.$cell_nip,'NIP.'.Petugas::where('jabatan','kepala-perpustakaan')->firstOrFail()->nip);
 
                 $spreadsheet->getActiveSheet()->getStyle('C'.$cell_name)->getFont()->setUnderline(true);
                 $spreadsheet->getActiveSheet()->getStyle('C'.$cell_name.':J'.$cell_nip)->getFont()->setBold(true);

@@ -27,11 +27,6 @@
 								Kembalikan Buku
 							</button>
 						</a>
-						<a href="{{url('/admin/transaksi-buku/guru/cetak')}}">
-							<button class="btn btn-success">
-								Cetak Laporan
-							</button>
-						</a>
 					</div>
 					<div class="card-body">
 						@if (session()->has('message'))

@@ -110,6 +110,7 @@ class AnggotaController extends Controller
             'tipe_anggota'    => $tipe,
             'username'        => $username,
             'password'        => bcrypt($password),
+            'name'            => $nama_anggota,
             'status_akun'     => 1,
             'status_delete'   => 0,
             'level'           => 0,
@@ -140,13 +141,14 @@ class AnggotaController extends Controller
                 User::where('id_users',$first->id_users)->update(array_slice($array,8,-3));
             }
             elseif ($username != '') {
-                User::where('id_users',$first->id_users)->update(array_slice($array,8,-4));
+                unset($array['password']);
+                User::where('id_users',$first->id_users)->update(array_slice($array,8,-3));
             }
             elseif ($password != '') {
                 User::where('id_users',$first->id_users)->update(array_slice($array,9,-3));
             }
 
-            $get->update(array_slice($array,0,-5));
+            $get->update(array_slice($array,0,-6));
             $message = 'Berhasil Update '.ucwords($tipe);
         }
 

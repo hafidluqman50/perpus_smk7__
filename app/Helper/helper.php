@@ -5,6 +5,23 @@ function dua_minggu($tanggal)
     return $dua_minggu;
 }
 
+function unslug_str($str) {
+	$get = explode('-',$str);
+	return ucwords($get[0]).' '.ucwords($get[1]);
+}
+
+function delete_files($target) {
+    if(is_dir($target)){
+        $files = glob( $target . '*', GLOB_MARK ); //GLOB_MARK adds a slash to directories returned
+        foreach( $files as $file ){
+            delete_files( $file );      
+        }
+        rmdir( $target );
+    } elseif(is_file($target)) {
+        unlink( $target );  
+    }
+}
+
 function explode_nama($str) {
 	$nama = '';
 	$explode = explode(" ",$str);

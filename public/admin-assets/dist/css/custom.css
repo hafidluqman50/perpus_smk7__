@@ -1,3 +1,7 @@
 .force-fullwidth {
 	width:100%!important;
 }
+
+.is-hide {
+	display: none;
+}

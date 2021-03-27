@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysql
--- Generation Time: Mar 21, 2021 at 07:59 AM
+-- Generation Time: Mar 27, 2021 at 08:01 AM
 -- Server version: 8.0.19
 -- PHP Version: 7.4.1
 
@@ -136,8 +136,8 @@ CREATE TABLE `buku` (
 --
 
 INSERT INTO `buku` (`id_buku`, `judul_buku`, `judul_slug`, `nomor_induk`, `pengarang`, `sn_penulis`, `penerbit`, `tempat_terbit`, `tahun_terbit`, `id_sub_ktg`, `klasifikasi`, `jumlah_eksemplar`, `stok_buku`, `foto_buku`, `keterangan`, `tanggal_upload`, `created_at`, `updated_at`) VALUES
-(3, 'Belajar PHP 7.1', 'belajar-php-71', '123', 'Ilham Jagaw Ter', 'IJT', 'Gramedia', 'Samarinda', 2017, 1, '679.8', 10, 15, '_foto_buku_5b51485b149cc2017-07-30_39323034-programming-wallpapers.jpg.jpg', 'Jago', '2018-07-20', '2017-07-28 18:48:59', '2018-07-19 18:26:35'),
-(5, 'Tes', 'tes', '124', 'asdasd', 'asdadsa', 'asdasd', 'asdasda', 2011, 1, '777.127.128', 123213, 3, '_foto_buku_5b514875253c02017-07-30_39323034-programming-wallpapers.jpg.jpg', '-', '2018-07-20', '2017-07-30 03:49:58', '2018-07-19 18:27:01'),
+(3, 'Belajar PHP 7.1', 'belajar-php-71', '123', 'Ilham Jagaw Ter', 'IJT', 'Gramedia', 'Samarinda', 2017, 1, '679.8', 10, 14, '_foto_buku_5b51485b149cc2017-07-30_39323034-programming-wallpapers.jpg.jpg', 'Jago', '2018-07-20', '2017-07-28 18:48:59', '2018-07-19 18:26:35'),
+(5, 'Tes', 'tes', '124', 'asdasd', 'asdadsa', 'asdasd', 'asdasda', 2011, 1, '777.127.128', 123213, 2, '_foto_buku_5b514875253c02017-07-30_39323034-programming-wallpapers.jpg.jpg', '-', '2018-07-20', '2017-07-30 03:49:58', '2018-07-19 18:27:01'),
 (6, 'Kehebatan', 'kehebatan', '125', 'Daguy', 'DGY', 'Erlangga', 'samarinda', 2017, 1, '892.128.7', 100, 118, '_foto_buku_5b513de054b74carbon (2).png.jpg', '-', '2018-07-20', '2017-09-03 19:48:17', '2018-07-19 17:41:52'),
 (8, 'Belajar Laravel 5.6', 'belajar-laravel-56', '128', 'Taylor Otwell', 'TWL', 'Laravel Corp.', 'Los Angeles', 2018, 1, '575.5', 120, 130, '_foto_buku_5b51e09d478deTaylor-Otwell-cloudways.jpg', NULL, '2018-07-20', '2018-07-19 07:28:16', '2018-07-20 05:16:13'),
 (11, 'daguy', 'daguy', '127', 'Daguy', 'DGY', 'asdasd', 'asdasd', 2019, 2, '123.123.', 123123, 121231, '_foto_buku_5b51476a162bcbatik_04.png.jpg', NULL, '2018-07-20', '2018-07-19 18:22:34', '2018-07-19 18:22:34'),
@@ -220,7 +220,8 @@ INSERT INTO `detail_transaksi` (`id_detail_transaksi`, `id_transaksi`, `id_buku`
 (12, 10, 13, 'GVxcwIUXWCkGjPgurpieBMRSHzyAtiUpCMywXzgAGuBHkSPijIVxGtRrecWi', 1, '2020-12-23', '2021-01-06', '2020-12-23', 'kembali', NULL, 'Tertukar', NULL, '2020-12-23 06:49:08'),
 (13, 9, 3, 'kAMibFwqJxcZGfCDSEtQQRkUmaeIojDMAxojUtkiSfGkEQmwQFRCqJZeacbI', 0, '2020-12-23', '2021-01-06', '2021-03-07', 'kembali', NULL, NULL, NULL, '2021-03-07 14:23:24'),
 (14, 9, 14, 'wtiKzhjqfHEpYaEnwPNuWOdAGDBmXIzfuDwHYamnIPjtwiAEXqpNKdOhGBWE', 0, '2021-03-07', '2021-03-21', NULL, 'batal-pinjam', NULL, NULL, '2021-03-07 15:07:59', '2021-03-07 15:07:59'),
-(15, 9, 3, NULL, 0, '2021-03-09', '2021-03-23', NULL, 'sedang-dipinjam', NULL, NULL, '2021-03-09 03:45:41', '2021-03-09 03:45:41');
+(16, 9, 3, '', 1, '2021-03-26', '2021-04-09', NULL, 'sedang-dipinjam', NULL, NULL, NULL, NULL),
+(17, 9, 5, '', 1, '2021-03-26', '2021-04-09', NULL, 'sedang-dipinjam', NULL, NULL, NULL, NULL);
 
 --
 -- Triggers `detail_transaksi`
@@ -446,20 +447,18 @@ CREATE TABLE `password_resets` (
 CREATE TABLE `petugas` (
   `id_petugas` int UNSIGNED NOT NULL,
   `id_users` int NOT NULL,
+  `nip` varchar(70) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `nama_petugas` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `nomor_induk` varchar(70) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `jenis_kelamin` enum('Laki-laki','Perempuan') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `foto_profile` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
+  `jabatan` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `foto_profile` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `petugas`
 --
 
-INSERT INTO `petugas` (`id_petugas`, `id_users`, `nama_petugas`, `nomor_induk`, `jenis_kelamin`, `foto_profile`, `created_at`, `updated_at`) VALUES
-(1, 1, 'Petugas Gan', '123131', 'Laki-laki', '1747_WallpaperPlay_developer-walp-w10-88515_1920x1080.jpg', '2017-06-24 02:10:05', '2017-06-24 02:10:05');
+INSERT INTO `petugas` (`id_petugas`, `id_users`, `nip`, `nama_petugas`, `jabatan`, `foto_profile`) VALUES
+(2, 16, '19670512 200701 1 038', 'Khairul Anam, M.Pd', 'kepala-perpustakaan', '-');
 
 -- --------------------------------------------------------
 
@@ -581,6 +580,7 @@ INSERT INTO `transaksi_buku` (`id_transaksi`, `id_anggota_perpus`, `updated_at`)
 
 CREATE TABLE `users` (
   `id_users` int NOT NULL,
+  `name` varchar(70) COLLATE utf8mb4_unicode_ci NOT NULL,
   `username` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `password` varchar(75) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `remember_token` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -596,14 +596,13 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id_users`, `username`, `password`, `remember_token`, `level`, `status_akun`, `status_delete`, `last_login`, `created_at`, `updated_at`) VALUES
-(1, 'admin', '$2y$10$x44D0Pclz570dxhOqAsD6.VNr9aDy04CX7w.gZ1nDjhAKxG/4Vu8C', '3PlEk5bKFwwPfI2PdjdYVrh48Hb65OEpDEkFksUcCqxTHAMVUYkEcUatbAS4', 2, 1, 0, '2018-06-21 13:12:39', '2017-07-16 03:52:48', '2018-03-18 23:22:12'),
-(2, 'ahmad', '$2y$10$9pgytQqHBOExXfY2dsE5F.5JXb9YPBvYSgT63bDwBoamfghp4rWUy', 'dun4lZyB9mGmvQ2RZKDNXwMQ3Th9QdbbuUmD7uKiyRy0Q5OqpW8qFjomfVIB', 1, 1, 0, '2017-09-25 06:09:16', '2017-09-24 22:02:32', '2017-09-24 22:09:16'),
-(3, 'hafidlh', '$2y$10$9II9gIVOMrHHOBJqlzSmneA.zhKTpDVecYJvAGZHWFsNQXGrshCgW', 'F56d8YRyQfgTHFzKmPNGcCmu40963RvrZbbOqvdsPUDT9n1sZKKlKXlxm1Hf', 0, 1, 0, '2018-07-02 02:23:25', '2017-09-07 15:54:05', '2020-12-23 06:49:35'),
-(4, 'ilham', '$2y$10$tD3vwSfLWgGAsBtLue/Dwuqs6sp1LsinmT4Z/B2frj6e7noh8BwXi', 'dPsXKQg66vplI3lnxecKCP7GFy7AtSbAYyanXleWm31JO6FSB88qFZjHwz4B', 0, 1, 0, '2017-10-27 05:13:00', '2017-08-06 01:22:09', '2017-10-26 21:13:00'),
-(5, 'petugas', '$2y$10$oBu6gkuKPmrbFk7M.kGEO..yzPV7bqpN0qHkenalYbY6gdbr/6LI6', '5gSO1oT06BXFfenJKWTLeHBDyWLuxZNe3MwRGf7uBsGRA0sdmcIiKZZBTfH1', 1, 1, 0, '2017-10-21 01:42:30', '2017-06-23 04:51:20', '2017-10-20 17:42:30'),
-(7, 'dagum', '$2y$10$qSTuenEO1wPzMbXU5SBq1eTElDRGDmWVZBf0DD1LN8z8QovLeoC.e', '6MkooEHAQilt9L2CxFYKJf9crQLML0JgIjKLf27HN6pXL99yj5N6Hd36shga', 0, 1, 0, NULL, NULL, '2018-10-29 08:13:14'),
-(13, 'sudijan', '$2y$10$CAfsd0olraWCLm6HAmoMMeUxC1Lc77KNms67N3XcF2bcBfKr3vZiq', NULL, 0, 1, 0, NULL, NULL, NULL);
+INSERT INTO `users` (`id_users`, `name`, `username`, `password`, `remember_token`, `level`, `status_akun`, `status_delete`, `last_login`, `created_at`, `updated_at`) VALUES
+(1, 'Administrator', 'admin', '$2y$10$x44D0Pclz570dxhOqAsD6.VNr9aDy04CX7w.gZ1nDjhAKxG/4Vu8C', 'k7i2QdZTix5TbTG3NkOQH0aO4sTJwuCLU3vKBWaBdn1Cn0mNLhUjYkWKoBnt', 2, 1, 0, '2018-06-21 13:12:39', '2017-07-16 03:52:48', '2018-03-18 23:22:12'),
+(3, 'Hafiidh Luqmanul Hakim', 'hafidlh', '$2y$10$9II9gIVOMrHHOBJqlzSmneA.zhKTpDVecYJvAGZHWFsNQXGrshCgW', 'F56d8YRyQfgTHFzKmPNGcCmu40963RvrZbbOqvdsPUDT9n1sZKKlKXlxm1Hf', 0, 1, 0, '2018-07-02 02:23:25', '2017-09-07 15:54:05', '2020-12-23 06:49:35'),
+(4, 'Muhammad Ilham', 'ilham', '$2y$10$tD3vwSfLWgGAsBtLue/Dwuqs6sp1LsinmT4Z/B2frj6e7noh8BwXi', 'dPsXKQg66vplI3lnxecKCP7GFy7AtSbAYyanXleWm31JO6FSB88qFZjHwz4B', 0, 1, 0, '2017-10-27 05:13:00', '2017-08-06 01:22:09', '2017-10-26 21:13:00'),
+(7, 'Dagum', 'dagum', '$2y$10$qSTuenEO1wPzMbXU5SBq1eTElDRGDmWVZBf0DD1LN8z8QovLeoC.e', '6MkooEHAQilt9L2CxFYKJf9crQLML0JgIjKLf27HN6pXL99yj5N6Hd36shga', 0, 1, 0, NULL, NULL, '2018-10-29 08:13:14'),
+(13, 'Sudijan', 'sudijan', '$2y$10$CAfsd0olraWCLm6HAmoMMeUxC1Lc77KNms67N3XcF2bcBfKr3vZiq', NULL, 0, 1, 0, NULL, NULL, NULL),
+(16, 'Khairul Anam, M.Pd', 'anam', '$2y$10$1EOxruCVgVOhE.pabyFU7.IK4Jt.CKLGzRzQ1tfE7R2QhSHIwjtNq', NULL, 1, 1, 0, NULL, NULL, '2021-03-24 09:39:27');
 
 -- --------------------------------------------------------
 
@@ -807,7 +806,7 @@ ALTER TABLE `barcode_scan`
 -- AUTO_INCREMENT for table `buku`
 --
 ALTER TABLE `buku`
-  MODIFY `id_buku` bigint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id_buku` bigint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `buku_rusak`
@@ -825,7 +824,7 @@ ALTER TABLE `buku_tamu`
 -- AUTO_INCREMENT for table `detail_transaksi`
 --
 ALTER TABLE `detail_transaksi`
-  MODIFY `id_detail_transaksi` bigint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id_detail_transaksi` bigint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `jurusan`
@@ -867,7 +866,7 @@ ALTER TABLE `notifikasi`
 -- AUTO_INCREMENT for table `petugas`
 --
 ALTER TABLE `petugas`
-  MODIFY `id_petugas` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_petugas` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `rating_buku`
@@ -903,7 +902,7 @@ ALTER TABLE `transaksi_buku`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id_users` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id_users` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `wishtlist_buku`

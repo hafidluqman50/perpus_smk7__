@@ -30,7 +30,7 @@
       <!-- Notifications Dropdown Menu -->
       <li class="nav-item dropdown">
         <a class="nav-link" data-toggle="dropdown" href="#">
-          <i class="fa fa-user mr-2"></i> {{ Auth::user()->username }}
+          <i class="fa fa-user mr-2"></i> {{ Auth::user()->name }}
         </a>
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
           <span class="dropdown-item dropdown-header">Profile</span>
@@ -64,7 +64,7 @@
           <img src="{{asset('admin-assets/dist/img/user2-160x160.jpg')}}" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">{{ Auth::user()->level==2?'Administrator':(Auth::user()->level==1?'Petugas':'') }}</a>
+          <a href="#" class="d-block">{{ Auth::user()->name }}</a>
         </div>
       </div>
 
@@ -173,6 +173,12 @@
                 <a href="{{ url('/admin/transaksi-buku/guru') }}" class="nav-link @if(isset($page)){{$page=='transaksi-buku-guru'?'active':''}}@endif">
                     <i class="fa fa-circle-o nav-icon"></i>
                     <p>Transaksi Buku Guru</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ url('/admin/transaksi-buku/laporan-transaksi') }}" class="nav-link @if(isset($page)){{$page=='laporan-transaksi'?'active':''}}@endif">
+                    <i class="fa fa-circle-o nav-icon"></i>
+                    <p>Laporan Transaksi</p>
                 </a>
               </li>
             </ul>

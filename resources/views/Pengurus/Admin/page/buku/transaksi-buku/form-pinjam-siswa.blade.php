@@ -50,16 +50,32 @@
 									<option selected="selected" disabled="disabled">=== Pilih Siswa ===</option>
 								</select>
 							</div>
-							<div class="form-group">
-								<label for="">Barcode</label>
-								<input type="text" class="form-control" id="barcode" placeholder="Code Barcode">
+							<hr>
+							<button class="btn btn-primary" id="scan-barcode" type="button">Scan Barcode</button>
+							<button class="btn btn-primary is-hide" id="input-manual" type="button">Input Manual</button>
+							<hr>
+							<div class="input-manual">
+								<div class="form-group">
+									<label for="">Buku</label>
+									<select name="buku_manual[]" id="buku_manual" class="form-control select-buku" required="required" multiple="">
+										@foreach ($data_buku as $element)
+										<option value="{{$element->id_buku}}">{{ $element->judul_buku }}</option>
+										@endforeach
+									</select>
+								</div>
 							</div>
-							<div class="form-group">
-								<label for="">Buku</label>
-								<select name="buku[]" id="buku" class="form-control select-buku" required="required" disabled="disabled" multiple="multiple">
-								</select>
-							</div>{{-- 
-							<div class="form-group">
+							<div class="input-barcode is-hide">
+								<div class="form-group">
+									<label for="">Barcode</label>
+									<input type="text" class="form-control" id="barcode" placeholder="Code Barcode">
+								</div>
+								<div class="form-group">
+									<label for="">Buku</label>
+									<select name="buku_barcode[]" id="buku" class="form-control select-buku" required="required" disabled="disabled" multiple="multiple">
+									</select>
+								</div>
+							</div>
+							{{-- <div class="form-group">
 								<label for="">Tanggal Pinjam</label>
 								<input type="text" class="form-control" name="tanggal_pinjam" value="{{date_explode(date('Y-m-d'))}}" readonly="readonly">
 							</div>
@@ -147,6 +163,10 @@
 				});
 			}
 		});
+
+		$('#scan-barcode').click(function() {
+			
+		})
 	});
 </script>
 @endsection

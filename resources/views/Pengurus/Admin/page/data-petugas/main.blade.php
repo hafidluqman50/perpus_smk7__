@@ -37,8 +37,9 @@
 							<thead>
 								<tr>
 									<th scope="col">No.</th>
-									<th scope="col">Nomor Induk</th>
+									<th scope="col">NIP</th>
 									<th scope="col">Nama Petugas</th>
+									<th scope="col">Jabatan</th>
 									<th scope="col">Username</th>
 									<th scope="col">Status</th>
 									<th scope="col">#</th>
@@ -54,4 +55,41 @@
 		</div>
 	</div>
 </section>
+@endsection
+
+@section('js')
+<script>
+    $(function(){
+        var petugas = $('.data-petugas').DataTable({
+            processing:true,
+            serverSide:true,
+            ajax:"{{ url('/datatables/data-petugas') }}",
+            columns:[
+                {data:'id_petugas',searchable:false,render:function(data,type,row,meta){
+                    return meta.row + meta.settings._iDisplayStart+1;
+                }},
+                {data:'nip',name:'nip'},
+                {data:'nama_petugas',name:'nama_petugas'},
+                {data:'jabatan',name:'jabatan'},
+                {data:'username',name:'username'},
+                {data:'status_petugas',name:'status_petugas'},
+                {data:'action',name:'action',searchable:false,orderable:false}
+            ],
+            scrollCollapse: true,
+            columnDefs: [ {
+            sortable: true,
+            "class": "index",
+            targets: 0
+            }],
+            order: [[ 1, 'desc' ]],
+            scrollX:true,
+            fixedColumns: true
+        });
+        petugas.on( 'order.dt search.dt', function () {
+	        petugas.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+	        	cell.innerHTML = i+1;
+	        });
+        }).draw();
+    });
+</script>
 @endsection

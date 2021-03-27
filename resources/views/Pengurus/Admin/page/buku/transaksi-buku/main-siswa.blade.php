@@ -17,37 +17,16 @@
 			<div class="col-md-12">
 				<div class="card">
 					<div class="card-header">
-						<form action="{{ url('/admin/transaksi-buku/cetak-laporan-buku') }}" method="GET">
-							<div class="row">
-								<div class="col-md-3">
-									<a href="{{url('/admin/transaksi-buku/siswa/pinjam')}}">
-										<button class="btn btn-primary" type="button">
-											Pinjam Buku
-										</button>
-									</a>
-									<a href="{{url('/admin/transaksi-buku/siswa/kembali')}}">
-										<button class="btn btn-info" type="button">
-											Kembalikan Buku
-										</button>
-									</a>
-								</div>
-								<div class="col-md-3">
-									<div class="form-group">
-										<select name="tahun_ajaran" class="form-control select2">
-											<option value="" selected="" disabled="">=== Pilih Tahun Ajaran ===</option>
-											@foreach ($tahun_ajaran as $value)
-											<option value="{{ $value->tahun_ajaran }}">{{ $value->tahun_ajaran }}</option>
-											@endforeach
-										</select>
-									</div>
-								</div>
-								<div class="col-md-3">
-									<button class="btn btn-success">
-										Cetak Laporan Pinjam
-									</button>
-								</div>
-							</div>
-						</form>
+						<a href="{{url('/admin/transaksi-buku/siswa/pinjam')}}">
+							<button class="btn btn-primary" type="button">
+								Pinjam Buku
+							</button>
+						</a>
+						<a href="{{url('/admin/transaksi-buku/siswa/kembali')}}">
+							<button class="btn btn-info" type="button">
+								Kembalikan Buku
+							</button>
+						</a>
 					</div>
 					<div class="card-body">
 						@if (session()->has('message'))

@@ -7,6 +7,7 @@ use App\Models\AnggotaModel as Anggota;
 use App\Models\AnggotaPerpusModel as AnggotaPerpus;
 use App\Models\TahunAjaranModel as TahunAjaran;
 use App\Models\KelasModel as Kelas;
+use App\Models\PetugasModel as Petugas;
 use App\Models\KategoriModel as Kategori;
 use App\Models\SubKategoriModel as SubKategori;
 use App\Models\BukuModel as Buku;
@@ -18,10 +19,32 @@ use App\Models\TransaksiModel as Transaksi;
 use App\Models\TransaksiDetailModel as TransaksiDetail;
 use Yajra\Datatables\Datatables;
 use Telegram;
+use Auth;
 use DB;
 
 class AjaxController extends Controller
 {
+    private $level;
+
+    function __construct()
+    {
+        $this->middleware(function($request,$next){
+            // if (session('user')) {
+            //     $this->level = session('user')->level_user == 4 ? 'siswa' : 'guru';
+            // }
+            // else {
+            //     $this->level = Auth::user()->level_user == 4 ? 'admin' : 'pembimbing';
+            // }
+            if (Auth::user()->level == 2) {
+                $this->level = 'admin';
+            }
+            else if (Auth::user()->level == 1) {
+                $this->level = 'petugas';
+            }
+            return $next($request);
+        });
+    }
+
     public function dataTahunAjaran() 
     {
     	$tahun_ajaran = TahunAjaran::whereNotIn('tahun_ajaran',['-'])->get();
@@ -140,23 +163,24 @@ class AjaxController extends Controller
     public function dataPetugas() 
     {
         $petugas    = Petugas::showData();
-        $url        = $request->segment(3);
-        $datatables = Datatables::of($petugas)->addColumn('action',function($action) use ($url){
+        $datatables = Datatables::of($petugas)->addColumn('action',function($action){
             $array = [
                 0 => ['class'=>'btn-success','text'=>'Aktifkan'],
                 1 => ['class'=>'btn-danger','text'=>'Nonaktifkan']
             ];
-            $column = '<a href="'.url("/admin/data-petugas/$url/edit/$action->id_petugas").'">
+            $column = '<a href="'.url("/admin/data-petugas/edit/$action->id_petugas").'">
                           <button class="btn btn-warning"> Edit </button>
                        </a>
                        <a href="'.url("/admin/data-petugas/delete/$action->id_petugas").'">
                            <button class="btn btn-danger" onclick="return confirm(\'Yakin Hapus ?\');"> Hapus </button>
                        </a>
-                       <a href="'.url("/admin/status-petugas/$action->id_petugas").'">
+                       <a href="'.url("/admin/data-petugas/status-petugas/$action->id_petugas").'">
                             <button class="btn '.$array[$action->status_akun]['class'].'">'.$array[$action->status_akun]['text'].'</button>
                        </a>
                     ';
             return $column;
+        })->editColumn('jabatan',function($edit){
+            return unslug_str($edit->jabatan);
         })->addColumn('status_petugas',function($status){
             $array = [
                 0 => ['class'=>'badge badge-danger','text'=>'Non Aktif'],
@@ -187,10 +211,10 @@ class AjaxController extends Controller
     {
         $buku = Buku::showData();
         $datatables = Datatables::of($buku)->addColumn('action',function($action){
-            $column = '<a href="'.url("/admin/data-buku/edit/$action->id_buku").'">
+            $column = '<a href="'.url("/$this->level/data-buku/edit/$action->id_buku").'">
                           <button class="btn btn-warning"> Edit </button>
                        </a>
-                       <a href="'.url("/admin/data-buku/delete/$action->id_buku").'">
+                       <a href="'.url("/$this->level/data-buku/delete/$action->id_buku").'">
                            <button class="btn btn-danger" onclick="return confirm(\'Yakin Hapus ?\');"> Hapus </button>
                        </a>
                     ';
@@ -213,10 +237,10 @@ class AjaxController extends Controller
     {
         $buku_rusak = BukuRusak::getData();
         $datatables = Datatables::of($buku_rusak)->addColumn('action',function($action){
-            $column = '<a href="'.url("/admin/data-buku-rusak/edit/$action->id_buku_rusak").'">
+            $column = '<a href="'.url("/$this->level/data-buku-rusak/edit/$action->id_buku_rusak").'">
                           <button class="btn btn-warning"> Edit </button>
                        </a>
-                       <a href="'.url("/admin/data-buku-rusak/delete/$action->id_buku_rusak").'">
+                       <a href="'.url("/$this->level/data-buku-rusak/delete/$action->id_buku_rusak").'">
                            <button class="btn btn-danger" onclick="return confirm(\'Yakin Hapus ?\');"> Hapus </button>
                        </a>
                     ';
@@ -286,19 +310,19 @@ class AjaxController extends Controller
         $transaksi = Transaksi::showData($jenis);
         $url       = $request->segment(3);
         $datatables = Datatables::of($transaksi)->addColumn('action',function($action)use($url){
-            $column = ' <a href="'.url("/admin/transaksi-buku/detail-transaksi/$url/$action->id_transaksi").'">
+            $column = ' <a href="'.url("/$this->level/transaksi-buku/detail-transaksi/$url/$action->id_transaksi").'">
                             <button class="btn btn-info">
                                 Detail
                             </button>
                         </a>
-                        <a href="'.url("/admin/transaksi-buku/delete/$action->id_transaksi").'" onclick="return confirm(\'Yakin Hapus ?\');">
+                        <a href="'.url("/$this->level/transaksi-buku/delete/$action->id_transaksi").'" onclick="return confirm(\'Yakin Hapus ?\');">
                            <button class="btn btn-danger"> Hapus </button>
                        </a>
                     ';
             if ($url == 'siswa') 
             {
                 $column .= '
-                        <a href="'.url("/admin/transaksi-buku/siswa/cetak-bebas-pustaka/$action->id_transaksi").'">
+                        <a href="'.url("/$this->level/transaksi-buku/siswa/cetak-bebas-pustaka/$action->id_transaksi").'">
                            <button class="btn btn-success"> Cetak Bebas Pustaka </button>
                        </a>';
             }
@@ -317,14 +341,14 @@ class AjaxController extends Controller
             // $cek = $action->status_transaksi == 'pending' ? '' : 'disabled="disabled"';
             if ($action->status_transaksi == 'pending') 
             {
-            $column = '<a href="'.url("/admin/transaksi-buku/detail-transaksi/$segment/$action->id_transaksi/konfirmasi/$action->id_detail_transaksi").'">
+            $column = '<a href="'.url("/$this->level/transaksi-buku/detail-transaksi/$segment/$action->id_transaksi/konfirmasi/$action->id_detail_transaksi").'">
                            <button class="btn btn-info"> Konfirmasi Pinjam </button>
                       </a>';
             }
             else {
                 $column = '';
             }
-              $column.='<a href="'.url("/admin/transaksi-buku/detail-transaksi/$action->id_transaksi/delete/$action->id_detail_transaksi").'" onclick="return confirm(\'Yakin Hapus ?\');">
+              $column.='<a href="'.url("/$this->level/transaksi-buku/detail-transaksi/$action->id_transaksi/delete/$action->id_detail_transaksi").'" onclick="return confirm(\'Yakin Hapus ?\');">
                    <button class="btn btn-danger"> Hapus </button>
                </a>';
             return $column;
