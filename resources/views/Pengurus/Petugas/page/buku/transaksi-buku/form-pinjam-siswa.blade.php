@@ -165,7 +165,29 @@
 		});
 
 		$('#scan-barcode').click(function() {
-			
+			$('.input-barcode').removeClass('is-hide');
+			$('.input-manual').addClass('is-hide');
+			$(this).addClass('is-hide');
+			$('#input-manual').removeClass('is-hide');
+			$('#buku_manual').attr('disabled','disabled');
+			$('#buku_manual').removeAttr('required');
+			$('.select-buku').select2({
+				placeholder:"=== Pilih Buku ==="
+			})
+		})
+
+		$('#input-manual').click(function() {
+			$('.input-manual').removeClass('is-hide');
+			$('.input-barcode').addClass('is-hide');
+			$(this).addClass('is-hide');
+			$('#scan-barcode').removeClass('is-hide');
+			$('#buku').attr('disabled','disabled');
+			$('#buku').removeAttr('required');
+			$('#buku_manual').attr('required','required');
+			$('#buku_manual').removeAttr('disabled');
+			$('.select-buku').select2({
+				placeholder:"=== Pilih Buku ==="
+			})
 		})
 	});
 </script>

@@ -12,14 +12,26 @@ class SubKategoriModel extends Model
     protected $guarded    = [];
     public $timestamps    = false;
 
-    public static function getBuku($slug,$slug_sub) {
-    	$db = DB::table('buku')
-                ->join('sub_kategori','buku.id_sub_ktg','=','sub_kategori.id_sub_ktg')
-    			->join('kategori_buku','sub_kategori.id_kategori_buku','=','kategori_buku.id_kategori_buku')
-                ->where('slug_kategori',$slug)
-                ->where('slug_sub_ktg',$slug_sub)
-                ->orderBy('id_buku','desc')
-                ->paginate(12);
+    public static function getBuku($slug,$slug_sub,$cari = '') {
+        if ($cari == '') {
+            $db = DB::table('buku')
+                    ->join('sub_kategori','buku.id_sub_ktg','=','sub_kategori.id_sub_ktg')
+                    ->join('kategori_buku','sub_kategori.id_kategori_buku','=','kategori_buku.id_kategori_buku')
+                    ->where('slug_kategori',$slug)
+                    ->where('slug_sub_ktg',$slug_sub)
+                    ->orderBy('id_buku','desc')
+                    ->paginate(12);
+        }
+        else {
+            $db = DB::table('buku')
+                    ->join('sub_kategori','buku.id_sub_ktg','=','sub_kategori.id_sub_ktg')
+                    ->join('kategori_buku','sub_kategori.id_kategori_buku','=','kategori_buku.id_kategori_buku')
+                    ->where('slug_kategori',$slug)
+                    ->where('slug_sub_ktg',$slug_sub)
+                    ->where('judul_buku','like','%'.$cari.'%')
+                    ->orderBy('id_buku','desc')
+                    ->paginate(12);
+        }
         return $db;
     }
 

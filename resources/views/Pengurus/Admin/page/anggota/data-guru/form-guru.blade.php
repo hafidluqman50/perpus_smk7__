@@ -31,7 +31,7 @@
 						<div class="card-body">
 							<div class="form-group">
 								<label for="" class="form-label">Nomor Induk Guru</label>
-								<input type="number" class="form-control" name="nomor_induk" value="{{isset($row)?$row->nomor_induk:(isset($errors)?old('nomor_induk'):'')}}" placeholder="Isi Nomor Induk Guru" required="required">
+								<input type="number" class="form-control" name="nomor_induk" value="{{isset($row)?$row->nomor_induk:(isset($errors)?old('nomor_induk'):'')}}" placeholder="Isi Nomor Induk Guru">
 							</div>
 							<div class="form-group">
 								<label for="" class="form-label">Nama Guru</label>

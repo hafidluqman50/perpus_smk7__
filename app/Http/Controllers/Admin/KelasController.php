@@ -94,6 +94,19 @@ class KelasController extends Controller
 			'anggota','page','id','siswa','tahun_ajaran','kelas'));
     }
 
+    public function editDetail($id,$id_detail)
+    {
+		$title        = 'Form Kelas Detail | Admin';
+		$anggota      = 'menu-open';
+		$page         = 'data-kelas';
+		$siswa        = Anggota::where('id_anggota',$id_detail)->firstOrFail();
+		$tahun_ajaran = TahunAjaran::whereNotIn('tahun_ajaran',['-'])->get();
+		$kelas        = Kelas::getById($id);
+		$row          = AnggotaPerpus::where('id_kelas',$id)->where('id_anggota',$id_detail)->firstOrFail();
+
+		return view('Pengurus.Admin.page.anggota.kelas.kelas-detail.form-kelas-detail-edit',compact('title','page','anggota','id','id_detail','siswa','tahun_ajaran','kelas','row'));
+    }
+
     public function deleteDetail($id,$id_detail)
     {
     	AnggotaPerpus::where('id_kelas',$id)
@@ -108,16 +121,31 @@ class KelasController extends Controller
 		$siswa           = $request->siswa;
 		$id_kelas        = $request->id_kelas;
 		$id_tahun_ajaran = $request->id_tahun_ajaran;
-    	for ($i=0; $i < count($siswa); $i++) { 
-    		$data_siswa[] = [
-				'id_anggota'      => $siswa[$i],
-				'id_kelas'        => $id_kelas,
+		$form 			 = $request->form;
+
+		if ($form == 'tambah') {
+	    	for ($i=0; $i < count($siswa); $i++) { 
+	    		$data_siswa[] = [
+					'id_anggota'      => $siswa[$i],
+					'id_kelas'        => $id_kelas,
+					'id_tahun_ajaran' => $id_tahun_ajaran
+	    		];
+	    	}
+
+    		AnggotaPerpus::insert($data_siswa);
+
+    		$message = 'Berhasil Input Data';
+		}
+		else {
+			$data_siswa = [
 				'id_tahun_ajaran' => $id_tahun_ajaran
-    		];
-    	}
+			];
 
-    	AnggotaPerpus::insert($data_siswa);
+			AnggotaPerpus::where('id_kelas',$id_kelas)->where('id_anggota',$siswa)->update($data_siswa);
 
-    	return redirect('/admin/kelas/detail/'.$id_kelas)->with('message','Berhasil Input Data');
+			$message = 'Berhasil Update Data';
+		}
+
+    	return redirect('/admin/kelas/detail/'.$id_kelas)->with('message',$message);
     }
 }

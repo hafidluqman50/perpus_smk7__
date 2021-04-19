@@ -367,36 +367,13 @@
 				      </p>
 				</div>
 				<div data-aos="fade-up" data-aos-delay="400" data-aos-offset="200" class="center-slide">
-          			<div>
-          				<img src="{{ asset('/front-assets/img/buku.jpg') }}">
-          				<h5 class="title is-5">Langkah 1</h5>
-          				<p class="subtitle">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa quibusdam maxime hic possimus, quaerat odi.</p>
-          			</div>
-          			<div>
-          				<img src="{{ asset('/front-assets/img/buku2.jpg') }}">
-          				<h5 class="title is-5">Langkah 2</h5>
-          				<p class="subtitle">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa quibusdam maxime hic possimus, quaerat d.</p>
-          			</div>
-          			<div>
-          				<img src="{{ asset('/front-assets/img/buku3.jpg') }}">
-          				<h5 class="title is-5">Langkah 3</h5>
-          				<p class="subtitle">Lorem ipsum abore, deserunt rem optio amet accusamus eum quod sunt odit facilis quas architecto expedita sed.</p>
-          			</div>
-          			<div>
-          				<img src="{{ asset('/front-assets/img/buku4.jpg') }}">
-          				<h5 class="title is-5">Langkah 4</h5>
-          				<p class="subtitle">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa quibusdam maxime hic possimus, quaed.</p>
-          			</div>
-          			<div>
-          				<img src="{{ asset('/front-assets/img/buku5.jpg') }}">
-          				<h5 class="title is-5">Langkah 5</h5>
-          				<p class="subtitle">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipt facilis quas architecto expedita sed.</p>
-          			</div>
-          			<div>
-          				<img src="{{ asset('/front-assets/img/buku6.jpg') }}">
-          				<h5 class="title is-5">Langkah 6</h5>
-          				<p class="subtitle">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa quibusdam maxime hic possimus, quaerat d.</p>
-          			</div>
+					@foreach ($panduan_pinjam as $element)
+					<div>
+						<img src="{{ asset('/front-assets/foto_panduan/'.$element->foto_panduan) }}" alt="">
+						<h5 class="title is-5">{{ $element->langkah_panduan }}</h5>
+						<p class="subtitle">{{ $element->isi_panduan }}</p>
+					</div>
+					@endforeach
 				</div>
 		    </div>
 		  </div>
@@ -416,15 +393,19 @@
 						      </p>
 					     </div>
 		    		</div>
-		    		<div data-aos="fade-right" data-aos-delay="300" data-aos-offset="200" class="column is-10-mobile is-half-tablet is-3-desktop">
-    					<figure class="image">
-    						<img src="{{ asset('/front-assets/img/petugas.jpg') }}">
-    						<figcaption>
-    							<p class="title is-6">Wulandary widyodiningrat s.kom</p>
-    							<p class="subtitle is-6">00292394245</p>
-    						</figcaption>
-    					</figure>
-		    		</div>
+		    		@foreach ($petugas as $element)
+			    		@if ($element->jabatan == 'pustakawan')
+			    		<div data-aos="fade-right" data-aos-delay="300" data-aos-offset="200" class="column is-10-mobile is-half-tablet is-3-desktop">
+							<figure class="image">
+    							<img src="{{ $element->foto_profile == '-' ? asset('/front-assets/foto_petugas/iconfinder_user-alt_285645.png') : asset('/front-assets/foto_petugas/'.$element->foto_profile) }}">
+								<figcaption>
+									<p class="title is-6">{{ $element->nama_petugas }}</p>
+									<p class="subtitle is-6">{{ $element->nip != '' || $element->nip != '-' ? 'NIP. '.$element->nip : '-' }}</p>
+								</figcaption>
+							</figure>
+			    		</div>
+			    		@endif
+		    		@endforeach
 		    		<div data-aos="fade-down" data-aos-delay="200" data-aos-offset="200" class="column is-4-desktop is-hidden-mobile is-hidden-tablet-only has-text-centered">
 		    			<div>
 			    			  <h1 class="title is-4">
@@ -436,15 +417,19 @@
 						      </p>
 					     </div>
 		    		</div>
+		    		@foreach ($petugas as $element)
+		    		@if ($element->jabatan == 'kepala-perpustakaan')
 		    		<div data-aos="fade-left" data-aos-delay="300" data-aos-offset="200" class="column is-10-mobile is-half-tablet is-3-desktop">
     					<figure class="image">
-    						<img src="{{ asset('/front-assets/img/petugas2.jpg') }}">
+    						<img src="{{ $element->foto_profile == '-' ? asset('/front-assets/foto_petugas/iconfinder_user-alt_285645.png') : asset('/front-assets/foto_petugas/'.$element->foto_profile) }}">
     						<figcaption>
-    							<p class="title is-6">Petugas Perpustakaan, S.Pd</p>
-    							<p class="subtitle is-6">00292394245</p>
+    							<p class="title is-6">{{ $element->nama_petugas }}</p>
+								<p class="subtitle is-6">{{ $element->nip != '' || $element->nip != '-' ? 'NIP. '.$element->nip : '-' }}</p>
     						</figcaption>
     					</figure>
 		    		</div>
+		    		@endif
+		    		@endforeach
 		    	</div>
 		    </div>
 		  </div>

@@ -8,12 +8,14 @@ use App\Models\AnggotaModel as Anggota;
 use App\Models\AnggotaPerpusModel as AnggotaPerpus;
 use App\Models\TransaksiModel as Transaksi;
 use App\Models\TransaksiDetailModel as TransaksiDetail;
+use App\Models\AturanPinjamModel as AturanPinjam;
 use Auth;
 use DB;
 
 class PinjamController extends Controller
 {
-    public function pinjam($slug) {
+    public function pinjam($slug) 
+    {
         $title = 'Transaksi Buku';
         $buku  = DB::table('buku')
                   ->join('sub_kategori','buku.id_sub_ktg','=','sub_kategori.id_sub_ktg')
@@ -21,11 +23,13 @@ class PinjamController extends Controller
                   ->where('judul_slug',$slug)
                   ->first();
         $anggota = AnggotaPerpus::getRow(Auth::id());
+        $aturan_pinjam = AturanPinjam::firstOrFail()->isi_aturan;
         // dd($slug);
-        return view('Main.page.transaksi-buku',compact('title','buku','anggota'));
+        return view('Main.page.transaksi-buku',compact('title','buku','anggota','aturan_pinjam'));
     }
 
-    public function pinjamPost(Request $request) {
+    public function pinjamPost(Request $request) 
+    {
         $buku                  = $request->id_buku;
         $tanggal_pinjam        = back_normal_date($request->tanggal_pinjam);
         $tanggal_harus_kembali = back_normal_date($request->tanggal_harus_kembali);
@@ -54,7 +58,8 @@ class PinjamController extends Controller
         return redirect('/pinjam/buku/detail/'.$id_detail)->with('success','Berhasil Pinjam Buku');
     }
 
-    public function detailPinjam($id) {
+    public function detailPinjam($id) 
+    {
         $title             = 'Pinjam Detail | Perpus SMKN 7 Samarinda';
         $id_anggota_perpus = AnggotaPerpus::getRow(Auth::id())->id_anggota_perpus;
         $data              = TransaksiDetail::rowDetailPinjam($id,$id_anggota_perpus);
@@ -62,7 +67,8 @@ class PinjamController extends Controller
         return view('Main.page.pinjam-buku',compact('data','title','data'));
     }
 
-    public function pinjamBatal(Request $request) {
+    public function pinjamBatal(Request $request) 
+    {
         $id_anggota_perpus = $request->id_anggota_perpus;
         $id_detail         = $request->id_detail_transaksi;
         $status_transaksi  = 'batal-pinjam';

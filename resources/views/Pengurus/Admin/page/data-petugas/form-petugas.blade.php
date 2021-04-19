@@ -23,7 +23,7 @@
 							</button>
 						</a>
 					</div>
-					<form action="{{url('/admin/data-petugas/save')}}" method="POST">
+					<form action="{{url('/admin/data-petugas/save')}}" method="POST" enctype="multipart/form-data">
 						@csrf
 						<div class="card-body">
 							@if($errors->any())
@@ -53,6 +53,10 @@
 							<div class="form-group">
 								<label for="" class="form-label">Password Petugas</label>
 								<input type="password" class="form-control" name="password" placeholder="Isi Password" {!!isset($row)?'':'required="required"'!!}>
+							</div>
+							<div class="form-group">
+								<label for="" class="form-label">Foto Petugas</label>
+								<input type="file" name="foto_petugas" class="form-control">
 							</div>
 						</div>
 						<div class="card-footer">

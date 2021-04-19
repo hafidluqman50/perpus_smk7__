@@ -42,9 +42,14 @@
 								<label for="">Buku</label>
 								<input type="text" class="form-control" value="{{ $konfirmasi->judul_buku }}" disabled="disabled">
 							</div>
-							<div class="form-group">
-								<label for="">Barcode</label>
-								<input type="text" name="barcode" class="form-control" placeholder="Code Barcode" required="required">
+							<hr>
+							<button class="btn btn-primary" id="input-barcode" type="button">Scan Barcode</button>
+							<hr>
+							<div class="is-hide" id="scan-barcode">
+								<div class="form-group">
+									<label for="">Barcode</label>
+									<input type="text" name="barcode" class="form-control" placeholder="Code Barcode">
+								</div>
 							</div>
 						</div>
 						<div class="card-footer">
@@ -52,7 +57,7 @@
 							<input type="hidden" name="id_transaksi" value="{{ $id }}">
 							<input type="hidden" name="id_detail_transaksi" value="{{ $id_detail }}">
 							<button type="submit" class="btn btn-primary">
-								Simpan <span class="fa fa-save"></span>
+								Konfirmasi <span class="fa fa-check"></span>
 							</button>
 						</div>
 					</form>
@@ -61,4 +66,20 @@
 		</div>
 	</div>
 </section>
+@endsection
+
+@section('js')
+<script>
+	$('#input-barcode').click(function() {
+		if ($('#scan-barcode').hasClass('is-hide')) {
+			$('#scan-barcode').removeClass('is-hide')
+			$('#scan-barcode .form-group').find('input').attr('required','required')
+		}
+		else {
+			$('#scan-barcode').addClass('is-hide')
+			$('#scan-barcode .form-group').find('input').removeAttr('required','required')
+			$('#scan-barcode .form-group').find('input').val('')
+		}
+	})
+</script>
 @endsection

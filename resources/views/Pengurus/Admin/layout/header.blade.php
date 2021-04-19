@@ -13,6 +13,7 @@
 	<link rel="stylesheet" href="{{asset('admin-assets/dist/css/custom.css')}}">
 	<link rel="stylesheet" href="{{asset('admin-assets/plugins/datatables/dataTables.bootstrap4.css')}}">
 	<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+  <script src="https://cdn.tiny.cloud/1/olo7w3qsyh2xcvguu934t4p2y668qef8bff9aepsls3xq3cf/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -122,6 +123,12 @@
                   <p>Data Guru</p>
                 </a>
               </li>
+              <li class="nav-item">
+                <a href="{{ url('/admin/data-anggota/karyawan') }}" class="nav-link @if (isset($page)){{ $page=='data-karyawan'?'active':'' }}@endif">
+                  <i class="fa fa-circle-o nav-icon"></i>
+                  <p>Data Karyawan</p>
+                </a>
+              </li>
             </ul>
           </li>
           <li class="nav-item has-treeview {{isset($buku)?$buku:''}}">
@@ -176,12 +183,30 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ url('/admin/transaksi-buku/laporan-transaksi') }}" class="nav-link @if(isset($page)){{$page=='laporan-transaksi'?'active':''}}@endif">
+                <a href="{{ url('/admin/print-bebas-pustaka') }}" class="nav-link @if(isset($page)){{$page=='print-bebas-pustaka'?'active':''}}@endif">
+                  <i class="fa fa-circle-o nav-icon"></i>
+                  <p>Print Bebas Pustaka</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ url('/admin/transaksi-buku/laporan') }}" class="nav-link @if(isset($page)){{$page=='laporan'?'active':''}}@endif">
                     <i class="fa fa-circle-o nav-icon"></i>
-                    <p>Laporan Transaksi</p>
+                    <p>Laporan</p>
                 </a>
               </li>
             </ul>
+          </li>
+          <li class="nav-item">
+            <a href="{{ url('/admin/panduan-pinjam') }}" class="nav-link @if(isset($page)){{$page=='panduan-pinjam'?'active':''}}@endif">
+              <i class="fa fa-pencil-square-o nav-icon"></i>
+              <p>Panduan Pinjam</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ url('/admin/aturan-pinjam') }}" class="nav-link @if(isset($page)){{$page=='aturan-pinjam'?'active':''}}@endif">
+              <i class="fa fa-pencil-square-o nav-icon"></i>
+              <p>Aturan Pinjam</p>
+            </a>
           </li>
           <li class="nav-item">
           	<a href="{{ url('/admin/data-petugas') }}" class="nav-link @if(isset($page)){{$page=='data-petugas'?'active':''}}@endif">

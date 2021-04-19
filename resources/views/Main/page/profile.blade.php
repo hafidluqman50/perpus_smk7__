@@ -68,7 +68,7 @@
 
 	<section id="list-transaksi">
 			<p class="title is-4 pinjaman">
-				Peminjaman Buku
+				Transaksi Buku
 			</p>
 			<div class="columns is-multiline">
 				@forelse ($cek as $value)
@@ -102,21 +102,6 @@
 				 						<a href="#" class="tag tag-kategori is-info">Sudah Kembali</a>
 				 						@endif
 									</div>
-									<span class="icon is-big">
-										<i class="fa fa-star"></i>
-									</span>
-									<span class="icon is-big">
-										<i class="fa fa-star"></i>
-									</span>
-									<span class="icon is-big">
-										<i class="fa fa-star"></i>
-									</span>
-									<span class="icon is-big">
-										<i class="fa fa-star-o"></i>
-									</span>
-									<span class="icon is-big">
-										<i class="fa fa-star-o"></i>
-									</span>
 								</div>
 				 				<div>
 				 					<div class="new-tag">

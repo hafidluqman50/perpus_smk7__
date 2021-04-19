@@ -70,7 +70,7 @@
 									@if($data->status_transaksi=='pending')
 										<span class="tag is-warning">Pending</span>
 									@elseif($data->status_transaksi=='sedang-dipinjam')
-										<span class="tag is-primary">Di pinjamkan</span>
+										<span class="tag is-primary">Sedang Dipinjam</span>
 									@elseif($data->status_transaksi=='batal-pinjam')
 										<span class="tag is-danger">Batal Pinjam</span>
 									@elseif($data->status_transaksi=='kembali')

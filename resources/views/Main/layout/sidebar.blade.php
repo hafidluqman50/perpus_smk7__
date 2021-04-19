@@ -13,20 +13,22 @@
 				    Cari buku
 				  </p>
 				  <ul class="menu-list">
-				  	<div class="columns is-multiline is-mobile is-tablet">
-					  	<div class="column is-10">
-						  	<div class="field">
-								<input class="input" type="text" placeholder="Judul buku" name="cari">
-							</div>
-					  	</div>
-					  	<div class="column is-2">
-					  		<button class="button" name="daguy">
-								<span class="icon is-small">
-									<i class="fa fa-search"></i>
-								</span>
-					  		</button>
-					  	</div>
-					  </div>
+				  	<form action="{{ cari_buku() }}" method="GET">
+					  	<div class="columns is-multiline is-mobile is-tablet">
+						  	<div class="column is-10">
+							  	<div class="field">
+									<input class="input" type="text" placeholder="Judul buku" name="cari">
+								</div>
+						  	</div>
+						  	<div class="column is-2">
+						  		<button class="button">
+									<span class="icon is-small">
+										<i class="fa fa-search"></i>
+									</span>
+						  		</button>
+						  	</div>
+						</div>
+				  	</form>
 				  </ul>
 			</div>
 			<div class="sort-button">
@@ -43,8 +45,6 @@
 					      <select name="order-buku">
 					        <option value="terbaru" selected="selected">buku terbaru</option>
 					        <option value="populer">buku terpopuler</option>
-					        <option value="rating">buku rating terbanyak</option>
-					        {{-- <option value="">buku terbanyak</option>	 --}}
 					        <option value="lama">buku lama</option>
 					      </select>
 					    </span>
@@ -62,103 +62,6 @@
 			</div>
 			  <ul class="menu-list kategori">
 			    <li><a href="{{ url('/buku') }}">Semua buku</a></li>
-			    {{-- <li>
-			      <a href="{{ url('/buku/kategori') }}">Refrensi <span class="tag is-primary">300</span></a>
-			      <ul>
-			        <li>
-			        	<a>
-			        		Semua
-			        		<p>120</p>
-			        	</a>
-			        </li>
-			        <li>
-			        	<a>
-			        		rekayasa perangkat lunak
-			        		<p>120</p>
-			        	</a>
-			        </li>
-			        <li>
-			        	<a>
-			        		multimedia
-			        		<p>80</p>
-			        	</a>
-			        </li>
-			        <li>
-			        	<a>
-			        		teknik komputer dan jaringan
-			        		<p>100</p>
-			        	</a>
-			        </li>
-			        <li>
-			        	<a>
-			        		Umum
-			        		<p>100</p>
-			        	</a>
-			        </li>
-			      </ul>
-			    </li>
-			    <li>
-			      <a href="{{ url('/buku/kategori') }}">Pelajaran <span class="tag is-primary">280</span></a>
-			      <ul>
-			        <li>
-			        	<a>
-			        		Semua
-			        		<p>120</p>
-			        	</a>
-			        </li>
-			        <li>
-			        	<a>
-			        		mateatika
-			        		<p>20</p>
-			        	</a>
-			        </li>
-			        <li>
-			        	<a>
-			        	bahasa indonesia
-			        		<p>90</p>
-			        	</a>
-			        </li>
-			        <li>
-			        	<a>
-			        	bahasa inggris
-			        		<p>20</p>
-			        	</a>
-			        </li>
-			        <li>
-			        	<a>
-			        	fisika
-			        		<p>25</p>
-			        	</a>
-			        </li>
-			        <li>
-			        	<a>
-			        	olahraga
-			        		<p>35</p>
-			        	</a>
-			        </li>
-			        <li>
-			        	<a>
-			        	sejarah indonesia
-			        		<p>24</p>
-			        	</a>
-			        </li>
-			        <li>
-			        	<a>
-			        	agama
-			        		<p>40</p>
-			        	</a>
-			        </li>
-			      </ul>
-			    </li>
-			    <li>
-			      <a>Novel <span class="tag is-primary">50</span></a>
-			    </li>
-			    <li>
-			      <a>Fiksi <span class="tag is-primary">80</span></a>
-			    </li>
-			    <li>
-			      <a>Non-Fiksi <span class="tag is-primary">100</span></a>
-			    </li> --}}
 			    @foreach ($kategori as $val)
 			    <li>
 			    	<a href="{{ url('/kategori',$val->slug_kategori) }}">

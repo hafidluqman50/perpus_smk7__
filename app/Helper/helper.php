@@ -5,9 +5,55 @@ function dua_minggu($tanggal)
     return $dua_minggu;
 }
 
+function cari_buku()
+{
+	$actual_link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]/cari";
+
+	return $actual_link;
+}
+
+function random_number()
+{
+	$number = rand(100,100000);
+	$t=time();
+	$random = $number.''.$t;
+
+	return $random;
+}
+
+// function random_color(){
+//     mt_srand((double)microtime()*1000000);
+//     $c = '';
+//     while(strlen($c)<6){
+//         $c .= sprintf("%02X", mt_rand(0, 255));
+//     }
+//     return $c;
+// }
+
+function bulan_tahun_ajaran($tahun_ajaran,$no)
+{
+	$bulan = [0 => ['07','08','09','10','11','12'],1 => ['01','02','03','04','05','06']];
+	return $bulan[$tahun_ajaran][$no];
+}
+
+function random_color_part() {
+    return str_pad( dechex( mt_rand( 0, 255 ) ), 2, '0', STR_PAD_LEFT);
+}
+
+function random_color() {
+    return random_color_part() . random_color_part() . random_color_part();
+}
+
 function unslug_str($str) {
-	$get = explode('-',$str);
-	return ucwords($get[0]).' '.ucwords($get[1]);
+	if (strpos($str,'-') !== false) {
+		$get   = explode('-',$str);
+		$words =  ucwords($get[0]).' '.ucwords($get[1]);
+	}
+	else {
+		$words = ucwords($str);
+	}
+
+	return $words;
 }
 
 function delete_files($target) {
@@ -174,14 +220,23 @@ function normal_month($month) {
 function denda($tanggal_awal,$tanggal_akhir) {
 	$date1 = new DateTime($tanggal_awal);
 	$date2 = new DateTime($tanggal_akhir);
-	$days = $date1->difference($date2);
-	if ($days->days % 3 == 0) {
-		// $bagi = $days->days / 3;
-		$bagi = $days->days;
-		$denda = 15000 * $bagi;
+	$days  = round(($date2->format('U') - $date1->format('U')) / (60*60*24));
+
+	if ($days > 2) {
+		if ($days % 3 == 0) {
+			$bagi  = $days / 3;
+			$denda = 15000 * $bagi;
+		}
+		else if ($days % 3 == 1) {
+			$bagi  = ($days - 1) / 3;
+			$denda = 15000 * $bagi;
+		}
+		else if ($days % 3 == 2) {
+			$bagi  = ($days - 2) / 3;
+			$denda = 15000 * $bagi;
+		}
 	}
 	else {
-		//
 		$denda = 0;
 	}
 	return $denda;

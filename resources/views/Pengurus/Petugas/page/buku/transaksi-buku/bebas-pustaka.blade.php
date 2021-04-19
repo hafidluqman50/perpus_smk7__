@@ -10,7 +10,8 @@
 		    color-adjust: exact !important;                 /*Firefox*/
 		}
 		@page{
-			size:a5 ;
+			size:a5;
+			margin:0!important;
 		}
 		.layout {
 			width:14.8cm;
@@ -65,8 +66,8 @@
 				<br>
 				<br>
 				<br>
-				<p style="font-size:12px; margin-bottom:1px;"><b><u>Khairul Anam, M.Pd</u></b></p>
-				<p style="font-size:12px; margin-top:0px;"><b>NIP.196705122007011038</b></p>
+				<p style="font-size:12px; margin-bottom:1px;"><b><u>{{$kepala_perpus->nama_petugas}}</u></b></p>
+				<p style="font-size:12px; margin-top:0px;"><b>NIP.{{$kepala_perpus->nip}}</b></p>
 			</div>
 			<br>
 			<br>

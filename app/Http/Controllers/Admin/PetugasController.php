@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\PetugasModel as Petugas;
 use App\Models\User;
 use Arr;
+use Intervention\Image\ImageManagerStatic as Image;
 
 class PetugasController extends Controller
 {
@@ -41,6 +42,7 @@ class PetugasController extends Controller
         $jabatan      = $request->jabatan;
         $username     = $request->username;
         $password     = $request->password;
+        $foto_petugas = $request->foto_petugas;
         $id           = $request->id_petugas;
 
         $array = [
@@ -61,9 +63,18 @@ class PetugasController extends Controller
         }
         //
         if ($id == '') {
+            if ($foto_petugas != '' || $foto_petugas != null) {
+                $fileName = uniqid('_foto_petugas_').$foto_petugas->getClientOriginalName();
 
+                Image::make($foto_petugas)->resize(642,350,function($constraint){
+                    $constraint->aspectRatio();
+                    $constraint->upSize();
+                })->save('front-assets/foto_petugas/'.$fileName);
+
+                $array['foto_profile'] = $fileName;
+            }
             $last_id = User::insertGetId(array_slice($array,4));
-            $anggota = Arr::except(array_merge($array,['id_users'=>$last_id]),['username','password','level','status_akun','status_delete']);
+            $anggota = Arr::except(array_merge($array,['id_users'=>$last_id]),['username','name','password','level','status_akun','status_delete']);
 
             Petugas::create($anggota);
             
@@ -81,6 +92,30 @@ class PetugasController extends Controller
             }
             elseif ($password != '') {
                 User::where('id_users',$first->id_users)->update(array_slice($array,5,-3));
+            }
+
+            if ($foto_petugas != '') {
+                $foto = Petugas::where('id_petugas',$id)->firstOrFail()->foto_petugas;
+                
+                if (file_exists(public_path('front-assets/foto_petugas/'.$foto))) {
+                    unlink(public_path('front-assets/foto_petugas/'.$foto));
+                }
+                
+                $fileName = uniqid('_foto_petugas_').$foto_petugas->getClientOriginalName();
+
+                Image::make($foto_petugas)->resize(446,446,function($constraint){
+                    $constraint->aspectRatio();
+                    $constraint->upSize();
+                })->save('front-assets/foto_petugas/'.$fileName);
+
+                unset($array['username']);
+                unset($array['password']);
+                unset($array['name']);
+                unset($array['status_akun']);
+                unset($array['status_delete']);
+                unset($array['level']);
+
+                Petugas::where('id_petugas',$id)->update($array);
             }
 
             $get->update(array_slice($array,0,-6));

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Auth;
 use App\Models\User;
 use Artisan;
+use Arr;
 
 class AuthController extends Controller
 {
@@ -34,7 +35,7 @@ class AuthController extends Controller
             }
     	}
     	else {
-    		$error = array_except($request->all(),['password']);
+    		$error = Arr::except($request->all(),['password']);
     		\Log::critical('Login gagal',$error);
             $data = 'User Atau Pass Salah';
             return redirect('/login-form')->with('fail',$data);

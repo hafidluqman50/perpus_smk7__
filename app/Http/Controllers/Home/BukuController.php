@@ -14,15 +14,25 @@ use Auth;
 
 class BukuController extends Controller
 {
-    public function buku() {
+    public function buku() 
+    {
         $title    = 'Buku';
         $ktg      = new Kategori;
         $kategori = $ktg->orderBy('id_kategori_buku','desc')->get();
         $sub_ktg  = new SubKategori;
+        if (request('cari') == '') {
         $buku = Buku::join('sub_kategori','buku.id_sub_ktg','=','sub_kategori.id_sub_ktg')
                      ->join('kategori_buku','sub_kategori.id_kategori_buku','=','kategori_buku.id_kategori_buku')
                      ->select('buku.*','sub_kategori.nama_sub','sub_kategori.slug_sub_ktg','kategori_buku.nama_kategori','kategori_buku.slug_kategori')
                      ->paginate(12);
+        }
+        else {
+        $buku = Buku::join('sub_kategori','buku.id_sub_ktg','=','sub_kategori.id_sub_ktg')
+                     ->join('kategori_buku','sub_kategori.id_kategori_buku','=','kategori_buku.id_kategori_buku')
+                     ->select('buku.*','sub_kategori.nama_sub','sub_kategori.slug_sub_ktg','kategori_buku.nama_kategori','kategori_buku.slug_kategori')
+                     ->where('judul_buku','like','%'.request('cari').'%')
+                     ->paginate(12);
+        }
 
         if (Auth::check() && Auth::user()->status_akun == 1) {
             $anggota   = Anggota::where('id_users',Auth::id())->firstOrFail()->id_anggota;
@@ -35,7 +45,8 @@ class BukuController extends Controller
         }
     }
 
-    public function detailBuku($slug) {
+    public function detailBuku($slug) 
+    {
         $get = Buku::join('sub_kategori','buku.id_sub_ktg','=','sub_kategori.id_sub_ktg')
                     ->join('kategori_buku','sub_kategori.id_kategori_buku','=','kategori_buku.id_kategori_buku')
                     ->where('judul_slug',$slug);
@@ -45,5 +56,11 @@ class BukuController extends Controller
     	}
     	$title = $buku->judul_buku;
     	return view('Main.page.detail-buku',compact('title','buku'));
+    }
+
+    public function cariBuku(Request $request)
+    {
+        $cari = $request->cari;
+        return $this->buku();
     }
 }

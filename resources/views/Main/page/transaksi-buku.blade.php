@@ -62,11 +62,7 @@
 					</div>
 					<div class="column is-12-tablet is-12-desktop">
 						<div class="aturan">
-							{{-- Lorem ipsum dolor sit amet, consectetur adipisicing elit. Hic mollitia quos non nostrum et excepturi laboriosam explicabo magni, provident praesentium minus accusantium, odit, natus officia autem Lorem ipsum dolor sit amet, consectetur adipisicing elit. Hic mollitia quos non nostrum et excepturi laboriosam explicabo magni, provident praesentium minus accusantium, odit, natus officia autem Lorem ipsum dolor sit amet, consectetur adipisicing elit. Hic 
-							Lorem ipsum dolor sit amet, consectetur adipisicing elit. Hic mollitia quos non nostrum et excepturi laboriosam explicabo magni, provident praesentium minus accusantium, odit, natus officia autem Lorem ipsum dolor sit amet, consectetur adipisicing elit. Hic mollitia quos non nostrum et excepturi laboriosam explicabo magni, provident praesentium minus accusantium, odit, natus officia autem Lorem ipsum dolor sit amet, consectetur adipisicing elit. Hic 
-							Lorem ipsum dolor sit amet, consectetur adipisicing elit. Hic mollitia quos non nostrum et excepturi laboriosam explicabo magni, provident praesentium minus accusantium, odit, natus officia autem Lorem ipsum dolor sit amet, consectetur adipisicing elit. Hic mollitia quos non nostrum et excepturi laboriosam explicabo magni, provident praesentium minus accusantium, odit, natus officia autem Lorem ipsum dolor sit amet, consectetur adipisicing elit. Hic 
-							Lorem ipsum dolor sit amet, consectetur adipisicing elit. Hic mollitia quos non nostrum et excepturi laboriosam explicabo magni, provident praesentium minus accusantium, odit, natus officia autem Lorem ipsum dolor sit amet, consectetur adipisicing elit. Hic mollitia quos non nostrum et excepturi laboriosam explicabo magni, provident praesentium minus accusantium, odit, natus officia autem Lorem ipsum dolor sit amet, consectetur adipisicing elit. Hic mollitia quos non nostrum et excepturi laboriosam explicabo magni, provident praesentium minus accusantium, odit, natus officia autem possimus eius velit atque. --}}
-							Buku harus tidak boleh hilang dan harus kembali tepat waktu
+							{!!$aturan_pinjam!!}
 						</div>
 						<div class="field">
 						  <p class="control">

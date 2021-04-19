@@ -13,6 +13,25 @@
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-md-12">
+				<div class="modal fade" id="modalPinBukuTamu" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				  <div class="modal-dialog" role="document">
+				    <div class="modal-content">
+				      <div class="modal-header">
+				        <h5 class="modal-title" id="exampleModalLabel">Pin Buku Tamu</h5>
+				        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				          <span aria-hidden="true">&times;</span>
+				        </button>
+				      </div>
+				      <div class="modal-body">
+				      	<input type="text" class="form-control" name="pin_buku_tamu" value="{{ $pin_buku_tamu[0]->pin_buku_tamu }}" placeholder="Masukkan Pin Buku Tamu">
+				      	<input type="hidden" name="id_pin_buku_tamu" value="{{ $pin_buku_tamu[0]->id_pin_buku_tamu }}">
+				      </div>
+				      <div class="modal-footer">
+				        <button type="button" id="submit_pin" class="btn {{ isset($pin_buku_tamu[0]) ? 'btn-warning' : 'btn-primary' }}">Simpan</button>
+				      </div>
+				    </div>
+				  </div>
+				</div>
 				<div class="card">
 					<div class="card-header">
 						<form action="{{ url('/admin/data-buku-tamu/export') }}" method="GET">
@@ -24,21 +43,26 @@
 										</button>
 									</a>	
 								</div>
-									<div class="col-md-3">
-										<div class="form-group">
-											<select name="tahun_ajaran" class="form-control select2">
-												<option value="" selected="" disabled="">=== Pilih Tahun Ajaran ===</option>
-												@foreach ($tahun_ajaran as $value)
-												<option value="{{$value->tahun_ajaran}}">{{$value->tahun_ajaran}}</option>
-												@endforeach
-											</select>
-										</div>
+								<div class="col-md-3">
+									<div class="form-group">
+										<select name="tahun_ajaran" class="form-control select2">
+											<option value="" selected="" disabled="">=== Pilih Tahun Ajaran ===</option>
+											@foreach ($tahun_ajaran as $value)
+											<option value="{{$value->tahun_ajaran}}">{{$value->tahun_ajaran}}</option>
+											@endforeach
+										</select>
 									</div>
-									<div class="col-md-3">
-										<button class="btn btn-success">
-											Rekap Buku Tamu <span class="fa fa-excel-o"></span>
-										</button>
-									</div>	
+								</div>
+								<div class="col-md-2">
+									<button class="btn btn-success">
+										Rekap Buku Tamu <span class="fa fa-excel-o"></span>
+									</button>
+								</div>
+								<div class="col-md-3">
+									<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#modalPinBukuTamu">
+										Pin Buku Tamu
+									</button>
+								</div>
 							</div>
 						</form>
 					</div>
@@ -95,7 +119,7 @@
             sortable: true,
             "class": "index",
             }],
-            order: [[ 1, 'desc' ]],
+            order: [[ 0, 'desc' ]],
             responsive:true,
             scrollX:true,
             fixedColumns: true
@@ -105,6 +129,28 @@
 	        	cell.innerHTML = i+1;
 	        });
         }).draw();
+
+		$('#submit_pin').click(() => {
+			$('#submit_pin').html('Loading...').attr('disabled','disabled')
+			let getUrl = window.location.origin+'/ajax/pin-buku-tamu/edit';
+			
+			let get_pin = $('input[name="pin_buku_tamu"]').val()
+			let id_pin_buku_tamu = $('input[name="id_pin_buku_tamu"]').val()
+
+			$.ajax({
+				url: getUrl,
+				type: 'GET',
+				data: {pin_buku_tamu: get_pin,id_pin_buku_tamu:id_pin_buku_tamu},
+			})
+			.done((param) => {
+				$('.select2').select2()
+				$('#submit_pin').html('Submit').removeAttr('disabled')
+				$('#modalPinBukuTamu').modal('hide')
+			})
+			.fail((error) => {
+				console.log(error);
+			})
+		})
     });
 </script>
 @endsection

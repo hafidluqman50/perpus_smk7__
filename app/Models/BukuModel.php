@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use DB;
 
 class BukuModel extends Model
 {
@@ -49,10 +50,12 @@ class BukuModel extends Model
     }
 
     public static function cekRating() {
-        $db = self::join('rating_buku','buku.id_buku','=','rating_buku.id_buku')
-                    ->join('sub_kategori','buku.id_sub_ktg','=','sub_kategori.id_sub_ktg')
+        $db = self::join('sub_kategori','buku.id_sub_ktg','=','sub_kategori.id_sub_ktg')
                     ->join('kategori_buku','sub_kategori.id_kategori_buku','=','kategori_buku.id_kategori_buku')
-                    ->orderBy('rating')
+                    ->join('detail_transaksi','buku.id_buku','=','detail_transaksi.id_buku')
+                    ->select(['buku.*',DB::raw('count(*) as hitung_populer')])
+                    ->orderBy('hitung_populer','DESC')
+                    ->groupBy('detail_transaksi.id_buku')
                     ->limit(3)
                     ->get();
         return $db;

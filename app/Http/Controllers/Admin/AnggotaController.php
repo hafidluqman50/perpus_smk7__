@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\AnggotaModel as Anggota;
 use App\Models\AnggotaPerpusModel as AnggotaPerpus;
 use App\Models\User;
+use Arr;
 use Str;
 
 class AnggotaController extends Controller
@@ -59,6 +60,30 @@ class AnggotaController extends Controller
         return view('Pengurus.Admin.page.anggota.data-guru.form-guru',compact('title','page','row'));
     }
 
+    public function karyawan() 
+    {
+        $title   = 'Data Karyawan | Admin';
+        $anggota = 'menu-open';
+        $page    = 'data-karyawan';
+        return view('Pengurus.Admin.page.anggota.data-karyawan.main',compact('title','anggota','page'));
+    }
+
+    public function tambahKaryawan() 
+    {
+        $title   = 'Form Karyawan | Admin';
+        $anggota = 'menu-open';
+        $page    = 'data-karyawan';
+        return view('Pengurus.Admin.page.anggota.data-karyawan.form-karyawan',compact('title','anggota','page'));
+    }
+
+    public function editKaryawan($id) 
+    {
+        $title = 'Form Karyawan | Admin';
+        $page  = 'data-karyawan';
+        $row   = Anggota::getData($id);
+        return view('Pengurus.Admin.page.anggota.data-karyawan.form-karyawan',compact('title','page','row'));
+    }
+
     public function deleteAnggota($id) 
     {
         $get   = Anggota::where('id_anggota',$id);
@@ -90,7 +115,7 @@ class AnggotaController extends Controller
     public function saveAnggota(Request $request) 
     {
         $nama_anggota  = $request->nama_anggota;
-        $nomor_induk   = $request->nomor_induk;
+        $nomor_induk   = $request->nomor_induk ?? '-';
         $email         = $request->email;
         $no_hp         = $request->no_hp;
         $jenis_kelamin = $request->jenis_kelamin;
@@ -123,11 +148,11 @@ class AnggotaController extends Controller
         if ($id == '') {
 
             $last_id = User::insertGetId(array_slice($array,8));
-            $anggota = array_except(array_merge($array,['id_users'=>$last_id]),['username','password','level','status_akun','status_delete']);
+            $anggota = Arr::except(array_merge($array,['id_users'=>$last_id]),['username','name','password','level','status_akun','status_delete']);
 
             Anggota::create($anggota);
 
-            if ($tipe == 'guru') {
+            if ($tipe == 'guru' || $tipe == 'karyawan') {
                 $get_id_anggota = Anggota::where('id_users',$last_id)->firstOrFail()->id_anggota;
                 AnggotaPerpus::create(['id_anggota' => $get_id_anggota,'id_kelas'=>1,'id_tahun_ajaran'=>1]);
             }

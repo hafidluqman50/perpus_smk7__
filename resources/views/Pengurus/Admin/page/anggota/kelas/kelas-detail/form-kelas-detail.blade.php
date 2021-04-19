@@ -42,6 +42,7 @@
 							</div>
 						</div>
 						<input type="hidden" name="id_kelas" value="{{ $id }}">
+						<input type="hidden" name="form" value="tambah">
 						<div class="card-footer">
 							<button class="btn btn-primary">
 								Simpan Data <span class="fa fa-save"></span>

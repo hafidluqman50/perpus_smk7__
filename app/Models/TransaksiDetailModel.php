@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use DB;
 
 class TransaksiDetailModel extends Model
 {
@@ -18,6 +19,97 @@ class TransaksiDetailModel extends Model
     				// ->orderBy('status_transaksi','desc')
     				->get();
     	return $db;
+    }
+
+    // public static function countPinjamBukuK13($kelas,$jurusan,$urutan_kelas,$tahun_ajaran) {
+    //     DB::enableQueryLog();
+    //     $get = self::join('transaksi_buku','detail_transaksi.id_transaksi','=','transaksi_buku.id_transaksi')
+    //                 ->join('anggota_perpus','transaksi_buku.id_anggota_perpus','=','anggota_perpus.id_anggota_perpus')
+    //                 ->join('kelas','anggota_perpus.id_kelas','=','kelas.id_kelas')
+    //                 ->join('kelas_tingkat','kelas.id_kelas_tingkat','=','kelas_tingkat.id_kelas_tingkat')
+    //                 ->join('jurusan','kelas.id_jurusan','=','jurusan.id_jurusan')
+    //                 ->join('tahun_ajaran','anggota_perpus.id_tahun_ajaran','=','tahun_ajaran.id_tahun_ajaran')
+    //                 ->join('buku','detail_transaksi.id_buku','=','buku.id_buku')
+    //                 ->where('kelas_tingkat','XII')
+    //                 ->where('nama_jurusan','RPL')
+    //                 ->where('urutan_kelas',1)
+    //                 ->where('tahun_ajaran','2021/2022')
+    //                 ->where('jenis_buku','buku-pelajaran-kelas-xii')
+    //                 ->groupBy('transaksi_buku.id_anggota_perpus')
+    //                 ->count();
+
+    //     dd(DB::getQueryLog());
+    //     dd($get);
+    //     return $get;
+    // }
+
+    public static function checkPinjamBukuK13($id_anggota,$kelas)
+    {
+        $db = self::join('transaksi_buku','detail_transaksi.id_transaksi','=','transaksi_buku.id_transaksi')
+                ->join('buku','detail_transaksi.id_buku','=','buku.id_buku')
+                ->where('id_anggota_perpus',$id_anggota)
+                ->where('jenis_buku','=','buku-pelajaran-kelas-'.strtolower($kelas))
+                ->count();
+
+        if ($db > 0) {
+            $return = 'true';
+        }
+        else {
+            $return = 'false';
+        }
+
+        return $return;
+    }
+
+    public static function checkTidakPinjamBukuK13($id_anggota,$kelas)
+    {
+        $db = self::join('transaksi_buku','detail_transaksi.id_transaksi','=','transaksi_buku.id_transaksi')
+                ->join('buku','detail_transaksi.id_buku','=','buku.id_buku')
+                ->where('id_anggota_perpus',$id_anggota)
+                ->where('jenis_buku','=','buku-pelajaran-kelas-'.strtolower($kelas))
+                ->count();
+
+        if ($db > 0) {
+            $return = 'false';
+        }
+        else {
+            $return = 'true';
+        }
+
+        return $return;
+    }
+
+    public static function countNotExistsPinjamK13($kelas,$jurusan,$urutan_kelas,$tahun_ajaran) 
+    {
+        // DB::enableQueryLog();
+        $get = DB::table('anggota_perpus')
+                ->join('anggota','anggota_perpus.id_anggota','=','anggota.id_anggota')
+                ->join('kelas','anggota_perpus.id_kelas','=','kelas.id_kelas')
+                ->join('kelas_tingkat','kelas.id_kelas_tingkat','=','kelas_tingkat.id_kelas_tingkat')
+                ->join('jurusan','kelas.id_jurusan','=','jurusan.id_jurusan')
+                ->join('tahun_ajaran','anggota_perpus.id_tahun_ajaran','=','tahun_ajaran.id_tahun_ajaran')
+                ->whereNotExists(function($query) {
+                    $query->from('transaksi_buku')
+                          ->whereRaw('transaksi_buku.id_anggota_perpus = anggota_perpus.id_anggota_perpus');
+                })
+                ->where('tipe_anggota','siswa')
+                ->where('kelas_tingkat',$kelas)
+                ->where('nama_jurusan',$jurusan)
+                ->where('urutan_kelas',$urutan_kelas)
+                ->where('tahun_ajaran',$tahun_ajaran[0].'/'.$tahun_ajaran[1])
+                ->count();
+        // $get = self::join('transaksi_buku','detail_transaksi.id_transaksi','=','transaksi_buku.id_transaksi')
+        //             ->join('anggota_perpus','transaksi_buku.id_anggota_perpus','=','anggota_perpus.id_anggota_perpus')
+        //             ->join('anggota','anggota_perpus.id_anggota','=','anggota.id_anggota')
+        //             ->whereNotExists(function($query){
+        //                 $query->from('buku')
+        //                         ->where('jenis_buku','buku-pelajaran-kelas-xii')
+        //                         ->whereRaw('detail_transaksi.id_buku = buku.id_buku');
+        //             })
+        //             ->get();
+        // dd(DB::getQueryLog());
+        // dd($get);
+        return $get;
     }
 
     public static function countPeminjaman($status,$date)
@@ -58,6 +150,26 @@ class TransaksiDetailModel extends Model
                     ->count();
 
         return $db;
+    }
+
+    public static function countPinjamPerYear($month,$year)
+    {
+        $count = self::whereMonth('tanggal_pinjam',$month)
+                      ->whereYear('tanggal_pinjam',$year)
+                      ->where('status_transaksi','sedang-dipinjam')
+                      ->count();
+
+        return $count;
+    }
+
+    public static function countKembaliPerYear($month,$year)
+    {
+        $count = self::whereMonth('tanggal_pinjam',$month)
+                      ->whereYear('tanggal_pinjam',$year)
+                      ->where('status_transaksi','kembali')
+                      ->count();
+
+        return $count;
     }
 
     public static function checkPinjam($id_user) {
@@ -180,7 +292,7 @@ class TransaksiDetailModel extends Model
                     ->join('jurusan','kelas.id_jurusan','=','jurusan.id_jurusan')
                     ->join('anggota','anggota_perpus.id_anggota','=','anggota.id_anggota')
                     ->join('tahun_ajaran','anggota_perpus.id_tahun_ajaran','=','tahun_ajaran.id_tahun_ajaran')
-                    ->where('kode_buku',$value)
+                    ->where('code_scanner',$value)
                     ->firstOrFail();
         // dd($db);
         return $db;
@@ -216,7 +328,7 @@ class TransaksiDetailModel extends Model
         return $db;
     }
 
-    public static function checkBuku($anggota,$kode_buku,$id_buku) 
+    public static function checkBuku($anggota,$code_scanner,$id_buku) 
     {
         $get = self::join('transaksi_buku','detail_transaksi.id_transaksi','=','transaksi_buku.id_transaksi')
                     ->where('id_anggota_perpus',$anggota)
@@ -224,7 +336,7 @@ class TransaksiDetailModel extends Model
                     ->firstOrFail();
         // dd($get);
 
-        if ($get->kode_buku != $kode_buku) {
+        if ($get->code_scanner != $code_scanner) {
             $statement = false;
         }
         else {

@@ -17,9 +17,13 @@ use App\Models\BarcodeModel as Barcode;
 use App\Models\SuratBebasPustakaModel as SuratBebasPustaka;
 use App\Models\TransaksiModel as Transaksi;
 use App\Models\TransaksiDetailModel as TransaksiDetail;
+use App\Models\AturanPinjamModel as AturanPinjam;
+use App\Models\PanduanPinjamModel as PanduanPinjam;
+use App\Models\PinBukuTamuModel as PinBukuTamu;
 use Yajra\Datatables\Datatables;
 use Telegram;
 use Auth;
+use Str;
 use DB;
 
 class AjaxController extends Controller
@@ -150,13 +154,52 @@ class AjaxController extends Controller
     {
         $kelas_detail = AnggotaPerpus::getByIdKelas($id);
         $datatables = Datatables::of($kelas_detail)->addColumn('action',function($action){
-            $column   = '<a href="'.url("/admin/kelas/detail/$action->id_kelas/delete/$action->id_anggota").'">
+            $column   = '<a href="'.url("/admin/kelas/detail/$action->id_kelas/edit/$action->id_anggota").'">
+                           <button class="btn btn-warning"> Edit </button>
+                        </a>
+                        <a href="'.url("/admin/kelas/detail/$action->id_kelas/delete/$action->id_anggota").'">
                            <button class="btn btn-danger" onclick="return confirm(\'Yakin Hapus ?\');"> Hapus </button>
                         </a>';
             return $column;
         })->addColumn('kelas_siswa',function($add){
             return $add->kelas_tingkat.' '.$add->nama_jurusan.' '.$add->urutan_kelas;
         })->make(true);
+        return $datatables;
+    }
+
+    public function dataAturanPinjam()
+    {
+        $aturan_pinjam = AturanPinjam::all();
+        $datatables = Datatables::of($aturan_pinjam)->addColumn('action',function($action){
+            $array = [
+                0 => ['class'=>'btn-success','text'=>'Aktifkan'],
+                1 => ['class'=>'btn-danger','text'=>'Nonaktifkan']
+            ];
+            $column = '<a href="'.url("/admin/aturan-pinjam/edit/$action->id_aturan_pinjam").'">
+                          <button class="btn btn-warning"> Edit </button>
+                       </a>
+                       <a href="'.url("/admin/aturan-pinjam/delete/$action->id_aturan_pinjam").'">
+                           <button class="btn btn-danger" onclick="return confirm(\'Yakin Hapus ?\');"> Hapus </button>
+                       </a>';
+            return $column;
+        })->rawColumns(['action','isi_aturan'])->make(true);
+        return $datatables;
+    }
+
+    public function dataPanduanPinjam()
+    {
+        $panduan_pinjam = PanduanPinjam::all();
+        $datatables = Datatables::of($panduan_pinjam)->addColumn('action',function($action){
+            $column = '<a href="'.url("/admin/panduan-pinjam/edit/$action->id_panduan_pinjam").'">
+                          <button class="btn btn-warning"> Edit </button>
+                       </a>
+                       <a href="'.url("/admin/panduan-pinjam/delete/$action->id_panduan_pinjam").'">
+                           <button class="btn btn-danger" onclick="return confirm(\'Yakin Hapus ?\');"> Hapus </button>
+                       </a>';
+            return $column;
+        })->editColumn('foto_panduan',function($edit){
+            return '<img class="img-responsive img-fluid img-thumbnail" src="'.asset("/front-assets/foto_panduan/$edit->foto_panduan").'">';
+        })->rawColumns(['foto_panduan','action'])->make(true);
         return $datatables;
     }
 
@@ -211,7 +254,13 @@ class AjaxController extends Controller
     {
         $buku = Buku::showData();
         $datatables = Datatables::of($buku)->addColumn('action',function($action){
-            $column = '<a href="'.url("/$this->level/data-buku/edit/$action->id_buku").'">
+            $column = '<a href="'.url("/$this->level/data-buku/cetak-label/$action->id_buku").'">
+                          <button class="btn btn-success"> Cetak Label </button>
+                       </a>
+                       <a href="'.url("/$this->level/data-buku/cetak-barcode/$action->id_buku").'">
+                          <button class="btn btn-success"> Cetak Barcode </button>
+                       </a>
+                       <a href="'.url("/$this->level/data-buku/edit/$action->id_buku").'">
                           <button class="btn btn-warning"> Edit </button>
                        </a>
                        <a href="'.url("/$this->level/data-buku/delete/$action->id_buku").'">
@@ -348,7 +397,11 @@ class AjaxController extends Controller
             else {
                 $column = '';
             }
-              $column.='<a href="'.url("/$this->level/transaksi-buku/detail-transaksi/$action->id_transaksi/delete/$action->id_detail_transaksi").'" onclick="return confirm(\'Yakin Hapus ?\');">
+              $column.='
+                <a href="'.url("/$this->level/transaksi-buku/detail-transaksi/$segment/$action->id_transaksi/kirim-email/$action->id_detail_transaksi").'">
+                  <button class="btn btn-info"> Kirim Pengingat </button>
+                </a>
+               <a href="'.url("/$this->level/transaksi-buku/detail-transaksi/$action->id_transaksi/delete/$action->id_detail_transaksi").'" onclick="return confirm(\'Yakin Hapus ?\');">
                    <button class="btn btn-danger"> Hapus </button>
                </a>';
             return $column;
@@ -410,8 +463,9 @@ class AjaxController extends Controller
     public function getBukuBarcode($barcode) 
     {
         $barcode = Barcode::where('code_scanner',$barcode)->firstOrFail();
-        $buku = Buku::where('id_buku',$barcode->id_buku)->firstOrFail();
-        $html = '<option value="'.$barcode->kode_buku.'" selected="selected">'.$buku->judul_buku.'</option>';
+        $buku    = Buku::where('id_buku',$barcode->id_buku)->firstOrFail();
+        $html    = '<option value="'.$barcode->code_scanner.'" selected="selected">'.$buku->judul_buku.'</option>';
+
         return $html;
     }
 
@@ -427,6 +481,41 @@ class AjaxController extends Controller
         return $data;
     }
 
+    public function checkPinBukuTamu(Request $request)
+    {
+        $pin_buku_tamu = $request->pin_buku_tamu;
+
+        $check = PinBukuTamu::where('pin_buku_tamu',$pin_buku_tamu)->count();
+
+        if ($check == 0) {
+            $return = 'false';
+        }
+        else {
+            $return = 'true';
+        }
+
+        return $return;
+    }
+
+    public function savePinBukuTamu(Request $request)
+    {
+        $pin_buku_tamu    = $request->pin_buku_tamu;
+        $id_pin_buku_tamu = $request->id_pin_buku_tamu;
+
+        $data_pin_buku_tamu = [
+            'pin_buku_tamu' => $pin_buku_tamu
+        ];
+
+        if ($id_pin_buku_tamu == '') {
+            PinBukuTamu::create($data_pin_buku_tamu);
+        }
+        else {
+            PinBukuTamu::where('id_pin_buku_tamu',$id_pin_buku_tamu)->update($data_pin_buku_tamu);
+        }
+
+        return response(201);
+    }
+
     public function getUpdates() 
     {
         Telegram::sendMessage(
@@ -439,8 +528,9 @@ class AjaxController extends Controller
         $array = [];
         $orderBy = [
             'terbaru' => 'desc',
-            'lama' => 'asc'
+            'lama'    => 'asc'
         ];
+
         if ($buku == '') 
         {
             $buku = Buku::join('sub_kategori','buku.id_sub_ktg','=','sub_kategori.id_sub_ktg')

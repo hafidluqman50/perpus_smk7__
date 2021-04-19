@@ -129,9 +129,9 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ url('/petugas/transaksi-buku/laporan-transaksi') }}" class="nav-link @if(isset($page)){{$page=='laporan-transaksi'?'active':''}}@endif">
+                <a href="{{ url('/petugas/transaksi-buku/laporan-transaksi') }}" class="nav-link @if(isset($page)){{$page=='laporan'?'active':''}}@endif">
                     <i class="fa fa-circle-o nav-icon"></i>
-                    <p>Laporan Transaksi</p>
+                    <p>Laporan</p>
                 </a>
               </li>
             </ul>

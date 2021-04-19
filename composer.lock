@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b041d5805836ec3e6216d5406e8771e6",
+    "content-hash": "09ba29dafa8a04cf7f26c0c492f29be5",
     "packages": [
         {
             "name": "box/spout",
@@ -74,6 +74,59 @@
                 "xlsx"
             ],
             "time": "2021-02-10T09:53:55+00:00"
+        },
+        {
+            "name": "codeitnowin/barcode",
+            "version": "3.0.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/codeitnowin/barcode-generator.git",
+                "reference": "bd140d279fc813e00f72eaa4f033186bf78b8786"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/codeitnowin/barcode-generator/zipball/bd140d279fc813e00f72eaa4f033186bf78b8786",
+                "reference": "bd140d279fc813e00f72eaa4f033186bf78b8786",
+                "shasum": ""
+            },
+            "require": {
+                "ext-gd": "*",
+                "php": ">=5.3.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "CodeItNow\\": "CodeItNow/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Akhtar Khan",
+                    "email": "er.akhtarkhan@gmail.com"
+                }
+            ],
+            "description": "Barcode & Qr Code generator library by http://www.codeitnow.in. You can use it with Custom PHP application or any PHP Framework such as Laravel, Cakephp, Yii, Codeigneter etc.",
+            "homepage": "http://www.codeitnow.in",
+            "keywords": [
+                "Symfony2",
+                "barcode",
+                "cakephp",
+                "code",
+                "generator",
+                "laravel",
+                "qr",
+                "qrcode",
+                "symfony"
+            ],
+            "support": {
+                "issues": "https://github.com/codeitnowin/barcode-generator/issues",
+                "source": "https://github.com/codeitnowin/barcode-generator/tree/v3.0.5"
+            },
+            "time": "2021-02-19T15:33:44+00:00"
         },
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -6450,5 +6503,6 @@
     "platform": {
         "php": "^7.2.5|^8.0"
     },
-    "platform-dev": []
+    "platform-dev": [],
+    "plugin-api-version": "2.0.0"
 }

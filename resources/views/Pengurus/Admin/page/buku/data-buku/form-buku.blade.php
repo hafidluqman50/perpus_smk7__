@@ -56,6 +56,10 @@
 								</select>
 							</div>
 							<div class="form-group">
+								<label for="" class="form-label">Inisial Buku</label>
+								<input type="text" class="form-control" name="inisial_buku" value="{{isset($row) ? $row->inisial_buku : ''}}" required="" placeholder="Isi Inisial Buku">
+							</div>
+							<div class="form-group">
 								<label for="" class="form-label">Pengarang</label>
 								<input type="text" class="form-control" name="pengarang" value="{{isset($row)?$row->pengarang:''}}" placeholder="Isi Nama Pengarang">
 							</div>
@@ -74,6 +78,10 @@
 							<div class="form-group">
 								<label for="" class="form-label">Tahun Terbit</label>
 								<input type="number" class="form-control" name="tahun_terbit" value="{{isset($row)?$row->tahun_terbit:''}}" placeholder="Isi Tahun Terbit" required="required">
+							</div>
+							<div class="form-group">
+								<label for="" class="form-label">Tahun Buku</label>
+								<input type="number" class="form-control" name="tahun_buku" value="{{isset($row)?$row->tahun_buku:''}}" placeholder="Isi Tahun Buku" required="required">
 							</div>
 							<div class="form-group">
 								<label for="" class="form-label">Klasifikasi</label>
@@ -95,6 +103,16 @@
 							<div class="form-group">
 								<label for="" class="form-label">Keterangan</label>
 								<textarea name="keterangan" class="form-control" id="" cols="30" rows="10" placeholder="Isi Keterangan Jika Diperlukan">{{isset($row)?$row->keterangan:''}}</textarea>
+							</div>
+							<div class="form-group">
+								<label for="" class="form-label">Jenis Buku</label>
+								<select name="jenis_buku" class="form-control select2">
+									<option value="" selected="" disabled="">=== Pilih Jenis Buku ===</option>
+									<option value="buku-bacaan" @if(isset($row)){!!$row->jenis_buku=='buku-bacaan'?'selected="selected"':''!!}@endif>Buku Bacaan</option>
+									<option value="buku-pelajaran-kelas-x" @if(isset($row)){!!$row->jenis_buku=='buku-pelajaran-kelas-x'?'selected="selected"':''!!}@endif>Buku Pelajaran Kelas X</option>
+									<option value="buku-pelajaran-kelas-xi" @if(isset($row)){!!$row->jenis_buku=='buku-pelajaran-kelas-xi'?'selected="selected"':''!!}@endif>Buku Pelajaran Kelas XI</option>
+									<option value="buku-pelajaran-kelas-xii" @if(isset($row)){!!$row->jenis_buku=='buku-pelajaran-kelas-xii'?'selected="selected"':''!!}@endif>Buku Pelajaran Kelas XII</option>
+								</select>
 							</div>
 						</div>
 						<div class="card-footer">

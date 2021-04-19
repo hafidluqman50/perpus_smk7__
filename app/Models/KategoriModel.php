@@ -12,13 +12,24 @@ class KategoriModel extends Model
     protected $guarded    = [];
     public $timestamp     = false;
 
-    public static function getBuku($slug) {
-    	$db = DB::table('buku')
-                ->join('sub_kategori','buku.id_sub_ktg','=','sub_kategori.id_sub_ktg')
-    			->join('kategori_buku','sub_kategori.id_kategori_buku','=','kategori_buku.id_kategori_buku')
-                ->orderBy('id_buku','desc')
-    			->where('slug_kategori',$slug)
-                ->paginate(12);
+    public static function getBuku($slug,$cari = '') {
+        if ($cari == '') {
+            $db = DB::table('buku')
+                    ->join('sub_kategori','buku.id_sub_ktg','=','sub_kategori.id_sub_ktg')
+                    ->join('kategori_buku','sub_kategori.id_kategori_buku','=','kategori_buku.id_kategori_buku')
+                    ->orderBy('id_buku','desc')
+                    ->where('slug_kategori',$slug)
+                    ->paginate(12);
+        }
+        else {
+            $db = DB::table('buku')
+                    ->join('sub_kategori','buku.id_sub_ktg','=','sub_kategori.id_sub_ktg')
+                    ->join('kategori_buku','sub_kategori.id_kategori_buku','=','kategori_buku.id_kategori_buku')
+                    ->orderBy('id_buku','desc')
+                    ->where('slug_kategori',$slug)
+                    ->where('judul_buku','like','%'.$cari.'%')
+                    ->paginate(12);
+        }
         return $db;
     }
 

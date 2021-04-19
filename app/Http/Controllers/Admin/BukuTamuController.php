@@ -8,6 +8,8 @@ use App\Models\AnggotaModel as Anggota;
 use App\Models\AnggotaPerpusModel as AnggotaPerpus;
 use App\Models\BukuTamuModel as BukuTamu;
 use App\Models\TahunAjaranModel as TahunAjaran;
+use App\Models\PetugasModel as Petugas;
+use App\Models\PinBukuTamuModel as PinBukuTamu;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
@@ -16,51 +18,67 @@ class BukuTamuController extends Controller
 {
     public function index()
     {
-        $title        = 'Data Buku Tamu | Admin';
-        $page         = 'data-buku-tamu';
-        $tahun_ajaran = TahunAjaran::whereNotIn('tahun_ajaran',['-'])->get();
+        $title         = 'Data Buku Tamu | Admin';
+        $page          = 'data-buku-tamu';
+        $tahun_ajaran  = TahunAjaran::whereNotIn('tahun_ajaran',['-'])->get();
+        $pin_buku_tamu = PinBukuTamu::all();
 
-    	return view('Pengurus.Admin.page.buku-tamu.main',compact('title','page','tahun_ajaran'));
+    	return view('Pengurus.Admin.page.buku-tamu.main',compact('title','page','tahun_ajaran','pin_buku_tamu'));
     }
 
     public function bukuTamu()
     {
-    	$title = 'Buku Tamu | Admin';
+    	$title   = 'Buku Tamu | Admin';
+        $anggota = AnggotaPerpus::join('anggota','anggota_perpus.id_anggota','=','anggota.id_anggota')
+                                ->whereNotIn('tipe_anggota',['siswa'])
+                                ->get();
 
-    	return view('Pengurus.Admin.page.buku-tamu.buku-tamu',compact('title'));
+    	return view('Pengurus.Admin.page.buku-tamu.buku-tamu',compact('title','anggota'));
     }
 
     public function save(Request $request)
     {
-    	$nisn = $request->nisn;
+        $nisn    = $request->nisn;
+        $anggota = $request->anggota;
 
-    	if (Anggota::where('nomor_induk',$nisn)->count() == 0) {
-    		$message = 'Data Tidak Ditemukan';
-    	}
+        if ($nisn != '') {
+            if (Anggota::where('nomor_induk',$nisn)->count() == 0) {
+                $message = 'Data Tidak Ditemukan';
+            }
+            else {
+                $anggota = AnggotaPerpus::join('anggota','anggota_perpus.id_anggota','=','anggota.id_anggota')
+                                        ->join('kelas','anggota_perpus.id_kelas','=','kelas.id_kelas')
+                                        ->join('kelas_tingkat','kelas.id_kelas_tingkat','=','kelas_tingkat.id_kelas_tingkat')
+                                        ->join('jurusan','kelas.id_jurusan','=','jurusan.id_jurusan')
+                                        ->where('nomor_induk',$nisn)
+                                        ->firstOrFail();
 
-    	else {
-	    	$anggota = AnggotaPerpus::join('anggota','anggota_perpus.id_anggota','=','anggota.id_anggota')
-				    				->join('kelas','anggota_perpus.id_kelas','=','kelas.id_kelas')
-				    				->join('kelas_tingkat','kelas.id_kelas_tingkat','=','kelas_tingkat.id_kelas_tingkat')
-				    				->join('jurusan','kelas.id_jurusan','=','jurusan.id_jurusan')
-	    							->where('nomor_induk',$nisn)
-	    							->firstOrFail();
+                $data_buku_tamu = [
+                    'id_anggota_perpus'  => $anggota->id_anggota_perpus,
+                    'ket_buku_tamu'      => $request->ket_buku_tamu,
+                    'tanggal_berkunjung' => date('Y-m-d')
+                ];
 
-	    	$data_buku_tamu = [
-				'id_anggota_perpus'  => $anggota->id_anggota_perpus,
-                'ket_buku_tamu'      => $request->ket_buku_tamu,
-				'tanggal_berkunjung' => date('Y-m-d')
-	    	];
+                BukuTamu::create($data_buku_tamu);
 
-	    	BukuTamu::create($data_buku_tamu);
-            if ($anggota->tipe_anggota == 'siswa') {
                 $message = 'Selamat Datang <b>'.$anggota->nomor_induk.' '.$anggota->nama_anggota.' '.$anggota->kelas_tingkat.' '.$anggota->nama_jurusan.' '.$anggota->urutan_kelas.'</b>';
             }
-            else if($anggota->tipe_anggota == 'guru') {
-                $message = 'Selamat Datang <b>'.$anggota->nomor_induk.' '.$anggota->nama_anggota.'</b>';
-            }
+        }
+        elseif ($anggota != '') {
+            $get_anggota = AnggotaPerpus::join('anggota','anggota_perpus.id_anggota','=','anggota.id_anggota')
+                                    ->where('id_anggota_perpus',$anggota)
+                                    ->firstOrFail();
 
-    	}
+            $data_buku_tamu = [
+                'id_anggota_perpus'  => $anggota,
+                'ket_buku_tamu'      => $request->ket_buku_tamu,
+                'tanggal_berkunjung' => date('Y-m-d')
+            ];
+
+            BukuTamu::create($data_buku_tamu);
+
+            $message = 'Selamat Datang <b>'.$get_anggota->nomor_induk.' '.$get_anggota->nama_anggota.'</b>';
+        }
     	return redirect('/admin/buku-tamu')->with('message',$message);
     }
 
@@ -96,9 +114,9 @@ class BukuTamuController extends Controller
         $explode = explode('/',$request->tahun_ajaran);
 
         for ($x=0; $x < count($explode); $x++) {
-            for ($i=0; $i < 12; $i++) {
+            for ($i=0; $i < 6; $i++) {
                 $bulan_sheet = $i+1;
-                $spreadsheet->setActiveSheetIndex($sheet_index)->setTitle(month($bulan_sheet).', '.$explode[$x]);
+                $spreadsheet->setActiveSheetIndex($sheet_index)->setTitle(month(bulan_tahun_ajaran($x,$i)).', '.$explode[$x]);
 
                 $drawing = new Drawing();
                 $drawing->setName('Kop Laporan');
@@ -112,7 +130,7 @@ class BukuTamuController extends Controller
 
                 $spreadsheet->getActiveSheet()->setCellValue('C8','Rekapitulasi Jumlah Pengunjung');
                 $spreadsheet->getActiveSheet()->setCellValue('C9','Perpustakaan SMK Negeri 7 Samarinda');
-                $spreadsheet->getActiveSheet()->setCellValue('C10','Bulan : '.month($bulan_sheet));
+                $spreadsheet->getActiveSheet()->setCellValue('C10','Bulan : '.month(bulan_tahun_ajaran($x,$i)));
                 $spreadsheet->getActiveSheet()->setCellValue('J10','Tahun : '.$explode[$x]);
                 $spreadsheet->getActiveSheet()->getStyle('C8:C9')->getFont()->setSize(14);
                 $spreadsheet->getActiveSheet()->setCellValue('C11','No');
@@ -140,7 +158,7 @@ class BukuTamuController extends Controller
                 $spreadsheet->getActiveSheet()->getColumnDimension('E')->setAutoSize(15);
                 $spreadsheet->getActiveSheet()->getColumnDimension('I')->setWidth(16);
                 $spreadsheet->getActiveSheet()->getColumnDimension('J')->setWidth(11);
-                for ($k=1; $k <= days_in_month($bulan_sheet,$explode[$x]) ; $k++) {
+                for ($k=1; $k <= days_in_month(bulan_tahun_ajaran($x,$i),$explode[$x]) ; $k++) {
                     $set_sheet = $k+12;
                     if (strlen($k) == 1) {
                         $tanggal_cell = '0'.(string)$k;
@@ -149,15 +167,15 @@ class BukuTamuController extends Controller
                         $tanggal_cell = $k;
                     }
                     $spreadsheet->getActiveSheet()->setCellValue('C'.$set_sheet,$k);
-                    $spreadsheet->getActiveSheet()->setCellValue('D'.$set_sheet,get_dayname($k,$bulan_sheet,$explode[$x]));
+                    $spreadsheet->getActiveSheet()->setCellValue('D'.$set_sheet,get_dayname($k,bulan_tahun_ajaran($x,$i),$explode[$x]));
                     $spreadsheet->getActiveSheet()->setCellValue('E'.$set_sheet,','.$tanggal_cell);
-                    $spreadsheet->getActiveSheet()->setCellValue('F'.$set_sheet,BukuTamu::countByClass('X',create_date($k,$bulan_sheet,$explode[$x])));
-                    $spreadsheet->getActiveSheet()->setCellValue('G'.$set_sheet,BukuTamu::countByClass('XI',create_date($k,$bulan_sheet,$explode[$x])));
-                    $spreadsheet->getActiveSheet()->setCellValue('H'.$set_sheet,BukuTamu::countByClass('XII',create_date($k,$bulan_sheet,$explode[$x])));
-                    $spreadsheet->getActiveSheet()->setCellValue('I'.$set_sheet,BukuTamu::countTeacher(create_date($k,$bulan_sheet,$explode[$x])));
-                    $spreadsheet->getActiveSheet()->setCellValue('J'.$set_sheet,BukuTamu::countPerDay(create_date($k,$bulan_sheet,$explode[$x])));
+                    $spreadsheet->getActiveSheet()->setCellValue('F'.$set_sheet,BukuTamu::countByClass('X',create_date($k,bulan_tahun_ajaran($x,$i),$explode[$x])));
+                    $spreadsheet->getActiveSheet()->setCellValue('G'.$set_sheet,BukuTamu::countByClass('XI',create_date($k,bulan_tahun_ajaran($x,$i),$explode[$x])));
+                    $spreadsheet->getActiveSheet()->setCellValue('H'.$set_sheet,BukuTamu::countByClass('XII',create_date($k,bulan_tahun_ajaran($x,$i),$explode[$x])));
+                    $spreadsheet->getActiveSheet()->setCellValue('I'.$set_sheet,BukuTamu::countTeacher(create_date($k,bulan_tahun_ajaran($x,$i),$explode[$x])));
+                    $spreadsheet->getActiveSheet()->setCellValue('J'.$set_sheet,BukuTamu::countPerDay(create_date($k,bulan_tahun_ajaran($x,$i),$explode[$x])));
 
-                    if (get_dayname($k,$bulan_sheet,$explode[$x]) == 'Minggu') {
+                    if (get_dayname($k,bulan_tahun_ajaran($x,$i),$explode[$x]) == 'Minggu') {
                         $spreadsheet->getActiveSheet()->getStyle('C'.$set_sheet.':J'.$set_sheet)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C8C8C8');
                     }
                     $spreadsheet->getActiveSheet()->getRowDimension($set_sheet)->setRowHeight(18);
@@ -173,11 +191,11 @@ class BukuTamuController extends Controller
 
                 $spreadsheet->getActiveSheet()->setCellValue('C'.$cell_count,'Total');
                 $spreadsheet->getActiveSheet()->mergeCells('C'.$cell_count.':E'.$cell_count);
-                $spreadsheet->getActiveSheet()->setCellValue('F'.$cell_count,BukuTamu::countTotalByClass('X',$bulan_sheet,$explode[$x]));
-                $spreadsheet->getActiveSheet()->setCellValue('G'.$cell_count,BukuTamu::countTotalByClass('XI',$bulan_sheet,$explode[$x]));
-                $spreadsheet->getActiveSheet()->setCellValue('H'.$cell_count,BukuTamu::countTotalByClass('XII',$bulan_sheet,$explode[$x]));
-                $spreadsheet->getActiveSheet()->setCellValue('I'.$cell_count,BukuTamu::countTotalTeacher($bulan_sheet,$explode[$x]));
-                $spreadsheet->getActiveSheet()->setCellValue('J'.$cell_count,BukuTamu::countTotalAllPerMonth($bulan_sheet,$explode[$x]));
+                $spreadsheet->getActiveSheet()->setCellValue('F'.$cell_count,BukuTamu::countTotalByClass('X',bulan_tahun_ajaran($x,$i),$explode[$x]));
+                $spreadsheet->getActiveSheet()->setCellValue('G'.$cell_count,BukuTamu::countTotalByClass('XI',bulan_tahun_ajaran($x,$i),$explode[$x]));
+                $spreadsheet->getActiveSheet()->setCellValue('H'.$cell_count,BukuTamu::countTotalByClass('XII',bulan_tahun_ajaran($x,$i),$explode[$x]));
+                $spreadsheet->getActiveSheet()->setCellValue('I'.$cell_count,BukuTamu::countTotalTeacher(bulan_tahun_ajaran($x,$i),$explode[$x]));
+                $spreadsheet->getActiveSheet()->setCellValue('J'.$cell_count,BukuTamu::countTotalAllPerMonth(bulan_tahun_ajaran($x,$i),$explode[$x]));
                 $spreadsheet->getActiveSheet()->getStyle('C'.$cell_count)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('04d9ff');
                 $spreadsheet->getActiveSheet()->getStyle('F'.$cell_count.':I'.$cell_count)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C8C8C8');
                 $spreadsheet->getActiveSheet()->getStyle('J'.$cell_count)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('04d9ff');
@@ -227,7 +245,7 @@ class BukuTamuController extends Controller
         $spreadsheet->getActiveSheet()->getSheetView()->setZoomScale(130);
         $spreadsheet->getActiveSheet()->setCellValue('D8','Rekapitulasi Jumlah Pengunjung');
         $spreadsheet->getActiveSheet()->setCellValue('D9','Perpustakaan SMK Negeri 7 Samarinda');
-        $spreadsheet->getActiveSheet()->setCellValue('D10','Tahun '.$explode[1]);
+        $spreadsheet->getActiveSheet()->setCellValue('D10','Tahun '.$explode[0].' - '.$explode[1]);
         $spreadsheet->getActiveSheet()->setCellValue('D11','No.');
         $spreadsheet->getActiveSheet()->setCellValue('E11','Bulan');
         $spreadsheet->getActiveSheet()->setCellValue('F11','Jumlah Seluruh Pengunjung');
@@ -252,18 +270,14 @@ class BukuTamuController extends Controller
 
         $bulan_rekap_tahun = '';
         $cell_worksheet_tahun = 12;
-        for ($j=1; $j <= 12; $j++) {
-            if (strlen($j) == 1) {
-                $bulan_rekap_tahun = '0'.$j;
+        for ($k=0; $k < count($explode); $k++) { 
+            for ($j=0; $j < 6; $j++) {
+                $spreadsheet->getActiveSheet()->setCellValue('D'.$cell_worksheet_tahun,$j+1);
+                $spreadsheet->getActiveSheet()->setCellValue('E'.$cell_worksheet_tahun,month(bulan_tahun_ajaran($k,$j)).', '.$explode[$k]);
+                $spreadsheet->getActiveSheet()->setCellValue('F'.$cell_worksheet_tahun,BukuTamu::countPerYear(bulan_tahun_ajaran($k,$j),$explode[$k]));
+                $spreadsheet->getActiveSheet()->getRowDimension($cell_worksheet_tahun)->setRowHeight(18);
+                $cell_worksheet_tahun = $cell_worksheet_tahun + 1;
             }
-            else {
-                $bulan_rekap_tahun = $j;
-            }
-            $spreadsheet->getActiveSheet()->setCellValue('D'.$cell_worksheet_tahun,$j);
-            $spreadsheet->getActiveSheet()->setCellValue('E'.$cell_worksheet_tahun,month($j));
-            $spreadsheet->getActiveSheet()->setCellValue('F'.$cell_worksheet_tahun,BukuTamu::countPerYear($bulan_rekap_tahun,$explode[1]));
-            $spreadsheet->getActiveSheet()->getRowDimension($cell_worksheet_tahun)->setRowHeight(18);
-            $cell_worksheet_tahun = $cell_worksheet_tahun + 1;
         }
         $styleTable2 = ['borders'=>['allBorders'=>['borderStyle'=>\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN]]];
         $spreadsheet->getActiveSheet()->getStyle('D11:G24')->applyFromArray($styleTable2);
@@ -297,7 +311,6 @@ class BukuTamuController extends Controller
 
         $spreadsheet->getActiveSheet()->getStyle('D11:G11')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C8C8C8');
         $spreadsheet->getActiveSheet()->getStyle('D24:G24')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C8C8C8');
-        $spreadsheet->getActiveSheet()->getRowDimension('23')->setRowHeight(23);
 
         $spreadsheet->getActiveSheet()->getPageSetup()
                     ->setOrientation(\PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::ORIENTATION_LANDSCAPE);

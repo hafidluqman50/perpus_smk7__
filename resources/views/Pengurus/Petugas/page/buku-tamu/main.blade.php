@@ -13,6 +13,22 @@
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-md-12">
+				<div class="modal fade" id="modalPinBukuTamu" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				  <div class="modal-dialog" role="document">
+				    <div class="modal-content">
+				      <div class="modal-header">
+				        <h5 class="modal-title" id="exampleModalLabel">Pin Buku Tamu</h5>
+				        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				          <span aria-hidden="true">&times;</span>
+				        </button>
+				      </div>
+				      <div class="modal-body">
+				      	<input type="text" class="form-control" name="pin_buku_tamu" value="{{ $pin_buku_tamu[0]->pin_buku_tamu }}" placeholder="Masukkan Pin Buku Tamu" readonly="readonly">
+				      	<input type="hidden" name="id_pin_buku_tamu" value="{{ $pin_buku_tamu[0]->id_pin_buku_tamu }}">
+				      </div>
+				    </div>
+				  </div>
+				</div>
 				<div class="card">
 					<div class="card-header">
 						<form action="{{ url('/petugas/data-buku-tamu/export') }}" method="GET">
@@ -24,21 +40,26 @@
 										</button>
 									</a>	
 								</div>
-									<div class="col-md-3">
-										<div class="form-group">
-											<select name="tahun_ajaran" class="form-control select2">
-												<option value="" selected="" disabled="">=== Pilih Tahun Ajaran ===</option>
-												@foreach ($tahun_ajaran as $value)
-												<option value="{{$value->tahun_ajaran}}">{{$value->tahun_ajaran}}</option>
-												@endforeach
-											</select>
-										</div>
+								<div class="col-md-3">
+									<div class="form-group">
+										<select name="tahun_ajaran" class="form-control select2">
+											<option value="" selected="" disabled="">=== Pilih Tahun Ajaran ===</option>
+											@foreach ($tahun_ajaran as $value)
+											<option value="{{$value->tahun_ajaran}}">{{$value->tahun_ajaran}}</option>
+											@endforeach
+										</select>
 									</div>
-									<div class="col-md-3">
-										<button class="btn btn-success">
-											Rekap Buku Tamu <span class="fa fa-excel-o"></span>
-										</button>
-									</div>	
+								</div>
+								<div class="col-md-2">
+									<button class="btn btn-success">
+										Rekap Buku Tamu <span class="fa fa-excel-o"></span>
+									</button>
+								</div>
+								<div class="col-md-3">
+									<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#modalPinBukuTamu">
+										Pin Buku Tamu
+									</button>
+								</div>
 							</div>
 						</form>
 					</div>
@@ -56,6 +77,7 @@
 									<th scope="col">Nama Anggota</th>
 									<th scope="col">Kelas/Jabatan</th>
 									<th scope="col">Keterangan</th>
+									<th scope="col">#</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -86,14 +108,15 @@
                 {data:'tanggal_berkunjung',name:'tanggal_berkunjung'},
                 {data:'nama_anggota',name:'nama_anggota'},
                 {data:'kelas_jabatan',name:'kelas_jabatan'},
-                {data:'ket_buku_tamu',name:'ket_buku_tamu'}
+                {data:'ket_buku_tamu',name:'ket_buku_tamu'},
+                {data:'action',name:'action',searchable:false,orderable:false}
             ],
             scrollCollapse: true,
             columnDefs: [ {
             sortable: true,
             "class": "index",
             }],
-            order: [[ 1, 'desc' ]],
+            order: [[ 0, 'desc' ]],
             responsive:true,
             scrollX:true,
             fixedColumns: true

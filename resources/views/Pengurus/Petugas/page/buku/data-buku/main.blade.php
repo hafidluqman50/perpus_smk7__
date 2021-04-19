@@ -22,11 +22,6 @@
 								Tambah Data
 							</button>
 						</a>
-						<a href="{{url('/petugas/data-buku/cetak-barcode/semua')}}">
-							<button class="btn btn-success">
-								Cetak Barcode
-							</button>
-						</a>
 						<a href="{{url('/petugas/data-buku/import')}}">
 							<button class="btn btn-success">
 								Import Buku
@@ -37,9 +32,14 @@
 								Contoh Format Import
 							</button>
 						</a>
-						<a href="{{url('/petugas/data-buku/cetak')}}">
+						<a href="{{ url('/petugas/data-buku/cetak-barcode') }}">
 							<button class="btn btn-success">
-								Cetak Laporan
+								Cetak Barcode Semua
+							</button>
+						</a>
+						<a href="{{ url('/petugas/data-buku/cetak-label') }}">
+							<button class="btn btn-success">
+								Cetak Label Semua
 							</button>
 						</a>
 					</div>
@@ -57,10 +57,13 @@
 							<thead>
 								<tr>
 									<th scope="col">No.</th>
-									{{-- <th scope="col">Nomor Induk</th> --}}
 									<th scope="col">Judul Buku</th>
 									<th scope="col">Kategori</th>
 									<th scope="col">Sub Kategori</th>
+									<th scope="col">Inisial Buku</th>
+									<th scope="col">Tahun Buku</th>
+									<th scope="col">Pengarang</th>
+									<th scope="col">Singkatan Pengarang</th>
 									<th scope="col">Penerbit</th>
 									<th scope="col">Tahun Terbit</th>
 									<th scope="col">Jumlah Eksemplar</th>
@@ -96,6 +99,10 @@
                 {data:'judul_buku',name:'judul_buku'},
                 {data:'nama_kategori',name:'nama_kategori'},
                 {data:'nama_sub',name:'nama_sub'},
+                {data:'inisial_buku',name:'inisial_buku'},
+                {data:'tahun_buku',name:'tahun_buku'},
+                {data:'pengarang',name:'pengarang'},
+                {data:'sn_penulis',name:'sn_penulis'},
                 {data:'penerbit',name:'penerbit'},
                 {data:'tahun_terbit',name:'tahun_terbit'},
                 {data:'jumlah_eksemplar',name:'jumlah_eksemplar'},
