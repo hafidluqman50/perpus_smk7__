@@ -21,7 +21,7 @@
 <div class="banner2"></div>
 <section id="profil">
 	<figure class="foto-siswa">
-		<img src="{{asset($anggota->foto_profile == '' || $anggota->foto_profile == '-' ? '/front-assets/profile_anggota/1498308623.learning.svg' : $anggota->foto_profile)}}" alt="">
+        <img src="{{asset($anggota->foto_profile == '' || $anggota->foto_profile == '-' ? '/front-assets/profile_anggota/1498308623.learning.svg' : '/front-assets/profile_anggota/'.$anggota->foto_profile)}}" alt="">
 	</figure>
 	<div class="container">
 			<div class="columns is-multiline data-siswa">
@@ -98,8 +98,10 @@
 				 						<a href="#" class="tag tag-kategori is-primary">Sedang Dipinjam</a>
 				 						@elseif($value->status_transaksi == 'batal-pinjam')
 				 						<a href="#" class="tag tag-kategori is-danger">Batal Pinjam</a>
+				 						@elseif($value->status_transaksi == 'hilang')
+				 						<a href="#" class="tag tag-kategori is-danger">Hilang</a>
 				 						@elseif($value->status_transaksi == 'kembali')
-				 						<a href="#" class="tag tag-kategori is-info">Sudah Kembali</a>
+				 						<a href="#" class="tag tag-kategori is-success">Sudah Kembali</a>
 				 						@endif
 									</div>
 								</div>
@@ -136,214 +138,6 @@
 				@endforelse
 			</div>
 	</section>
-	<br>
-	<section id="wishlist">
-			<p class="title is-4 pinjaman">
-				Buku wishlist
-			</p>
-			<div class="columns is-multiline">
-				<div class="column is-one-third-tablet is-10-mobile is-offset-1-mobile is-one-quarter-desktop">
-					Tidak Ada Wishlist Buku
-				</div>
-				{{-- <div class="column is-one-third-tablet is-10-mobile is-offset-1-mobile is-one-quarter-desktop">
-					<div class="card">
-		    				<div class="card-image">
-		    					<figure class="image is-1by1">
-		    					<a href="#">
-		    						<img src="{{ asset('/front-assets/img/buku6.jpg') }}" draggable="false">
-		    					</a>
-		    					</figure>
-		    				</div>
-		    				<div class="card-content">
-			 					<p class="title is-4">Deadpool corps</p>
-									<small>1 Jan 2016 -
-									<span class="icon is-small">
-										<i class="fa fa-star"></i>
-									</span>
-									<span class="icon is-small">
-										<i class="fa fa-star"></i>
-									</span>
-									<span class="icon is-small">
-										<i class="fa fa-star"></i>
-									</span>
-									<span class="icon is-small">
-										<i class="fa fa-star-o"></i>
-									</span>
-									<span class="icon is-small">
-										<i class="fa fa-star-o"></i>
-									</span>
-									</small>
-				 				<div>
-					 				<a class="tag is-danger">blood</a>
-					 				<a class="tag is-success">comedy</a>
-				 				</div>
-			 				</div>
-			 				<div class="content">
-			 					<div class="columns is-gapless">
-			 						<div class="column is-10">
-			 							<button class="button is-primary pinjam">Pinjam</button>
-			 						</div>
-			 						<div class="column is-2">
-			 							<button class="button is-inverted is-dark pinjam">
-			 								<span class="icon">
-			 									<i class="fa fa-heart-o animated pulse"></i>
-			 								</span>
-			 							</button>
-			 						</div>
-			 					</div>
-			 				</div>
-		 				</div>
-				</div>
-				<div class="column is-one-third-tablet is-10-mobile is-offset-1-mobile is-one-quarter-desktop">
-					<div class="card">
-		    				<div class="card-image">
-		    					<figure class="image is-1by1">
-		    					<a href="#">
-		    						<img src="{{ asset('/front-assets/img/buku6.jpg') }}" draggable="false">
-		    					</a>
-		    					</figure>
-		    				</div>
-		    				<div class="card-content">
-			 					<p class="title is-4">Deadpool corps</p>
-									<small>1 Jan 2016 -
-									<span class="icon is-small">
-										<i class="fa fa-star"></i>
-									</span>
-									<span class="icon is-small">
-										<i class="fa fa-star"></i>
-									</span>
-									<span class="icon is-small">
-										<i class="fa fa-star"></i>
-									</span>
-									<span class="icon is-small">
-										<i class="fa fa-star-o"></i>
-									</span>
-									<span class="icon is-small">
-										<i class="fa fa-star-o"></i>
-									</span>
-									</small>
-				 				<div>
-					 				<a class="tag is-danger">blood</a>
-					 				<a class="tag is-success">comedy</a>
-				 				</div>
-			 				</div>
-			 				<div class="content">
-			 					<div class="columns is-gapless">
-			 						<div class="column is-10">
-			 							<button class="button is-primary pinjam">Pinjam</button>
-			 						</div>
-			 						<div class="column is-2">
-			 							<button class="button is-inverted is-dark pinjam">
-			 								<span class="icon">
-			 									<i class="fa fa-heart-o animated pulse"></i>
-			 								</span>
-			 							</button>
-			 						</div>
-			 					</div>
-			 				</div>
-		 				</div>
-				</div>
-				<div class="column is-one-third-tablet is-10-mobile is-offset-1-mobile is-one-quarter-desktop">
-					<div class="card">
-		    				<div class="card-image">
-		    					<figure class="image is-1by1">
-		    					<a href="#">
-		    						<img src="{{ asset('/front-assets/img/buku6.jpg') }}" draggable="false">
-		    					</a>
-		    					</figure>
-		    				</div>
-		    				<div class="card-content">
-			 					<p class="title is-4">Deadpool corps</p>
-									<small>1 Jan 2016 -
-									<span class="icon is-small">
-										<i class="fa fa-star"></i>
-									</span>
-									<span class="icon is-small">
-										<i class="fa fa-star"></i>
-									</span>
-									<span class="icon is-small">
-										<i class="fa fa-star"></i>
-									</span>
-									<span class="icon is-small">
-										<i class="fa fa-star-o"></i>
-									</span>
-									<span class="icon is-small">
-										<i class="fa fa-star-o"></i>
-									</span>
-									</small>
-				 				<div>
-					 				<a class="tag is-danger">blood</a>
-					 				<a class="tag is-success">comedy</a>
-				 				</div>
-			 				</div>
-			 				<div class="content">
-			 					<div class="columns is-gapless">
-			 						<div class="column is-10">
-			 							<button class="button is-primary pinjam">Pinjam</button>
-			 						</div>
-			 						<div class="column is-2">
-			 							<button class="button is-inverted is-dark pinjam">
-			 								<span class="icon">
-			 									<i class="fa fa-heart-o animated pulse"></i>
-			 								</span>
-			 							</button>
-			 						</div>
-			 					</div>
-			 				</div>
-		 				</div>
-				</div>
-				<div class="column is-one-third-tablet is-10-mobile is-offset-1-mobile is-one-quarter-desktop">
-					<div class="card">
-		    				<div class="card-image">
-		    					<figure class="image is-1by1">
-		    					<a href="#">
-		    						<img src="{{ asset('/front-assets/img/buku6.jpg') }}" draggable="false">
-		    					</a>
-		    					</figure>
-		    				</div>
-		    				<div class="card-content">
-			 					<p class="title is-4">Deadpool corps</p>
-									<small>1 Jan 2016 -
-									<span class="icon is-small">
-										<i class="fa fa-star"></i>
-									</span>
-									<span class="icon is-small">
-										<i class="fa fa-star"></i>
-									</span>
-									<span class="icon is-small">
-										<i class="fa fa-star"></i>
-									</span>
-									<span class="icon is-small">
-										<i class="fa fa-star-o"></i>
-									</span>
-									<span class="icon is-small">
-										<i class="fa fa-star-o"></i>
-									</span>
-									</small>
-				 				<div>
-					 				<a class="tag is-danger">blood</a>
-					 				<a class="tag is-success">comedy</a>
-				 				</div>
-			 				</div>
-			 				<div class="content">
-			 					<div class="columns is-gapless">
-			 						<div class="column is-10">
-			 							<button class="button is-primary pinjam">Pinjam</button>
-			 						</div>
-			 						<div class="column is-2">
-			 							<button class="button is-inverted is-dark pinjam">
-			 								<span class="icon">
-			 									<i class="fa fa-heart-o animated pulse"></i>
-			 								</span>
-			 							</button>
-			 						</div>
-			 					</div>
-			 				</div>
-		 				</div>
-				</div> --}}
-			</div>
-	</section>
-	</div>
 </section>
 @endsection
 

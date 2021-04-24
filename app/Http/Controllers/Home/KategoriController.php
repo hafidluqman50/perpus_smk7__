@@ -12,7 +12,8 @@ class KategoriController extends Controller
     public function kategori($slug) 
     {
         $ktg           = new Kategori;
-        $kategori      = $ktg->orderBy('id_kategori_buku','desc')->get();
+        $kategori      = $ktg->orderBy('id_kategori_buku','desc')
+                            ->where('status_delete',0)->get();
         $sub_ktg       = new SubKategori;
         $val           = $ktg->getBuku($slug,request('cari'));
         $nama_kategori = $ktg->findBySlug($slug)->nama_kategori;

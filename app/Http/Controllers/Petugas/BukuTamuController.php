@@ -23,17 +23,17 @@ class BukuTamuController extends Controller
         $tahun_ajaran  = TahunAjaran::whereNotIn('tahun_ajaran',['-'])->get();
         $pin_buku_tamu = PinBukuTamu::all();
 
-        return view('Pengurus.Petugas.page.buku-tamu.main',compact('title','page','tahun_ajaran','pin_buku_tamu'));
+    	return view('Pengurus.Petugas.page.buku-tamu.main',compact('title','page','tahun_ajaran','pin_buku_tamu'));
     }
 
     public function bukuTamu()
     {
-        $title   = 'Buku Tamu | Petugas';
+    	$title   = 'Buku Tamu | Petugas';
         $anggota = AnggotaPerpus::join('anggota','anggota_perpus.id_anggota','=','anggota.id_anggota')
                                 ->whereNotIn('tipe_anggota',['siswa'])
                                 ->get();
 
-        return view('Pengurus.Petugas.page.buku-tamu.buku-tamu',compact('title','anggota'));
+    	return view('Pengurus.Petugas.page.buku-tamu.buku-tamu',compact('title','anggota'));
     }
 
     public function save(Request $request)
@@ -79,14 +79,14 @@ class BukuTamuController extends Controller
 
             $message = 'Selamat Datang <b>'.$get_anggota->nomor_induk.' '.$get_anggota->nama_anggota.'</b>';
         }
-        return redirect('/petugas/buku-tamu')->with('message',$message);
+    	return redirect('/admin/buku-tamu')->with('message',$message);
     }
 
     public function delete($id)
     {
-        BukuTamu::where('id_buku_tamu',$id)->delete();
+    	BukuTamu::where('id_buku_tamu',$id)->delete();
 
-        return redirect('/petugas/data-buku-tamu')->with('message','Berhasil Hapus Data Buku Tamu');
+    	return redirect('/admin/data-buku-tamu')->with('message','Berhasil Hapus Data Buku Tamu');
     }
 
     public function rekapPengunjung(Request $request)
@@ -208,7 +208,7 @@ class BukuTamuController extends Controller
 
                 $spreadsheet->getActiveSheet()->setCellValue('C'.$cell_sign,'Mengetahui,');
                 $spreadsheet->getActiveSheet()->setCellValue('J'.$cell_sign,'Samarinda,          '.$explode[$x]);
-                $spreadsheet->getActiveSheet()->setCellValue('C'.$cell_job,'Kepala Tata Administrasi');
+                $spreadsheet->getActiveSheet()->setCellValue('C'.$cell_job,'Kepala Tata Petugasistrasi');
                 $spreadsheet->getActiveSheet()->setCellValue('J'.$cell_job,'Kepala Perpustakaan');
                 $spreadsheet->getActiveSheet()->setCellValue('C'.$cell_name,'Jumran, S.Pd');
                 $spreadsheet->getActiveSheet()->setCellValue('J'.$cell_name,Petugas::where('jabatan','kepala-perpustakaan')->firstOrFail()->nama_petugas);
@@ -305,8 +305,8 @@ class BukuTamuController extends Controller
         $spreadsheet->getActiveSheet()->setCellValue('H27','Kepala Perpustakaan');
         $spreadsheet->getActiveSheet()->setCellValue('B31','Jumran, S.Pd');
         $spreadsheet->getActiveSheet()->setCellValue('B32','NIP.19660507 199011 1 001');
-        $spreadsheet->getActiveSheet()->setCellValue('H31','Khairul Anam, M.Pd');
-        $spreadsheet->getActiveSheet()->setCellValue('H32','NIP.19670512 200701 1 038');
+        $spreadsheet->getActiveSheet()->setCellValue('H31',Petugas::where('jabatan','kepala-perpustakaan')->firstOrFail()->nama_petugas);
+        $spreadsheet->getActiveSheet()->setCellValue('H32','NIP.'.Petugas::where('jabatan','kepala-perpustakaan')->firstOrFail()->nip);
         $spreadsheet->getActiveSheet()->getStyle('B31:H32')->getFont()->setBold(true);
 
         $spreadsheet->getActiveSheet()->getStyle('D11:G11')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C8C8C8');

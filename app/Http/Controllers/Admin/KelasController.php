@@ -44,7 +44,7 @@ class KelasController extends Controller
 
     public function delete($id)
     {
-		Kelas::where('id_kelas',$id)->delete();
+		Kelas::where('id_kelas',$id)->update(['status_delete' => 1]);
 		return redirect('/admin/kelas')->with('message','Berhasil Hapus Kelas');
     }
 
@@ -59,7 +59,8 @@ class KelasController extends Controller
 		$kelas = [
 			'id_kelas_tingkat' => $id_kelas_tingkat,
 			'id_jurusan'       => $id_jurusan,
-			'urutan_kelas'     => $urutan_kelas
+			'urutan_kelas'     => $urutan_kelas,
+			'status_delete'	   => 0,
 		];
 
 		if ($id == '') {
@@ -87,8 +88,8 @@ class KelasController extends Controller
 		$title        = 'Form Kelas Detail | Admin';
 		$anggota      = 'menu-open';
 		$page         = 'data-kelas';
-		$siswa        = Anggota::where('tipe_anggota','siswa')->get();
-		$tahun_ajaran = TahunAjaran::whereNotIn('tahun_ajaran',['-'])->get();
+		$siswa        = Anggota::where('tipe_anggota','siswa')->where('status_delete',0)->get();
+		$tahun_ajaran = TahunAjaran::whereNotIn('tahun_ajaran',['-'])->where('status_delete',0)->get();
 		$kelas        = Kelas::getById($id);
 		return view('Pengurus.Admin.page.anggota.kelas.kelas-detail.form-kelas-detail',compact('title',
 			'anggota','page','id','siswa','tahun_ajaran','kelas'));
@@ -111,7 +112,7 @@ class KelasController extends Controller
     {
     	AnggotaPerpus::where('id_kelas',$id)
 					->where('id_anggota',$id_detail)
-					->delete();
+					->update(['status_delete' => 1]);
 
 		return redirect('/admin/kelas/detail/'.$id)->with('message','Berhasil Hapus Data');
     }
@@ -128,7 +129,8 @@ class KelasController extends Controller
 	    		$data_siswa[] = [
 					'id_anggota'      => $siswa[$i],
 					'id_kelas'        => $id_kelas,
-					'id_tahun_ajaran' => $id_tahun_ajaran
+					'id_tahun_ajaran' => $id_tahun_ajaran,
+					'status_delete'   => 0
 	    		];
 	    	}
 

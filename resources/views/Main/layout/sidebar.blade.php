@@ -17,7 +17,7 @@
 					  	<div class="columns is-multiline is-mobile is-tablet">
 						  	<div class="column is-10">
 							  	<div class="field">
-									<input class="input" type="text" placeholder="Judul buku" name="cari">
+									<input class="input" type="text" placeholder="Judul buku" name="cari" value="{{isset($_GET['cari']) ? $_GET['cari'] : ''}}">
 								</div>
 						  	</div>
 						  	<div class="column is-2">
@@ -30,27 +30,6 @@
 						</div>
 				  	</form>
 				  </ul>
-			</div>
-			<div class="sort-button">
-				  <p class="menu-label">
-						<span class="icon is-small">
-							<i class="fa fa-sort"></i>
-						</span>
-				    Urut berdasarkan
-				  </p>
-				  <div class="menu-list">
-					<div class="field">
-					  <p class="control">
-					    <span class="select">
-					      <select name="order-buku">
-					        <option value="terbaru" selected="selected">buku terbaru</option>
-					        <option value="populer">buku terpopuler</option>
-					        <option value="lama">buku lama</option>
-					      </select>
-					    </span>
-					  </p>
-					</div>
-				  </div>
 			</div>
 			<div class="categori-button">
 			  <p class="menu-label">

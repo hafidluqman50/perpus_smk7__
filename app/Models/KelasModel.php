@@ -16,6 +16,7 @@ class KelasModel extends Model
 		$get = self::join('kelas_tingkat','kelas.id_kelas_tingkat','=','kelas_tingkat.id_kelas_tingkat')
 					->join('jurusan','kelas.id_jurusan','=','jurusan.id_jurusan')
 					->whereNotIn('kelas_tingkat',['-'])
+					->where('status_delete',0)
 					->get();
 		return $get;
 	}
@@ -25,6 +26,7 @@ class KelasModel extends Model
 		$get = self::join('kelas_tingkat','kelas.id_kelas_tingkat','=','kelas_tingkat.id_kelas_tingkat')
 					->join('jurusan','kelas.id_jurusan','=','jurusan.id_jurusan')
 					->whereNotIn('kelas_tingkat',['-'])
+					->where('kelas.status_delete',0)
 					->get();
 		return $get;
 	}

@@ -33,7 +33,7 @@ class TahunAjaranController extends Controller
 
     public function delete($id) 
     {
-        TahunAjaran::where('id_tahun_ajaran',$id)->delete();
+        TahunAjaran::where('id_tahun_ajaran',$id)->update(['status_delete' => 1]);
         return redirect('/admin/tahun-ajaran')->with('message','Berhasil Hapus Tahun Ajaran');
     }
 

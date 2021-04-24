@@ -91,10 +91,9 @@ class AnggotaController extends Controller
         if (file_exists(public_path('front-assets/foto_anggota/'.$first->foto_profile))) {
             unlink(public_path('front-assets/foto_anggota/'.$first->foto_profile));
         }
-        $tipe = TipeAnggota::where('id_tipe_anggota',$first->id_tipe_anggota)->firstOrFail()->tipe_anggota;
-        $user = User::where('id_users',$first->id_users)->delete();
-        $get->delete();
-        return redirect('/admin/data-anggota/'.$tipe)->with('message','Berhasil Hapus '.ucwords($tipe));
+        $user = User::where('id_users',$first->id_users)->update(['status_delete' => 1]);
+        $get->update(['status_delete' => 1]);
+        return redirect('/admin/data-anggota/'.$first->tipe_anggota)->with('message','Berhasil Hapus '.ucwords($first->tipe_anggota));
     }
 
     public function statusAnggota($id) 
@@ -124,7 +123,7 @@ class AnggotaController extends Controller
         $tipe          = $request->tipe;
         $id            = $request->id_anggota;
 
-        $array = [
+        $data_anggota = [
             'nomor_induk'     => $nomor_induk,
             'nama_anggota'    => $nama_anggota,
             'nama_slug'       => Str::slug($nama_anggota,'-'),
@@ -133,6 +132,10 @@ class AnggotaController extends Controller
             'jenis_kelamin'   => $jenis_kelamin,
             'foto_profile'    => '-',
             'tipe_anggota'    => $tipe,
+            'status_delete'   => 0,
+        ];
+
+        $data_user = [
             'username'        => $username,
             'password'        => bcrypt($password),
             'name'            => $nama_anggota,
@@ -147,10 +150,12 @@ class AnggotaController extends Controller
         //
         if ($id == '') {
 
-            $last_id = User::insertGetId(array_slice($array,8));
-            $anggota = Arr::except(array_merge($array,['id_users'=>$last_id]),['username','name','password','level','status_akun','status_delete']);
+            $last_id = User::insertGetId($data_user);
+            // $anggota = Arr::except(array_merge($array,['id_users'=>$last_id]),['username','name','password','level','status_akun','status_delete']);
 
-            Anggota::create($anggota);
+            $data_anggota['id_users'] = $last_id;
+
+            Anggota::create($data_anggota);
 
             if ($tipe == 'guru' || $tipe == 'karyawan') {
                 $get_id_anggota = Anggota::where('id_users',$last_id)->firstOrFail()->id_anggota;
@@ -163,17 +168,20 @@ class AnggotaController extends Controller
             $first = $get->firstOrFail();
             
             if ($username != '' && $password != '') {
-                User::where('id_users',$first->id_users)->update(array_slice($array,8,-3));
+                unset($data_user['level'],$data_user['status_akun'],$data_user['status_delete']);
+                User::where('id_users',$first->id_users)->update($data_user);
             }
             elseif ($username != '') {
-                unset($array['password']);
-                User::where('id_users',$first->id_users)->update(array_slice($array,8,-3));
+                unset($data_user['password'],$data_user['level'],$data_user['status_akun'],$data_user['status_delete']);
+                User::where('id_users',$first->id_users)->update($data_user);
             }
             elseif ($password != '') {
-                User::where('id_users',$first->id_users)->update(array_slice($array,9,-3));
+                unset($data_user['username'],$data_user['level'],$data_user['status_akun'],$data_user['status_delete']);
+                User::where('id_users',$first->id_users)->update($data_user);
             }
 
-            $get->update(array_slice($array,0,-6));
+            unset($data_anggota['status_delete']);
+            $get->update($data_anggota);
             $message = 'Berhasil Update '.ucwords($tipe);
         }
 

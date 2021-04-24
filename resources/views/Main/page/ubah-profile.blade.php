@@ -4,13 +4,13 @@
 <div class="banner2"></div>
 <section id="profil">
     <figure class="foto-siswa">
-        <img src="{{asset($anggota->foto_profile == '' || $anggota->foto_profile == '-' ? '/front-assets/profile_anggota/1498308623.learning.svg' : $anggota->foto_profile)}}" alt="">
+        <img src="{{asset($anggota->foto_profile == '' || $anggota->foto_profile == '-' ? '/front-assets/profile_anggota/1498308623.learning.svg' : '/front-assets/profile_anggota/'.$anggota->foto_profile)}}" alt="">
     </figure>
     <form action="{{ url('/ubah/profile/save') }}" method="POST" enctype="multipart/form-data">
     {{ csrf_field() }}
     <div class="field has-text-centered">
         <span class="button is-outlined is-primary btn-file">
-          Pilih Foto... <input name="foto_profile" id="image" type="file">
+          Pilih Foto... <input name="foto_profile" id="image" name="foto_profile" type="file">
         </span>
         <img id="uploadPreview">
     </div>
@@ -33,7 +33,7 @@
                     <div class="field">
                         <p class="title is-6 label" for="username">username</p>
                         <li class="control has-icons-left subtitle is-4">
-                            <input type="text" name="username" class="input" value="{{ $anggota->username }}">
+                            <input type="text" name="username" class="input">
                         </li>
                     </div>
                 </ul>
@@ -82,7 +82,7 @@
             </div>
             <div class="column is-5-tablet is-offset-1-tablet is-10-mobile is-offset-1-mobile is-8 is-offset-2-desktop data-siswa">
                 <input type="hidden" name="id_users" value="{{Auth::id()}}">
-                <button type="submit" class="button is-primary" disabled="disabled">Submit</button>
+                <button type="submit" class="button is-primary">Submit</button>
                 <a href="{{ url('/profile') }}">
                 <button class="button is-default" type="button">
                     Kembali

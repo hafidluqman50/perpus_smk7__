@@ -29,6 +29,8 @@ class AnggotaPerpusModel extends Model
         $query = self::join('anggota','anggota_perpus.id_anggota','=','anggota.id_anggota')
                     ->where('anggota_perpus.id_kelas',$id_kelas)
                     ->where('anggota_perpus.id_tahun_ajaran',$id_tahun_ajaran)
+                    ->where('anggota_perpus.status_delete',0)
+                    ->where('anggota.status_delete',0)
                     ->get();
 
         return $query;
@@ -39,29 +41,43 @@ class AnggotaPerpusModel extends Model
         $query = self::join('anggota','anggota_perpus.id_anggota','=','anggota.id_anggota')
                     ->join('users','anggota.id_users','=','users.id_users')
                     ->where('tipe_anggota','guru')
+                    ->where('anggota.status_delete',0)
                     ->get();
                     
         return $query;
     }
 
-    public static function showAnggota($tipe) {
-        if ($tipe == 'siswa') {
-            $query = self::join('anggota','anggota_perpus.id_anggota_perpus','=','anggota.id_anggota')
-                        ->join('users','anggota.id_users','=','users.id_users')
-                        ->join('kelas','anggota_perpus.id_kelas','=','kelas.id_kelas')
-                        ->join('kelas_tingkat','kelas.id_kelas_tingkat','=','kelas_tingkat.id_kelas_tingkat')
-                        ->join('jurusan','kelas.id_jurusan','=','jurusan.id_jurusan')
-                        ->where('tipe_anggota','siswa')
-                        ->get();
-        }
-        else {
-            $query = self::join('anggota','anggota_perpus.id_anggota_perpus','=','anggota.id_anggota')
-                        ->join('users','anggota.id_users','=','users.id_users')
-                        ->where('tipe_anggota','guru')
-                        ->get();
-        }
-    	return $query;
+    public static function getKaryawan()
+    {
+        $query = self::join('anggota','anggota_perpus.id_anggota','=','anggota.id_anggota')
+                    ->join('users','anggota.id_users','=','users.id_users')
+                    ->where('tipe_anggota','karyawan')
+                    ->where('anggota.status_delete',0)
+                    ->get();
+                    
+        return $query;
     }
+
+    // public static function showAnggota($tipe) {
+    //     if ($tipe == 'siswa') {
+    //         $query = self::join('anggota','anggota_perpus.id_anggota_perpus','=','anggota.id_anggota')
+    //                     ->join('users','anggota.id_users','=','users.id_users')
+    //                     ->join('kelas','anggota_perpus.id_kelas','=','kelas.id_kelas')
+    //                     ->join('kelas_tingkat','kelas.id_kelas_tingkat','=','kelas_tingkat.id_kelas_tingkat')
+    //                     ->join('jurusan','kelas.id_jurusan','=','jurusan.id_jurusan')
+    //                     ->where('tipe_anggota','siswa')
+    //                     ->where('anggota_perpus.status_delete',0)
+    //                     ->get();
+    //     }
+    //     else {
+    //         $query = self::join('anggota','anggota_perpus.id_anggota_perpus','=','anggota.id_anggota')
+    //                     ->join('users','anggota.id_users','=','users.id_users')
+    //                     ->where('tipe_anggota','guru')
+    //                     ->where('anggota_perpus.status_delete',0)
+    //                     ->get();
+    //     }
+    // 	return $query;
+    // }
 
     public static function getId($id) {
         $query = self::join('tipe_anggota','anggota.id_tipe_anggota','=','tipe_anggota.id_tipe_anggota')
@@ -83,6 +99,7 @@ class AnggotaPerpusModel extends Model
                     ->join('tahun_ajaran','anggota_perpus.id_tahun_ajaran','=','tahun_ajaran.id_tahun_ajaran')
                     ->join('anggota','anggota_perpus.id_anggota','=','anggota.id_anggota')
                     ->where('anggota_perpus.id_kelas',$id)
+                    ->where('anggota_perpus.status_delete',0)
                     ->get();
 
         return $get;

@@ -61,12 +61,13 @@ class Kernel extends HttpKernel
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
-        'isLogin' => \App\Http\Middleware\isLogin::class,
-        'isAnggota' => \App\Http\Middleware\isAnggota::class,
-        'isAdmin' => \App\Http\Middleware\isAdmin::class,
-        'isPetugas' => \App\Http\Middleware\isPetugas::class,
-        'ajaxGuard' => \App\Http\Middleware\ajaxGuard::class,
-        'checkPinjam' => \App\Http\Middleware\CheckPinjam::class
+        'is.login' => \App\Http\Middleware\isLogin::class,
+        'is.anggota' => \App\Http\Middleware\isAnggota::class,
+        'is.admin' => \App\Http\Middleware\isAdmin::class,
+        'is.petugas' => \App\Http\Middleware\isPetugas::class,
+        'ajax.guard' => \App\Http\Middleware\ajaxGuard::class,
+        'check.pinjam' => \App\Http\Middleware\CheckPinjam::class,
+        'has.auth' => \App\Http\Middleware\hasAuth::class
     ];
 
     /**

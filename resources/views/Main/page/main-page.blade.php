@@ -49,7 +49,7 @@
 				<p>Hidupkan perpus kalian ! dan jadilah generasi gemar membaca bersama teman teman.</p>
 				<hr color="lightgrey">
 				<a href="{{ url('/profile') }}" class="button is-primary is-outlined">Profil</a> 
-				<a href="{{ url('/profile/#wishlist') }}" class="button is-dark is-inverted is-outlined" id="wishlist">Wishlist</a>
+				{{-- <a href="{{ url('/profile/#wishlist') }}" class="button is-dark is-inverted is-outlined" id="wishlist">Wishlist</a> --}}
 				<button class="icon is-large floating">
 					<a class="fa fa-angle-down"></a>
 				</button>
@@ -99,7 +99,7 @@
 			    	<div class="columns is-multiline is-tablet is-mobile">
 			    		<div class="column is-12-mobile is-one-third-tablet is-one-third-desktop">
 							<figure>
-								<img src="{{asset($anggota->foto_profile == '' || $anggota->foto_profile == '-' ? '/front-assets/profile_anggota/1498308623.learning.svg' : $anggota->foto_profile)}}" alt="">
+        						<img src="{{asset($anggota->foto_profile == '' || $anggota->foto_profile == '-' ? '/front-assets/profile_anggota/1498308623.learning.svg' : '/front-assets/profile_anggota/'.$anggota->foto_profile)}}" alt="">
 							</figure>
 			    		</div>
 			    		<div class="column is-12-mobile is-one-third-tablet is-one-third-desktop data-siswa">
@@ -149,7 +149,7 @@
 								Beberapa buku dengan peminjaman paling banyak
 							</p>
 						</div>
-						@foreach($buku->cekRating() as $key => $data)
+						@foreach($buku->showMostPopular() as $key => $data)
 						@php
 						$array = [
 							0 =>['animate' => 'fade-up','delay' => '200'],
@@ -200,7 +200,7 @@
 				 				</div>
 				 				<div class="content">
 				 					<div class="columns is-gapless is-multiline is-mobile">
-				 						<div class="column is-10-desktop is-half-mobile">
+				 						<div class="column is-12-desktop is-12-mobile">
 				 							@if(Auth::check())
 					 							@if($cek == 0)
 					 							<a href="{{ url('/pinjam/buku',$data->judul_slug) }}">
@@ -217,13 +217,13 @@
 				 							</a>
 				 							@endif
 				 						</div>
-				 						<div class="column is-2-desktop is-half-mobile">
+				 						{{-- <div class="column is-2-desktop is-half-mobile">
 				 							<button class="button is-inverted is-dark pinjam notif-wishlist">
 				 								<span class="icon">
 				 									<i class="fa fa-heart-o animated pulse"></i>
 				 								</span>
 				 							</button>
-				 						</div>
+				 						</div> --}}
 				 					</div>
 				 				</div>
 			 				</div>
@@ -305,7 +305,7 @@
 				 				</div>
 				 				<div class="content">
 				 					<div class="columns is-gapless is-multiline is-mobile">
-				 						<div class="column is-10-desktop is-half-mobile">
+				 						<div class="column is-12-desktop is-12-mobile">
 				 							@if(Auth::check())
 					 							@if($cek == 0)
 					 							<a href="{{ url('/pinjam/buku',$data->judul_slug) }}">
@@ -322,13 +322,13 @@
 				 							</a>
 				 							@endif
 				 						</div>
-				 						<div class="column is-2-desktop is-half-mobile">
+				 						{{-- <div class="column is-2-desktop is-half-mobile">
 				 							<button class="button is-inverted is-dark pinjam notif-wishlist">
 				 								<span class="icon">
 				 									<i class="fa fa-heart-o animated pulse"></i>
 				 								</span>
 				 							</button>
-				 						</div>
+				 						</div> --}}
 				 					</div>
 				 				</div>
 			 				</div>
@@ -393,19 +393,22 @@
 						      </p>
 					     </div>
 		    		</div>
+			    	<div data-aos="fade-right" data-aos-delay="300" data-aos-offset="200" class="column is-10-mobile is-half-tablet is-3-desktop">
 		    		@foreach ($petugas as $element)
 			    		@if ($element->jabatan == 'pustakawan')
-			    		<div data-aos="fade-right" data-aos-delay="300" data-aos-offset="200" class="column is-10-mobile is-half-tablet is-3-desktop">
 							<figure class="image">
     							<img src="{{ $element->foto_profile == '-' ? asset('/front-assets/foto_petugas/iconfinder_user-alt_285645.png') : asset('/front-assets/foto_petugas/'.$element->foto_profile) }}">
 								<figcaption>
 									<p class="title is-6">{{ $element->nama_petugas }}</p>
-									<p class="subtitle is-6">{{ $element->nip != '' || $element->nip != '-' ? 'NIP. '.$element->nip : '-' }}</p>
+									<p class="subtitle is-6" style="margin-bottom:3%;">{{ $element->nip != '' || $element->nip != '-' ? 'NIP. '.$element->nip : '-' }}</p>
+									<p class="subtitle is-6">{{ unslug_str($element->jabatan) }}</p>
 								</figcaption>
 							</figure>
-			    		</div>
+							<br>
+							<br>
 			    		@endif
 		    		@endforeach
+			    	</div>
 		    		<div data-aos="fade-down" data-aos-delay="200" data-aos-offset="200" class="column is-4-desktop is-hidden-mobile is-hidden-tablet-only has-text-centered">
 		    			<div>
 			    			  <h1 class="title is-4">
@@ -417,19 +420,22 @@
 						      </p>
 					     </div>
 		    		</div>
-		    		@foreach ($petugas as $element)
-		    		@if ($element->jabatan == 'kepala-perpustakaan')
 		    		<div data-aos="fade-left" data-aos-delay="300" data-aos-offset="200" class="column is-10-mobile is-half-tablet is-3-desktop">
+		    		@foreach ($petugas as $element)
+		    			@if ($element->jabatan == 'kepala-perpustakaan')
     					<figure class="image">
     						<img src="{{ $element->foto_profile == '-' ? asset('/front-assets/foto_petugas/iconfinder_user-alt_285645.png') : asset('/front-assets/foto_petugas/'.$element->foto_profile) }}">
     						<figcaption>
     							<p class="title is-6">{{ $element->nama_petugas }}</p>
-								<p class="subtitle is-6">{{ $element->nip != '' || $element->nip != '-' ? 'NIP. '.$element->nip : '-' }}</p>
+								<p class="subtitle is-6" style="margin-bottom:3%;">{{ $element->nip != '' || $element->nip != '-' ? 'NIP. '.$element->nip : '-' }}</p>
+								<p class="subtitle is-6">{{ unslug_str($element->jabatan) }}</p>
     						</figcaption>
     					</figure>
-		    		</div>
-		    		@endif
+    					<br>
+    					<br>
+		    			@endif
 		    		@endforeach
+		    		</div>
 		    	</div>
 		    </div>
 		  </div>

@@ -46,7 +46,7 @@
 					<div class="card-body">
 						@if(session()->has('message'))
 						<div class="alert alert-success alert-dismissible">
-							{{ session('message') }} <button class="close" data-dismiss="alert">X</button>
+							{{ session('message') }} <button class="close" data-dismiss="alert" aria-label="close">X</button>
 						</div>
 						@elseif(session()->has('log'))
 						<div class="alert alert-danger alert-dismissible">

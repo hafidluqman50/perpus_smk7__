@@ -18,6 +18,7 @@ class AnggotaModel extends Model
     public static function showAnggota($tipe) {
     	$query = self::join('users','anggota.id_users','=','users.id_users')
     				->where('tipe_anggota',$tipe)
+                    ->where('anggota.status_delete',0)
     				->get();
     	return $query;
     }

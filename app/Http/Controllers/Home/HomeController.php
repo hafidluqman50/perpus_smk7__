@@ -12,6 +12,7 @@ use App\Models\RatingModel as Rating;
 use App\Models\PanduanPinjamModel as PanduanPinjam;
 use App\Models\PetugasModel as Petugas;
 use App\Models\User;
+use Image;
 use Auth;
 
 class HomeController extends Controller
@@ -53,21 +54,59 @@ class HomeController extends Controller
 
     public function saveSettings(Request $request) 
     {
-        $username = $request->username;
-        $email    = $request->email;
-        $password = $request->password;
-        $id       = $request->id_users;
+        $username     = $request->username;
+        $email        = $request->email;
+        $password     = $request->password;
+        $id           = $request->id_users;
+        $foto_profile = $request->foto_profile;
+        $fileName     = $foto_profile != '' ?uniqid('_photo_profile_').$foto_profile->getClientOriginalName():'-';
 
         $anggota = [
             'email' => $email,
         ];
-        $user = [
-            'username' => $username,
-            'password' => bcrypt($password)
-        ];
+
+        $data_users = ['username' => $username,'password' => bcrypt($password)];
+
+        if ($foto_profile != '' || $foto_profile != null) {
+            $foto = Anggota::where('id_anggota',$id)->firstOrFail()->foto_profile;
+            
+            if (file_exists(public_path('front-assets/profile_anggota/'.$foto))) {
+                unlink(public_path('front-assets/profile_anggota/'.$foto));
+            }
+
+            Image::make($foto_profile)->resize(446,446,function($constraint){
+                $constraint->aspectRatio();
+                $constraint->upSize();
+            })->save('front-assets/profile_anggota/'.$fileName);
+
+            $anggota['foto_profile'] = $fileName;
+        }
+
+        if ($username == '' && $password != '') {
+            if (User::checkUsername($username) == false) {
+                return redirect('/ubah/profile')->withInput($request->input());
+            }
+            unset($data_users['username']);
+            User::where('id_users',Auth::id())
+                ->update($data_users);
+
+            $message = 'Berhasil Ubah Password';
+        }
+        else if($username != '' && $password == '') {
+            unset($data_users['password']);
+            User::where('id_users',Auth::id())
+                ->update($data_users);  
+
+            $message = 'Berhasil Ubah Username';
+        }
+        else if ($username != '' && $password != '') {
+            User::where('id_users',Auth::id())
+                ->update($data_users);
+
+            $message = 'Berhasil Ubah Username & Password';
+        }
 
         Anggota::where('id_users',$id)->update($anggota);
-        User::where('id_users',$id)->update($user);
 
         return redirect('/profile')->with('success','Berhasil Update Profile');
     }

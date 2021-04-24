@@ -18,12 +18,14 @@ class BukuController extends Controller
     {
         $title    = 'Buku';
         $ktg      = new Kategori;
-        $kategori = $ktg->orderBy('id_kategori_buku','desc')->get();
+        $kategori = $ktg->orderBy('id_kategori_buku','desc')
+                     ->where('status_delete',0)->get();
         $sub_ktg  = new SubKategori;
         if (request('cari') == '') {
         $buku = Buku::join('sub_kategori','buku.id_sub_ktg','=','sub_kategori.id_sub_ktg')
                      ->join('kategori_buku','sub_kategori.id_kategori_buku','=','kategori_buku.id_kategori_buku')
                      ->select('buku.*','sub_kategori.nama_sub','sub_kategori.slug_sub_ktg','kategori_buku.nama_kategori','kategori_buku.slug_kategori')
+                     ->where('buku.status_delete',0)
                      ->paginate(12);
         }
         else {
@@ -31,6 +33,7 @@ class BukuController extends Controller
                      ->join('kategori_buku','sub_kategori.id_kategori_buku','=','kategori_buku.id_kategori_buku')
                      ->select('buku.*','sub_kategori.nama_sub','sub_kategori.slug_sub_ktg','kategori_buku.nama_kategori','kategori_buku.slug_kategori')
                      ->where('judul_buku','like','%'.request('cari').'%')
+                     ->where('buku.status_delete',0)
                      ->paginate(12);
         }
 

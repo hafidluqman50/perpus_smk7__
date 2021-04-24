@@ -77,18 +77,18 @@
 			 				</div>
 			 				<div class="content">
 			 					<div class="columns is-gapless is-multiline is-mobile">
-			 						<div class="column is-10-desktop is-half-mobile">
+			 						<div class="column is-12-desktop is-12-mobile">
 			 							<a href="{{ url('/pinjam/buku',$buku->judul_slug) }}">
 			 								<button class="button is-primary pinjam">Pinjam</button>
 			 							</a>
 			 						</div>
-			 						<div class="column is-2-desktop is-half-mobile">
+			 						{{-- <div class="column is-2-desktop is-half-mobile">
 			 							<button class="button is-inverted is-dark pinjam" id="notif-wishlist">
 			 								<span class="icon">
 			 									<i class="fa fa-heart-o animated pulse"></i>
 			 								</span>
 			 							</button>
-			 						</div>
+			 						</div> --}}
 			 					</div>
 			 				</div>
 		 				</div>

@@ -35,6 +35,7 @@ class ReminderPinjamBuku extends Mailable
                             'buku'                  => $this->mail['judul_buku'],
                             'tanggal_harus_kembali' => $this->mail['tanggal_harus_kembali'],
                             'nama_anggota'          => $this->mail['nama_anggota']
-                        ]);
+                        ])
+                    ->subject('Reminder Kembalikan Buku');
     }
 }

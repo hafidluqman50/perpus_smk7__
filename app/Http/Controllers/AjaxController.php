@@ -51,7 +51,7 @@ class AjaxController extends Controller
 
     public function dataTahunAjaran() 
     {
-    	$tahun_ajaran = TahunAjaran::whereNotIn('tahun_ajaran',['-'])->get();
+    	$tahun_ajaran = TahunAjaran::whereNotIn('tahun_ajaran',['-'])->where('status_delete',0)->get();
     	$datatables = Datatables::of($tahun_ajaran)->addColumn('action',function($action){
         $array = [
     			0 => ['class'=>'btn-success','text'=>'Aktifkan'],
@@ -300,18 +300,14 @@ class AjaxController extends Controller
 
     public function dataKategori() 
     {
-        $kategori = Kategori::all();
+        $kategori = Kategori::where('status_delete',0)->get();
         $datatables = Datatables::of($kategori)->addColumn('action',function($action){
-            $array = [
-                1 => 'disabled="disabled"'
-            ];
-            $button = $array[$action->id_kategori_buku] ?? '" onclick="return confirm(\'Yakin Hapus ?\');"';
 
             $column = '<a href="'.url("/admin/kategori-buku/edit/$action->id_kategori_buku").'">
                           <button class="btn btn-warning"> Edit </button>
                        </a>
                        <a href="'.url("/admin/kategori-buku/delete/$action->id_kategori_buku").'">
-                           <button class="btn btn-danger" '.$button.'> Hapus </button>
+                           <button class="btn btn-danger" onclick="return confirm(\'Yakin Hapus ?\');"> Hapus </button>
                        </a>
                        <a href="'.url("/admin/sub-kategori/$action->id_kategori_buku").'">
                            <button class="btn btn-info"> Lihat Sub </button>
@@ -394,13 +390,16 @@ class AjaxController extends Controller
                            <button class="btn btn-info"> Konfirmasi Pinjam </button>
                       </a>';
             }
+            else if($action->status_transaksi == 'sedang-dipinjam') {
+                $column = '
+                <a href="'.url("/$this->level/transaksi-buku/detail-transaksi/$segment/$action->id_transaksi/kirim-email/$action->id_detail_transaksi").'">
+                  <button class="btn btn-info"> Kirim Pengingat </button>
+                </a>';
+            }
             else {
                 $column = '';
             }
               $column.='
-                <a href="'.url("/$this->level/transaksi-buku/detail-transaksi/$segment/$action->id_transaksi/kirim-email/$action->id_detail_transaksi").'">
-                  <button class="btn btn-info"> Kirim Pengingat </button>
-                </a>
                <a href="'.url("/$this->level/transaksi-buku/detail-transaksi/$action->id_transaksi/delete/$action->id_detail_transaksi").'" onclick="return confirm(\'Yakin Hapus ?\');">
                    <button class="btn btn-danger"> Hapus </button>
                </a>';
@@ -432,7 +431,8 @@ class AjaxController extends Controller
                 'batal-pinjam'    => ['class' => 'badge-danger','text' => 'Batal Pinjam'],
                 'pending'         => ['class' => 'badge-warning','text' => 'Pending'],
                 'sedang-dipinjam' => ['class' => 'badge-info','text' => 'Sedang Dipinjam'],
-                'kembali'         => ['class' => 'badge-success','text' => 'Kembali']
+                'kembali'         => ['class' => 'badge-success','text' => 'Kembali'],
+                'hilang'          => ['class' => 'badge-danger','text' => 'Hilang']
             ];
             $label = '<span class="badge '.$array[$edit->status_transaksi]['class'].'">'.$array[$edit->status_transaksi]['text'].'</span>';
             return $label;
@@ -464,7 +464,7 @@ class AjaxController extends Controller
     {
         $barcode = Barcode::where('code_scanner',$barcode)->firstOrFail();
         $buku    = Buku::where('id_buku',$barcode->id_buku)->firstOrFail();
-        $html    = '<option value="'.$barcode->code_scanner.'" selected="selected">'.$buku->judul_buku.'</option>';
+        $html    = '<option value="'.$barcode->id_buku.'" selected="selected">'.$buku->judul_buku.'</option>';
 
         return $html;
     }

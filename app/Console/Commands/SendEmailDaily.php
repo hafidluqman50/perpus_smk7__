@@ -6,6 +6,7 @@ use Illuminate\Console\Command;
 use App\Models\TransaksiDetailModel as TransaksiDetail;
 use App\Mail\ReminderPinjamBuku;
 use Illuminate\Support\Facades\Mail;
+use Session;
 
 class SendEmailDaily extends Command
 {
@@ -41,7 +42,8 @@ class SendEmailDaily extends Command
     public function handle()
     {
         $tanggal          = date('Y-m-d');
-        $tanggal_reminder = date('Y-m-d', strtotime($tanggal. ' + 1 days'));
+        $tanggal_reminder = date('Y-m-d', strtotime($tanggal. ' + 3 days'));
+        // session()->put('tanggal_reminder',$tanggal_reminder);
 
         $get_data = TransaksiDetail::join('transaksi_buku','detail_transaksi.id_transaksi','=','transaksi_buku.id_transaksi')
                                     ->join('anggota_perpus','transaksi_buku.id_anggota_perpus','=','anggota_perpus.id_anggota_perpus')
@@ -51,16 +53,17 @@ class SendEmailDaily extends Command
                                     ->where('status_transaksi','sedang-dipinjam')
                                     ->get();
 
+        // $when = now()->addMinutes(5);
+        
         foreach ($get_data as $key => $value) {
             $reminder = [
-                        'judul_buku'            => $value->judul_buku, 
-                        'nama_anggota'          => $value->nama_anggota, 
-                        'tanggal_harus_kembali' => $value->tanggal_harus_kembali
+                            'judul_buku'            => $value->judul_buku, 
+                            'nama_anggota'          => $value->nama_anggota, 
+                            'tanggal_harus_kembali' => $value->tanggal_harus_kembali
                         ];
+
     
-            Mail::to($value->email)->send(new ReminderPinjamBuku($reminder));
+            Mail::to($value->email)->queue(new ReminderPinjamBuku($reminder));
         }
-        
-        $this->info('Daily Update has been send successfully');
     }
 }

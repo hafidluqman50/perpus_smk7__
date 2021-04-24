@@ -29,7 +29,7 @@
 							<div class="form-group">
 								<label for="">Tahun Ajaran</label>
 								<select id="tahun-ajaran" class="form-control select2" required="required">
-									<option selected="selected" disabled="disabled">=== Pilih Tahun Ajaran ===</option>
+									<option value="" selected="selected" disabled="disabled">=== Pilih Tahun Ajaran ===</option>
 									@foreach ($tahun_ajaran as $element)
 									<option value="{{$element->id_tahun_ajaran}}">{{$element->tahun_ajaran}}</option>
 									@endforeach
@@ -49,6 +49,14 @@
 								<select name="anggota" class="form-control select2" id="siswa" required="required" disabled="disabled">
 									<option selected="selected" disabled="disabled">=== Pilih Siswa ===</option>
 								</select>
+							</div>
+							<div class="form-group">
+								<label for="">Tanggal Pinjam</label>
+								<input type="date" name="tanggal_pinjam" class="form-control" value="{{ date('Y-m-d') }}" readonly="readonly">
+							</div>
+							<div class="form-group">
+								<label for="">Tanggal Harus Kembali</label>
+								<input type="date" name="tanggal_harus_kembali" class="form-control" value="{{ dua_minggu(date('Y-m-d')) }}">
 							</div>
 							<hr>
 							<button class="btn btn-primary" id="scan-barcode" type="button">Scan Barcode</button>
@@ -71,7 +79,7 @@
 								</div>
 								<div class="form-group">
 									<label for="">Buku</label>
-									<select name="buku_barcode[]" id="buku" class="form-control select-buku" required="required" disabled="disabled" multiple="multiple">
+									<select name="buku_barcode[]" id="buku" class="form-control select-buku" disabled="disabled" multiple="multiple">
 									</select>
 								</div>
 							</div>

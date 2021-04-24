@@ -44,18 +44,25 @@
 	</style>
 </head>
 <body>
-	@foreach ($buku as $element)
+	@foreach ($buku as $key => $value)
 	    <section class="sheet padding-10mm">
         <h5 style="text-align:center;font-family: 'Source Sans Pro', sans-serif;">
-        	{{ $element->judul_buku }}
+        	{{ $value->judul_buku }}
         </h5>
-		@foreach ($barcode->where('id_buku',$element->id_buku)->get() as $value)
+        @php
+            $get_barcode = $barcode->where('id_buku',$value->id_buku)->get();
+        @endphp
+        @for ($i = 0; $i < $value->stok_buku; $i++)
 		<div class="label">
-			<label class="bar"><img src="data:image/png;base64,{{ $barcode->code($value->code_scanner) }}" alt=""></label>
-			<span class="text-nama">{{ $element->judul_buku }}</span>
+			<label class="bar"><img src="data:image/png;base64,{{ $barcode->code($get_barcode[0]->code_scanner) }}" alt=""></label>
+			<span class="text-nama">{{ $value->judul_buku }}</span>
 		</div>
-		@endforeach
+        @endfor
 		</section>
 	@endforeach
 </body>
 </html>
+
+<script>
+    window.print();
+</script>

@@ -344,10 +344,10 @@ class LaporanTransaksiController extends Controller
                 foreach ($get_siswa_transaksi as $key => $data_siswa) {
 
                 $check_pinjam_k13 = TransaksiDetail::checkPinjamBukuK13($data_siswa->id_anggota_perpus,
-                                                                        $data->kelas_tingkat);
+                                                                        $data->kelas_tingkat,$explode);
 
                 $check_tidak_pinjam_k13 = TransaksiDetail::checkTidakPinjamBukuK13($data_siswa->id_anggota_perpus,
-                                                                        $data->kelas_tingkat);
+                                                                        $data->kelas_tingkat,$explode);
                     if ($check_pinjam_k13 == 'true') {
                         $count_total_pinjam = $count_total_pinjam+1;
                     }
@@ -414,6 +414,114 @@ class LaporanTransaksiController extends Controller
 
             $sheet_cell = 13;
         }
+
+        $spreadsheet->setActiveSheetIndex(3)->setTitle('Rekap Th. '.$explode[0].'-'.$explode[1]);
+
+        $drawing = new Drawing();
+        $drawing->setName('Kop Laporan');
+        $drawing->setDescription('Kop Laporan');
+        $drawing->setPath('admin-assets/dist/img/kop_laporan.jpeg');
+        $drawing->setWidth(150);
+        $drawing->setHeight(150);
+        $drawing->setCoordinates('B1');
+        $drawing->setOffsetX(45);
+        $drawing->setWorksheet($spreadsheet->getActiveSheet());
+
+        $spreadsheet->getActiveSheet()->setCellValue('C8','Rekapitulasi Peminjaman Buku Paket Kurikulum 2013');
+        $spreadsheet->getActiveSheet()->setCellValue('C9','Perpustakaan SMK Negeri 7 Samarinda');
+        $spreadsheet->getActiveSheet()->setCellValue('C10','Tahun '.$explode[0].' - '.$explode[1]);
+        $spreadsheet->getActiveSheet()->getStyle('C8:C10')->getFont()->setSize(14);
+        $spreadsheet->getActiveSheet()->setCellValue('C12','No.');
+        $spreadsheet->getActiveSheet()->setCellValue('D12','Kelas');
+        $spreadsheet->getActiveSheet()->setCellValue('E12','Pinjam');
+        $spreadsheet->getActiveSheet()->setCellValue('F12','Tidak Pinjam');
+        $spreadsheet->getActiveSheet()->setCellValue('G12','Ket');
+        $spreadsheet->getActiveSheet()->mergeCells('C8:G8');
+        $spreadsheet->getActiveSheet()->mergeCells('C9:G9');
+        $spreadsheet->getActiveSheet()->mergeCells('C10:G10');
+        $spreadsheet->getActiveSheet()->mergeCells('C11:D11');
+        $spreadsheet->getActiveSheet()->getStyle('C8:C10')->getFont()->setBold(true);
+        $spreadsheet->getActiveSheet()->getStyle('C11:G12')->applyFromArray($customCellMonth);
+        $spreadsheet->getActiveSheet()->getStyle('C8:C10')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+        $spreadsheet->getActiveSheet()->getColumnDimension('C')->setWidth(7);
+        $spreadsheet->getActiveSheet()->getColumnDimension('D')->setWidth(13);
+        $spreadsheet->getActiveSheet()->getColumnDimension('E')->setWidth(18);
+        $spreadsheet->getActiveSheet()->getColumnDimension('F')->setWidth(18);
+        $spreadsheet->getActiveSheet()->getColumnDimension('G')->setWidth(18);
+        $spreadsheet->getActiveSheet()->getRowDimension('12')->setRowHeight(40);
+
+        $last_sheet_cell = 13;
+        foreach ($kelas_tingkat as $key => $value) {
+            $count_total_pinjam   = 0;
+            $count_not_pinjam_k13 = 0;
+            $count_total_pinjam   = 0;
+            $count_not_exists     = 0;
+
+            $count_not_exists       = TransaksiDetail::countNotExistsPinjamK13("XII",'','',$explode);
+
+            $check_pinjam_k13       = TransaksiDetail::checkPinjamBukuK13('',$value->kelas_tingkat,$explode);
+            
+            $check_tidak_pinjam_k13 = TransaksiDetail::checkTidakPinjamBukuK13('',"XII",$explode);
+
+            if ($check_pinjam_k13 == 'true') {
+                $count_total_pinjam = $count_total_pinjam+1;
+            }
+            if ($check_tidak_pinjam_k13 == 'true') {
+                $count_not_pinjam_k13 = $count_not_pinjam_k13+1;
+            }
+
+            $count_total_tidak_pinjam = $count_not_exists + $count_not_pinjam_k13;
+
+            $spreadsheet->getActiveSheet()->setCellValue('C'.$last_sheet_cell,$key+1);
+            $spreadsheet->getActiveSheet()->setCellValue('D'.$last_sheet_cell,$value->kelas_tingkat);
+            $spreadsheet->getActiveSheet()->setCellValue('E'.$last_sheet_cell,$count_total_pinjam);
+            $spreadsheet->getActiveSheet()->setCellValue('F'.$last_sheet_cell,$count_total_tidak_pinjam);
+            $spreadsheet->getActiveSheet()->setCellValue('G'.$last_sheet_cell,'');
+            
+            $spreadsheet->getActiveSheet()->getRowDimension($last_sheet_cell)->setRowHeight(24);
+
+            $last_sheet_cell = $last_sheet_cell+1;
+        }
+        
+        $spreadsheet->getActiveSheet()->mergeCells('C'.$last_sheet_cell.':D'.$last_sheet_cell);
+
+        $styleTable = ['borders'=>['allBorders'=>['borderStyle'=>\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN]]];
+        $spreadsheet->getActiveSheet()->getStyle('C12:G'.$last_sheet_cell)->applyFromArray($styleTable);
+            
+        $spreadsheet->getActiveSheet()->getStyle('C11:G'.$last_sheet_cell)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+        $spreadsheet->getActiveSheet()->getStyle('C11:G'.$last_sheet_cell)->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+
+        $spreadsheet->getActiveSheet()->getStyle('C'.$last_sheet_cell.':G'.$last_sheet_cell)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('C8C8C8');    
+
+        $spreadsheet->getActiveSheet()->getRowDimension($last_sheet_cell)->setRowHeight(24);
+
+        $last_cell_sign  = $last_sheet_cell+2;
+        $last_cell_job   = $last_sheet_cell+3;
+        $last_cell_name  = $last_sheet_cell+7;
+        $last_cell_nip   = $last_sheet_cell+8;
+
+        $spreadsheet->getActiveSheet()->setCellValue('C'.$last_sheet_cell,'Total');
+        $spreadsheet->getActiveSheet()->setCellValue('E'.$last_sheet_cell,'=SUM(E13:E'.$last_sheet_cell.')');
+        $spreadsheet->getActiveSheet()->setCellValue('F'.$last_sheet_cell,'=SUM(F13:F'.$last_sheet_cell.')');
+
+        $spreadsheet->getActiveSheet()->setCellValue('C'.$last_cell_sign,'Mengetahui,');
+        $spreadsheet->getActiveSheet()->setCellValue('G'.$last_cell_sign,'Samarinda,          '.$explode[0]);
+        $spreadsheet->getActiveSheet()->setCellValue('C'.$last_cell_job,'Kepala Tata Administrasi');
+        $spreadsheet->getActiveSheet()->setCellValue('G'.$last_cell_job,'Kepala Perpustakaan');
+        $spreadsheet->getActiveSheet()->setCellValue('C'.$last_cell_name,'Jumran, S.Pd');
+        $spreadsheet->getActiveSheet()->setCellValue('G'.$last_cell_name,Petugas::where('jabatan','kepala-perpustakaan')->firstOrFail()->nama_petugas);
+        $spreadsheet->getActiveSheet()->setCellValue('C'.$last_cell_nip,'NIP.19660507 199011 1 001');
+        $spreadsheet->getActiveSheet()->setCellValue('G'.$last_cell_nip,'NIP.'.Petugas::where('jabatan','kepala-perpustakaan')->firstOrFail()->nip);
+
+            $spreadsheet->getActiveSheet()->getStyle('C'.$last_cell_name)->getFont()->setUnderline(true);
+            $spreadsheet->getActiveSheet()->getStyle('C'.$last_cell_name.':G'.$cell_nip)->getFont()->setBold(true);
+        
+        $spreadsheet->getActiveSheet()->getSheetView()->setZoomScale(145);
+
+        $spreadsheet->getActiveSheet()->getPageSetup()
+                    ->setOrientation(\PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::ORIENTATION_LANDSCAPE);
+        $spreadsheet->getActiveSheet()->getPageSetup()
+                    ->setPaperSize(\PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::PAPERSIZE_A4);
 
         $writer = new Xlsx($spreadsheet);
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');

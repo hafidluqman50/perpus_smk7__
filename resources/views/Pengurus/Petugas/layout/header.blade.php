@@ -35,7 +35,7 @@
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
           <span class="dropdown-item dropdown-header">Profile</span>
           <div class="dropdown-divider"></div>
-          <a href="{{ url('/settings-profile') }}" class="dropdown-item">
+          <a href="{{ url('/petugas/ubah-profile') }}" class="dropdown-item">
             <i class="fa fa-cogs mr-2"></i> Ubah Profile
           </a>
           <div class="dropdown-divider"></div>
@@ -61,7 +61,11 @@
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="{{asset('admin-assets/dist/img/user2-160x160.jpg')}}" class="img-circle elevation-2" alt="User Image">
+          @if (Auth::user()->fotoPetugas() == '' || Auth::user()->fotoPetugas() == '-')
+          <img src="{{asset('front-assets/foto_petugas/png-clipart-computer-icons-avatar-flat-design-blank-shape-logo-rim-thumbnail.png')}}" class="img-circle elevation-2" alt="User Image">
+          @else
+          <img src="{{asset('front-assets/foto_petugas/'.Auth::user()->fotoPetugas())}}" class="img-circle elevation-2" alt="User Image">
+          @endif
         </div>
         <div class="info">
           <a href="#" class="d-block">{{ Auth::user()->name }}</a>
@@ -126,6 +130,12 @@
                 <a href="{{ url('/petugas/transaksi-buku/guru') }}" class="nav-link @if(isset($page)){{$page=='transaksi-buku-guru'?'active':''}}@endif">
                     <i class="fa fa-circle-o nav-icon"></i>
                     <p>Transaksi Buku Guru</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ url('/petugas/transaksi-buku/karyawan') }}" class="nav-link @if(isset($page)){{$page=='transaksi-buku-karyawan'?'active':''}}@endif">
+                    <i class="fa fa-circle-o nav-icon"></i>
+                    <p>Transaksi Buku Karyawan</p>
                 </a>
               </li>
               <li class="nav-item">

@@ -26,7 +26,7 @@
 					<div class="card-body">
 						@if (session()->has('message'))
 							@foreach (session('message') as $element)
-							<div class="alert {{$element['class']}} alert-dismissible">{!!$element['text']!!} <button class="close">X</button></div>
+							<div class="alert {{$element['class']}} alert-dismissible">{!!$element['text']!!} <button class="close" data-dismiss="alert">X</button></div>
 							@endforeach
 						@endif
 						{{-- <h6>Tahun Ajaran : <b>{{$siswa->tahun_ajaran}}</b></h6>

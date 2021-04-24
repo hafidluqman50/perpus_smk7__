@@ -30,7 +30,7 @@
 					</div>
 					<div class="card-body">
 						@if (session()->has('message'))
-							<div class="alert alert-success alert-dismissible">{{session('message')}} <button class="close">X</button></div>
+							<div class="alert alert-success alert-dismissible">{{session('message')}} <button class="close" data-dismiss="alert">X</button></div>
 						@endif
 						<table class="table force-fullwidth transaksi-buku">
 							<thead>

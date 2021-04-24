@@ -13,18 +13,18 @@
 
 <section class="content">
 	<div class="container-fluid">
-		<div class="row">
-			<div class="col-md-12">
-				<div class="card">
-					<div class="card-header">
-						<a href="{{url('/admin/transaksi-buku/siswa')}}">
-							<button class="btn btn-default">
-								<span class="fa fa-long-arrow-left"></span> Kembali
-							</button>
-						</a>
-					</div>
-					<form action="{{url('/admin/transaksi-buku/kembali/post')}}" method="POST">
-						@csrf
+		<form action="{{url('/admin/transaksi-buku/kembali/post')}}" method="POST">
+			@csrf
+			<div class="row">
+				<div class="col-md-6">
+					<div class="card">
+						<div class="card-header">
+							<a href="{{url('/admin/transaksi-buku/siswa')}}">
+								<button class="btn btn-default" type="button">
+									<span class="fa fa-long-arrow-left"></span> Kembali
+								</button>
+							</a>
+						</div>
 						<div class="card-body">
 							<div class="form-group">
 								<label for="">Tahun Ajaran</label>
@@ -50,14 +50,28 @@
 									<option selected="selected" disabled="disabled">=== Pilih Siswa ===</option>
 								</select>
 							</div>
-							<hr>
+						</div>
+						<div class="card-footer">
+							<input type="hidden" name="tipe" value="siswa">
+							<button type="submit" class="btn btn-primary">
+								Simpan <span class="fa fa-save"></span>
+							</button>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="card">
+						<div class="card-header">
+							<b>Kembalikan Buku</b>
+						</div>
+						<div class="card-body">
 							<button class="btn btn-primary" id="scan-barcode" type="button">Scan Barcode</button>
 							<button class="btn btn-primary is-hide" id="input-manual" type="button">Input Manual</button>
 							<hr>
 							<div class="input-manual">
 								<div class="form-group">
 									<label for="">Buku</label>
-									<select name="buku_manual[]" id="buku_manual" class="form-control select-buku" required="required" multiple="">
+									<select name="buku_manual[]" id="buku_manual" class="form-control select-buku" multiple="">
 										@foreach ($data_buku as $element)
 										<option value="{{$element->id_buku}}">{{ $element->judul_buku }}</option>
 										@endforeach
@@ -71,21 +85,32 @@
 								</div>
 								<div class="form-group">
 									<label for="">Buku</label>
-									<select name="buku_barcode[]" id="buku" class="form-control select-buku" required="required" disabled="disabled" multiple="multiple">
+									<select name="buku_barcode[]" id="buku" class="form-control select-buku" disabled="disabled" multiple="multiple">
 									</select>
 								</div>
 							</div>
 						</div>
-						<div class="card-footer">
-							<input type="hidden" name="tipe" value="siswa">
-							<button type="submit" class="btn btn-primary">
-								Simpan <span class="fa fa-save"></span>
-							</button>
+					</div>
+					<div class="card">
+						<div class="card-header">
+							<b>Buku Hilang</b>
 						</div>
-					</form>
+						<div class="card-body">
+							<div class="input-manual">
+								<div class="form-group">
+									<label for="">Buku</label>
+									<select name="buku_hilang[]" id="buku_hilang" class="form-control select-buku" multiple="">
+										@foreach ($data_buku as $element)
+										<option value="{{$element->id_buku}}">{{ $element->judul_buku }}</option>
+										@endforeach
+									</select>
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
-		</div>
+		</form>
 	</div>
 </section>
 @endsection

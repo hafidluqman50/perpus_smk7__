@@ -80,7 +80,7 @@ class PetugasController extends Controller
             
             $message = 'Berhasil Input Petugas';
         } else {
-            $get = Petugas::where('id_anggota',$id);
+            $get = Petugas::where('id_petugas',$id);
             $first = $get->firstOrFail();
             
             if ($username != '' && $password != '') {
@@ -108,12 +108,12 @@ class PetugasController extends Controller
                     $constraint->upSize();
                 })->save('front-assets/foto_petugas/'.$fileName);
 
-                unset($array['username']);
-                unset($array['password']);
-                unset($array['name']);
-                unset($array['status_akun']);
-                unset($array['status_delete']);
-                unset($array['level']);
+                unset($array['username'],
+                      $array['password'],
+                      $array['name'],
+                      $array['status_akun'],
+                      $array['status_delete'],
+                      $array['level']);
 
                 Petugas::where('id_petugas',$id)->update($array);
             }
@@ -123,6 +123,20 @@ class PetugasController extends Controller
         }
 
         return redirect('/admin/data-petugas/')->with('message',$message);
+    }
+
+    public function delete($id)
+    {
+        $get = Petugas::where('id_petugas',$id);
+        $foto = $get->firstOrFail()->foto_profile;
+        if (file_exists(public_path('front-assets/foto_petugas/'.$foto))) {
+            unlink(public_path('front-assets/foto_petugas/'.$foto));
+        }
+        User::where('id_users',$get->firstOrFail()->id_users)->update(['status_delete'=>1]);
+        $get->delete();
+
+
+        return redirect('/admin/data-petugas');
     }
 
     public function statusPetugas($id) 

@@ -5,6 +5,29 @@ function dua_minggu($tanggal)
     return $dua_minggu;
 }
 
+function mail_image($image)
+{
+    $link1 = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http")."://$_SERVER[SERVER_NAME]/public/admin-assets/dist/$image";
+    $link2 = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http")."://$_SERVER[SERVER_NAME]/admin-assets/dist/$image";
+    
+    if(file_exists($link1))
+    {
+        return $link1;
+    }
+    else {
+        return $link2;
+    }
+}
+
+function base64_img($img)
+{
+    $path = getcwd().$img;
+    // dd(file_exists($path));
+    $type = pathinfo($path, PATHINFO_EXTENSION);
+    $data = file_get_contents($path);
+    $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+}
+
 function cari_buku()
 {
 	$actual_link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]/cari";
@@ -239,7 +262,7 @@ function denda($tanggal_awal,$tanggal_akhir) {
 	else {
 		$denda = 0;
 	}
-	return $denda;
+	return $denda > 50000 ? 50000 : $denda;
 }
 
 function rupiah_format($money) {

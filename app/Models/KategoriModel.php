@@ -19,6 +19,7 @@ class KategoriModel extends Model
                     ->join('kategori_buku','sub_kategori.id_kategori_buku','=','kategori_buku.id_kategori_buku')
                     ->orderBy('id_buku','desc')
                     ->where('slug_kategori',$slug)
+                    ->where('buku.status_delete',0)
                     ->paginate(12);
         }
         else {
@@ -28,6 +29,7 @@ class KategoriModel extends Model
                     ->orderBy('id_buku','desc')
                     ->where('slug_kategori',$slug)
                     ->where('judul_buku','like','%'.$cari.'%')
+                    ->where('buku.status_delete',0)
                     ->paginate(12);
         }
         return $db;
@@ -61,6 +63,7 @@ class KategoriModel extends Model
                 ->join('kategori_buku','sub_kategori.id_kategori_buku','=','kategori_buku.id_kategori_buku')
                 ->select('buku.*','kategori_buku.*')
                 ->where('kategori_buku.slug_kategori',$slug)
+                ->where('buku.status_delete',0)
                 ->count();
         return $db;
     }

@@ -1,7 +1,7 @@
 @extends('Main.layout.layout-app')
 @section('content')
 {{-- @include('Main.layout.notif-bubble') --}}
-<div id="wrap-notif">
+{{-- <div id="wrap-notif" class="test">
 	<div class="wish-box">
 		<div class="wish-notif columns is-multiline notification is-default is-mobile is-tablet">
         	<div class="column is-2-mobile is-2-tablet is-2-desktop">
@@ -9,12 +9,12 @@
 	           		<i class="fa fa-heart"></i>
 	          	</span>
         	</div>
-	        <div class="column is-10-tablet is-10-mobile is-10-mobile">
-	        	Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
+	        <div class="column is-10-tablet is-10-mobile is-10-mobile" id="mantap">
+
 	        </div>
 		</div>
 	</div>
-</div>
+</div> --}}
 <div class="error">
 	<div class="error-box">
 		<div class="is-error columns is-multiline notification is-default is-mobile is-tablet">
@@ -82,7 +82,7 @@
 		 				</div>
 		 				<div class="content">
 		 					<div class="columns is-gapless is-multiline is-mobile">
-		 						<div class="column is-10-desktop is-half-mobile">
+		 						<div class="column is-12-desktop is-12-mobile">
 		 							@if (Auth::check())
 			 							@if($cek == 0)
 			 							<a href="{{ url('/pinjam/buku',$data->judul_slug) }}">
@@ -97,13 +97,13 @@
 		 							</a>
 		 							@endif
 		 						</div>
-		 						<div class="column is-2-desktop is-half-mobile">
-		 							<button class="button is-inverted is-dark pinjam notif-wishlist" {!!Auth::check() ? 'data-buku="'.$data->id_buku.'" data-anggota="'.$anggota.'"':''!!}>
+		 						{{-- <div class="column is-2-desktop is-half-mobile">
+		 							<button class="button is-inverted is-dark pinjam notif-wishlist" data-buku="{{ $data->id_buku }}">
 		 								<span class="icon">
 		 									<i class="fa fa-heart-o animated pulse"></i>
 		 								</span>
 		 							</button>
-		 						</div>
+		 						</div> --}}
 		 					</div>
 		 				</div>
 	 				</div>
@@ -151,9 +151,6 @@ $(function(){
     });
     $('#remove').on('click',function(){
     	$('#show').hide();
-    });
-    $(window).scroll(function(){
-    	
     });
 });
 </script>

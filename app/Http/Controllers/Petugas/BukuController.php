@@ -52,7 +52,7 @@ class BukuController extends Controller
         if (file_exists(public_path('front-assets/foto_buku/'.$foto))) {
             unlink(public_path('front-assets/foto_buku/'.$foto));
         }
-        $get->delete();
+        $get->update(['status_delete' => 1]);
         Barcode::where('id_buku',$id)->delete();
 
         return redirect('/petugas/data-buku')->with('message','Berhasil Hapus Buku');
@@ -60,11 +60,6 @@ class BukuController extends Controller
 
     public function save(Request $request) 
     {
-        if (Buku::count() == 0) {
-            $nomor_induk = 1;
-        } else {
-            $nomor_induk = Buku::orderBy('id_buku','desc')->firstOrFail()->nomor_induk+1;
-        }
         $judul_buku       = $request->judul_buku;
         $judul_slug       = Str::slug($judul_buku,'-');
         $sub_ktg          = $request->sub_ktg;
@@ -85,7 +80,10 @@ class BukuController extends Controller
         $id               = $request->id_buku;
         if ($id == '') {
             if ($foto_buku != '') {
-                Image::make($foto_buku)->resize(446,446)->save('front-assets/foto_buku/'.$fileName);
+                Image::make($foto_buku)->resize(446,446,function($constraint){
+                    $constraint->aspectRation();
+                    $constraint->upSize();
+                })->save('front-assets/foto_buku/'.$fileName);
             }
             $array = [
                 'tanggal_upload'   => date('Y-m-d'),
@@ -107,16 +105,18 @@ class BukuController extends Controller
                 'jenis_buku'       => $jenis_buku
             ];
             Buku::create($array);
-            for ($i=0; $i < $stok_buku; $i++) { 
-                $id_buku = Buku::where('judul_slug',$judul_slug)->firstOrFail()->id_buku;
-                $data_barcode = [
-                    'id_barcode'   => (string) Str::uuid(),
-                    'code_scanner' => random_number(),
-                    'id_buku'      => $id_buku,
-                ];
+            $code_scanner = random_number();
 
-                Barcode::firstOrCreate($data_barcode);
-            }
+            // for ($i=0; $i < $stok_buku; $i++) { 
+            $id_buku = Buku::where('judul_slug',$judul_slug)->firstOrFail()->id_buku;
+            $data_barcode = [
+                'id_barcode'   => (string) Str::uuid(),
+                'code_scanner' => $code_scanner,
+                'id_buku'      => $id_buku,
+            ];
+
+            Barcode::create($data_barcode);
+            // }
             $message = 'Berhasil Input Buku';
         } else {
 
@@ -127,7 +127,10 @@ class BukuController extends Controller
                     unlink(public_path('front-assets/foto_buku/'.$foto));
                 }
 
-                Image::make($foto_buku)->resize(446,446)->save('front-assets/foto_buku/'.$fileName);
+                Image::make($foto_buku)->resize(446,446,function($constraint){
+                    $constraint->aspectRatio();
+                    $constraint->upSize();
+                })->save('front-assets/foto_buku/'.$fileName);
                 $array = [
                     'tanggal_upload'   => date('Y-m-d'),
                     'judul_buku'       => $judul_buku,
@@ -167,20 +170,6 @@ class BukuController extends Controller
                     'keterangan'       => $keterangan,
                     'jenis_buku'       => $jenis_buku
                 ];
-            }
-
-            if (Buku::where('id_buku',$id)->firstOrFail()->stok_buku != $stok_buku) {
-                Barcode::where('id_buku',$id)->delete();
-
-                for ($j=0; $j < $stok_buku; $j++) {
-                    $data_barcode = [
-                        'id_barcode'   => (string) Str::uuid(),
-                        'code_scanner' => random_number(),
-                        'id_buku'      => $id,
-                    ];
-
-                    Barcode::firstOrCreate($data_barcode);
-                }
             }
 
             Buku::where('id_buku',$id)->update($array);
@@ -336,19 +325,24 @@ class BukuController extends Controller
                             'keterangan'       => $cells[14]->getValue(),
                         ];
                         Buku::firstOrCreate($data_buku);
-                        for ($i=0; $i < $cells[13]->getValue(); $i++) {
-                            $id_buku = Buku::where('judul_slug',Str::slug($cells[1]->getValue(),'-'))->firstOrFail()->id_buku;
+                        // for ($i=0; $i < $cells[13]->getValue(); $i++) {
+                        $id_buku = Buku::where('judul_slug',Str::slug($cells[1]->getValue(),'-'))->firstOrFail()->id_buku;
 
-                            Barcode::where('id_buku',$id_buku)->delete();
-
-                            $data_barcode = [
-                                'id_barcode'   => (string) Str::uuid(),
-                                'code_scanner' => random_number(),
-                                'id_buku'      => $id_buku,
-                            ];
-
-                            Barcode::firstOrCreate($data_barcode);
+                        if (Barcode::where('id_buku',$id_buku)->count() > 0) {
+                            $code_scanner = Barcode::where('id_buku',$id_buku)->firstOrFail()->code_scanner;
                         }
+                        else {
+                            $code_scanner = random_number();
+                        }
+
+                        $data_barcode = [
+                            'id_barcode'   => (string) Str::uuid(),
+                            'code_scanner' => $code_scanner,
+                            'id_buku'      => $id_buku,
+                        ];
+
+                        Barcode::firstOrCreate($data_barcode);
+                        // }
                     }
                 }
             }
@@ -523,7 +517,7 @@ class BukuController extends Controller
 
     public function cetakBarcodeById($id)
     {
-        $buku    = Buku::where('id_buku',$id)->get();
+        $buku    = Buku::where('id_buku',$id)->where('status_delete',0)->get();
         $barcode = new Barcode;
 
         return view('Pengurus.Petugas.page.buku.data-buku.cetak-barcode',compact('buku','barcode'));

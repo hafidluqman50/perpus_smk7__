@@ -9,19 +9,19 @@
 		@page {
 			margin:0!important;
 		}
-		h6 {
+		h4 {
   			font-family: "Times New Roman", Times, serif;
 		}
 		.row {
-			margin-top:14px;
+			margin-top:5%;
 		}
 		.layout-label {
-			width:8.13cm;
-			height:3.56cm;
+			width:10.3cm;
+			height:5cm;
 			border: 1px solid black;
 			margin-left:auto;
 			margin-right: auto;
-			margin-bottom:9%;
+			margin-bottom:5%;
 			position: relative;
 		}
 		.layout-label::before {
@@ -35,13 +35,13 @@
 			background-image: url('/admin-assets/dist/Logo_SMKN_7_Samarinda.png');
 			background-repeat: no-repeat;
 			background-position: center;
-			background-size:3.3cm 3.3cm;
+			background-size:4.5cm 4.5cm;
 			filter: grayscale(100%);
 			opacity: 0.3;
 		}
 		.label-header {
 			width: 100%;
-			height:1.4cm;
+			height:1.7cm;
 			border-bottom: 1px solid black;
 		}
 		.label-body {
@@ -68,24 +68,24 @@
 					<div class="col-md-6">
 						<div class="layout-label bg-watermark">
 							<div class="label-header">
-								<h6 align="center" style="margin-top:1%;"><b>PERPUSTAKAAN</b></h6>
-								<h6 align="center"><b>SMK NEGERI 7 SAMARINDA</b></h6>
+								<h4 align="center" style="margin-top:1%;"><b>PERPUSTAKAAN</b></h4>
+								<h4 align="center" style="margin-bottom:2%;"><b>SMK NEGERI 7 SAMARINDA</b></h4>
 							</div>
 							<div class="label-body">
-								<h6 align="center" style="margin-top:1%;"><b>{{ $value->klasifikasi }}</b></h6>
-								<h6 align="center"><b>{{ $value->sn_penulis }}</b></h6>
-								<h6 align="center"><b>{{ $value->inisial_buku }}</b></nav></h6>
+								<h4 align="center" style="margin-top:1%;"><b>{{ $value->klasifikasi }}</b></h4>
+								<h4 align="center"><b>{{ $value->sn_penulis }}</b></h4>
+								<h4 align="center"><b>{{ $value->inisial_buku }}</b></nav></h4>
 							</div>
-							<h5 align="center">{{ $value->judul_buku }}</h5>
 						</div>
+						<h5 align="center">{{ $value->judul_buku }}</h5>
 					</div>
-				@if ($count % 2 != 0)
+				@if ($count % 2 == 1)
 				</div>
 				@endif
 				@php 
 					$count = $count + 1;
 				@endphp
-				@if ($count % 16 == 0)
+				@if ($count % 10 == 0)
 				<div class="page-break-after"></div>
 				@endif
 			@endfor

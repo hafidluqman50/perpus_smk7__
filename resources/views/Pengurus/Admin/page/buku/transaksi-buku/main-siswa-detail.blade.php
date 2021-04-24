@@ -22,11 +22,14 @@
 								<span class="fa fa-long-arrow-left"></span> Kembali
 							</button>
 						</a>
+						<a href="{{ url('/admin/transaksi-buku/siswa/cetak-bebas-pustaka/'.$id) }}">
+							<button class="btn btn-success">Cetak Bebas Pustaka</button>
+						</a>
 					</div>
 					<div class="card-body">
 						@if (session()->has('message'))
 							@foreach (session('message') as $element)
-							<div class="alert {{$element['class']}} alert-dismissible">{!!$element['text']!!} <button class="close">X</button></div>
+							<div class="alert {{$element['class']}} alert-dismissible">{!!$element['text']!!} <button class="close" data-dismiss="alert">X</button></div>
 							@endforeach
 						@endif
 						<h6>Tahun Ajaran : <b>{{$siswa->tahun_ajaran}}</b></h6>
@@ -82,7 +85,7 @@
             sortable: true,
             "class": "index",
             }],
-            order: [[ 6, 'desc' ]],
+            order: [[ 2, 'desc' ]],
             responsive:true,
             scrollX:true,
             fixedColumns: true

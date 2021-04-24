@@ -36,7 +36,7 @@ class KategoriController extends Controller
 
     public function deleteKategori($id) 
     {
-        Kategori::where('id_kategori_buku',$id)->delete();
+        Kategori::where('id_kategori_buku',$id)->update(['status_delete' => 1]);
         return redirect('/admin/kategori-buku')->with('message','Berhasil Hapus Kategori');
     }
 
@@ -88,7 +88,7 @@ class KategoriController extends Controller
 
     public function deleteSubKategori($id,$id_sub) 
     {
-        SubKategori::where('id_kategori_buku',$id)->where('id_sub_ktg',$id_sub)->delete();
+        SubKategori::where('id_kategori_buku',$id)->where('id_sub_ktg',$id_sub)->update(['status_delete' => 1]);
         return redirect('/admin/kategori-buku')->with('message','Berhasil Hapus Sub Kategori');
     }
 

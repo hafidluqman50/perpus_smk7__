@@ -20,7 +20,6 @@ class AuthController extends Controller
     	$password = $request->password;
     	if (Auth::attempt(['username' => $username, 'password' => $password, 'status_delete' => 0])) {
             if (Auth::user()->level==0 && Auth::user()->status_akun == 1) {
-                // dd(Auth::check());
     			return redirect()->intended('/');
             }
             else if (Auth::user()->level==1 && Auth::user()->status_akun == 1) {

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Auth;
 
 class User extends Authenticatable
 {
@@ -38,4 +39,29 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public static function checkUsername($username)
+    {
+        $check  = self::where('username',$username)->count();
+
+        $return = '';
+
+        if ($check == 0) {
+            $return = true;
+        }
+        else {
+            $return = false;
+        }
+
+        return $return;
+    }
+
+    public static function fotoPetugas()
+    {
+        $db = self::join('petugas','users.id_users','=','petugas.id_users')
+                    ->where('petugas.id_users',Auth::id())
+                    ->firstOrFail();
+
+        return $db->foto_profile;
+    }
 }
