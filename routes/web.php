@@ -113,7 +113,6 @@ Route::group(['prefix'=>'datatables'],function(){
 	Route::get('/data-buku-rusak',['as'=>'data-buku-datatables','uses'=>'AjaxController@dataBukuRusak']);
 	Route::get('/data-kategori',['as'=>'data-kategori-datatables','uses'=>'AjaxController@dataKategori']);
 	Route::get('/data-sub-kategori/{id_ktg}',['as'=>'data-kategori-datatables','uses'=>'AjaxController@dataSubKategori']);
-	Route::get('/data-barcode',['as'=>'data-barcode-datatables','uses'=>'AjaxController@dataBarcode']);
 	Route::get('/data-surat-bebas-pustaka',['as'=>'data-buku-tamu-datatables','uses'=>'AjaxController@dataSuratBebasPustaka']);
 	Route::get('/data-transaksi/{jenis}',['as'=>'data-transaksi-datatables','uses'=>'AjaxController@dataTransaksi']);
 	Route::get('/data-detail-transaksi/{id}/{jenis}',['as'=>'data-detail-datatables','uses'=>'AjaxController@dataDetailTransaksi']);
@@ -182,14 +181,6 @@ Route::group(['prefix'=>'admin','middleware'=>'is.admin'],function(){
 	Route::get('/kelas/detail/{id}/delete/{id_detail}',['as'=>'admin-kelas-detail','uses'=>'Admin\KelasController@deleteDetail']);
 	Route::post('/kelas/detail/{id}/save',['as'=>'admin-kelas-detail','uses'=>'Admin\KelasController@saveDetail']);
 	// END CRUD ANGGOTA //
-
-	// CRUD BARCODE //
-	Route::get('/barcode-buku',['as'=>'admin-barcode-buku','uses'=>'Admin\BarcodeController@index']);
-	Route::get('/barcode-buku/tambah',['as'=>'admin-barcode-buku','uses'=>'Admin\BarcodeController@tambah']);
-	Route::get('/barcode-buku/edit/{id}',['as'=>'admin-barcode-buku','uses'=>'Admin\BarcodeController@edit']);
-	Route::get('/barcode-buku/delete/{id}',['as'=>'admin-barcode-buku','uses'=>'Admin\BarcodeController@delete']);
-	Route::post('/barcode-buku/save',['as'=>'admin-barcode-buku','uses'=>'Admin\BarcodeController@save']);
-	// END CRUD BARCODE //
 
 	// CRUD BUKU //
 	Route::get('/data-buku',['as'=>'admin-data-buku','uses'=>'Admin\BukuController@index']);

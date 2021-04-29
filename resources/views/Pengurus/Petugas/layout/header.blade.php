@@ -103,12 +103,6 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="{{ url('/petugas/barcode-buku') }}" class="nav-link @if(isset($page)){{$page=='barcode'?'active':''}}@endif">
-                  <i class="fa fa-circle-o nav-icon"></i>
-                  <p>Barcode Buku</p>
-                </a>
-              </li>
-              <li class="nav-item">
                 <a href="{{ url('/petugas/data-buku') }}" class="nav-link @if(isset($page)){{$page=='data-buku'?'active':''}}@endif">
                   <i class="fa fa-circle-o nav-icon"></i>
                   <p>Data Buku</p>

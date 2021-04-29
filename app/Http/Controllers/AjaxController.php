@@ -234,22 +234,6 @@ class AjaxController extends Controller
         return $datatables;
     }
 
-    public function dataBarcode() 
-    {
-        $barcode = Barcode::showData();
-        $datatables = Datatables::of($barcode)->addColumn('action',function($action){
-            $column = '<a href="'.url("/admin/barcode-buku/edit/$action->id_barcode").'">
-                          <button class="btn btn-warning"> Edit </button>
-                       </a>
-                       <a href="'.url("/admin/barcode-buku/delete/$action->id_barcode").'">
-                           <button class="btn btn-danger" onclick="return confirm(\'Yakin Hapus ?\');"> Hapus </button>
-                       </a>
-                    ';
-            return $column;
-        })->make(true);
-        return $datatables;
-    }
-
     public function dataBuku() 
     {
         $buku = Buku::showData();

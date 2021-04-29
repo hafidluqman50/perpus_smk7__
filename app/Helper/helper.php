@@ -248,15 +248,15 @@ function denda($tanggal_awal,$tanggal_akhir) {
 	if ($days > 2) {
 		if ($days % 3 == 0) {
 			$bagi  = $days / 3;
-			$denda = 15000 * $bagi;
+			$denda = 5000 * $bagi;
 		}
 		else if ($days % 3 == 1) {
 			$bagi  = ($days - 1) / 3;
-			$denda = 15000 * $bagi;
+			$denda = 5000 * $bagi;
 		}
 		else if ($days % 3 == 2) {
 			$bagi  = ($days - 2) / 3;
-			$denda = 15000 * $bagi;
+			$denda = 5000 * $bagi;
 		}
 	}
 	else {
