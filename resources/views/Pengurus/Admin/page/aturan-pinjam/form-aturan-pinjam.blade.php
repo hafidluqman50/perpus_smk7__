@@ -5,7 +5,7 @@
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-md-12">
-				<h1 class="m-0 text-dark">Form Barcode</h1>
+				<h1 class="m-0 text-dark">Form Aturan Pinjam</h1>
 			</div>
 		</div>
 	</div>

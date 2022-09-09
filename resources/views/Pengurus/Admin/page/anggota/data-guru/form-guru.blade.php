@@ -37,14 +37,14 @@
 								<label for="" class="form-label">Nama Guru</label>
 								<input type="text" class="form-control" name="nama_anggota" value="{{isset($row)?$row->nama_anggota:(isset($errors)?old('nama_anggota'):'')}}" placeholder="Isi Nama Guru" required="required">
 							</div>
-							<div class="form-group">
+							{{-- <div class="form-group">
 								<label for="" class="form-label">Email Guru</label>
 								<input type="email" class="form-control" name="email" value="{{isset($row)?$row->email:(isset($errors)?old('email'):'')}}" placeholder="Isi Email Guru" required="required">
 							</div>
 							<div class="form-group">
 								<label for="" class="form-label">Nomor HP</label>
 								<input type="number" class="form-control" name="no_hp" value="{{isset($row)?$row->nmr_hp:(isset($errors)?old('no_hp'):'')}}" placeholder="Isi Nomor Hp" required="required">
-							</div>
+							</div> --}}
 							<div class="form-group">
 								<label for="" class="form-label">Jenis Kelamin</label>
 								<select name="jenis_kelamin" class="form-control" required="required">

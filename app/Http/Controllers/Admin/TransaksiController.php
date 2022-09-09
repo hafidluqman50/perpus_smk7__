@@ -148,7 +148,7 @@ class TransaksiController extends Controller
         if ($barcode == '') {
             TransaksiDetail::where('id_transaksi',$id_transaksi)
                             ->where('id_detail_transaksi',$id_detail_transaksi)
-                            ->where('id_buku',$id_buku)
+                            // ->where('id_buku',$id_buku)
                             ->update([
                                 'stok_transaksi'   => 1,
                                 'status_transaksi' => 'sedang-dipinjam',

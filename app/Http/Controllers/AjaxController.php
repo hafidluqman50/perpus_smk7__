@@ -241,11 +241,11 @@ class AjaxController extends Controller
             $column = '<a href="'.url("/$this->level/data-buku/cetak-label/$action->id_buku").'">
                           <button class="btn btn-success"> Cetak Label </button>
                        </a>
-                       <a href="'.url("/$this->level/data-buku/cetak-barcode/$action->id_buku").'">
-                          <button class="btn btn-success"> Cetak Barcode </button>
-                       </a>
                        <a href="'.url("/$this->level/data-buku/edit/$action->id_buku").'">
                           <button class="btn btn-warning"> Edit </button>
+                       </a>
+                       <a href="'.url("/$this->level/data-buku/cetak-barcode/$action->id_buku").'">
+                          <button class="btn btn-success"> Cetak Barcode </button>
                        </a>
                        <a href="'.url("/$this->level/data-buku/delete/$action->id_buku").'">
                            <button class="btn btn-danger" onclick="return confirm(\'Yakin Hapus ?\');"> Hapus </button>
@@ -570,8 +570,8 @@ class AjaxController extends Controller
         return response()->json($data_buku,201);
     }
 
-    public function wishlistBuku($id,$id_anggota) 
-    {
+    // public function wishlistBuku($id,$id_anggota) 
+    // {
 
-    }
+    // }
 }

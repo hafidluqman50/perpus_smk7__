@@ -5,7 +5,7 @@
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-md-12">
-				<h1 class="m-0 text-dark">Form Buku</h1>
+				<h1 class="m-0 text-dark">Form Surat Bebas Pustaka</h1>
 			</div>
 		</div>
 	</div>

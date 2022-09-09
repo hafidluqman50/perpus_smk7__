@@ -37,22 +37,22 @@
 								<label for="" class="form-label">Nama Siswa</label>
 								<input type="text" class="form-control" name="nama_anggota" value="{{isset($row)?$row->nama_anggota:(isset($errors)?old('nama_anggota'):'')}}" placeholder="Isi Nama Lengkap Siswa" required="required">
 							</div>
-							<div class="form-group">
+							{{-- <div class="form-group">
 								<label for="" class="form-label">Email Siswa</label>
 								<input type="email" class="form-control" name="email" value="{{isset($row)?$row->email:(isset($errors)?old('email'):'')}}" placeholder="Isi Email" required="required">
 							</div>
 							<div class="form-group">
 								<label for="" class="form-label">Nomor HP</label>
 								<input type="number" class="form-control" name="no_hp" value="{{isset($row)?$row->nmr_hp:(isset($errors)?old('no_hp'):'')}}" placeholder="Isi Nomor HP" required="required">
-							</div>
-							<div class="form-group">
+							</div> --}}
+							{{-- <div class="form-group">
 								<label for="" class="form-label">Jenis Kelamin</label>
 								<select name="jenis_kelamin" class="form-control" id="" required="required">
 									<option selected="selected" disabled="disabled">=== Pilih Jenis Kelamin ===</option>
 									<option value="Laki-Laki"@if(isset($row)){!!$row->jenis_kelamin=='Laki-Laki'?'selected="selected"':''!!}@elseif(isset($errors)){!!old('jenis_kelamin')=='Laki-Laki' ? 'selected="selected"' : ''!!}@endif>Laki-Laki</option>
 									<option value="Perempuan"@if(isset($row)){!!$row->jenis_kelamin=='Perempuan'?'selected="selected"':''!!}@elseif(isset($errors)){!!old('jenis_kelamin')=='Perempuan' ? 'selected="selected"' : ''!!}@endif>Perempuan</option>
 								</select>
-							</div>
+							</div> --}}
 							<div class="form-group">
 								<label for="" class="form-label">Username Siswa</label>
 								<input type="text" class="form-control" name="username" value="{!!isset($row)?$row->username:(isset($errors)?old('username'):'')!!}" placeholder="Isi Username" {!!isset($row)?'disabled="disabled"':'required="required"'!!}>

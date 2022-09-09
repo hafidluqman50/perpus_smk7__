@@ -38,8 +38,8 @@
 									<th scope="col">NISN</th>
 									<th scope="col">Nama</th>
 									<th scope="col">Username</th>
-									<th scope="col">Email</th>
-									<th scope="col">No HP</th>
+									{{-- <th scope="col">Email</th>
+									<th scope="col">No HP</th> --}}
 									<th scope="col">Status</th>
 									<th scope="col">#</th>
 								</tr>
@@ -71,8 +71,8 @@
                 {data:'nomor_induk',name:'nomor_induk'},
                 {data:'nama_anggota',name:'nama_anggota'},
                 {data:'username',name:'username'},
-                {data:'email',name:'email'},
-                {data:'nmr_hp',name:'nmr_hp'},
+                // {data:'email',name:'email'},
+                // {data:'nmr_hp',name:'nmr_hp'},
                 {data:'status_anggota',name:'status_anggota'},
                 {data:'action',name:'action',searchable:false,orderable:false}
             ],
@@ -82,7 +82,7 @@
             width:"100%",
             "class": "index",
             }],
-            order: [[ 7, 'asc' ]],
+            order: [[ 0, 'asc' ]],
             responsive:true,
             // scrollCollaps:true,
             scrollX:true,

@@ -39,7 +39,7 @@ class KelasController extends Controller
 		$kelas_tingkat = KelasTingkat::whereNotIn('id_kelas_tingkat',[1])->get();
 		$jurusan       = Jurusan::whereNotIn('id_jurusan',[1])->get();
 		$row           = Kelas::where('id_kelas',$id)->firstOrFail();
-		return view('Pengurus.Admin.page.anggota.kelas.form-kelas',compact('title','anggota','page','jurusan','kelas_tingkat','kelas'));	
+		return view('Pengurus.Admin.page.anggota.kelas.form-kelas',compact('title','anggota','page','jurusan','kelas_tingkat','row'));
     }
 
     public function delete($id)

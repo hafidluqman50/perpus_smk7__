@@ -99,14 +99,6 @@
 							<button class="button is-primary pinjam">Pinjam</button>
 						</a>
 					</div>
-					<div class="column is-half-mobile is-half-tablet is-4-desktop">
-			 			<button class="button is-dark is-outlined pinjam">
-			 				<p>Wishlist</p>
-			 				<span class="icon is-small">
-			 					<i class="fa fa-heart-o"></i>
-			 				</span>
-			 			</button>
-			 		</div>
 				</div>
 			</div>
 		</div>

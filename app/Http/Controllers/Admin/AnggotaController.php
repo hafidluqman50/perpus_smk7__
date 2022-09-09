@@ -30,10 +30,11 @@ class AnggotaController extends Controller
 
     public function editSiswa($id) 
     {
-        $title        = 'Form Siswa | Admin';
-        $page         = 'data-siswa';
-        $row          = Anggota::getData($id);
-        return view('Pengurus.Admin.page.anggota.data-siswa.form-siswa',compact('title','page','row'));
+        $title   = 'Form Siswa | Admin';
+        $anggota = 'menu-open';
+        $page    = 'data-siswa';
+        $row     = Anggota::getData($id);
+        return view('Pengurus.Admin.page.anggota.data-siswa.form-siswa',compact('title','page','row','anggota'));
     }
 
     public function guru() 
@@ -54,10 +55,11 @@ class AnggotaController extends Controller
 
     public function editGuru($id) 
     {
-        $title = 'Form Guru | Admin';
-        $page  = 'data-guru';
-        $row   = Anggota::getData($id);
-        return view('Pengurus.Admin.page.anggota.data-guru.form-guru',compact('title','page','row'));
+        $title   = 'Form Guru | Admin';
+        $anggota = 'menu-open';
+        $page    = 'data-guru';
+        $row     = Anggota::getData($id);
+        return view('Pengurus.Admin.page.anggota.data-guru.form-guru',compact('title','page','row','anggota'));
     }
 
     public function karyawan() 
@@ -78,10 +80,11 @@ class AnggotaController extends Controller
 
     public function editKaryawan($id) 
     {
-        $title = 'Form Karyawan | Admin';
-        $page  = 'data-karyawan';
-        $row   = Anggota::getData($id);
-        return view('Pengurus.Admin.page.anggota.data-karyawan.form-karyawan',compact('title','page','row'));
+        $title   = 'Form Karyawan | Admin';
+        $page    = 'data-karyawan';
+        $anggota = 'menu-open';
+        $row     = Anggota::getData($id);
+        return view('Pengurus.Admin.page.anggota.data-karyawan.form-karyawan',compact('title','page','row','anggota'));
     }
 
     public function deleteAnggota($id) 
